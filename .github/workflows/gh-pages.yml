@@ -18,6 +18,11 @@ jobs:
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: 'latest'
+      - uses: jontze/action-mdbook@v2
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          use-toc: true
+          toc-version: "~0.7.0"
 
       - run: mdbook build
 
