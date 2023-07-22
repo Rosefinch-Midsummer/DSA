@@ -1,3 +1,4 @@
 # Summary
 
-- [Chapter 1](./chapter_1.md)
+- [排序算法](./排序算法.md)
+- [查找算法][./查找算法.md)
