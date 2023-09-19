@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">1.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">2.</strong> 查找算法</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="弁言.html"><strong aria-hidden="true">1.</strong> 弁言</a></li><li class="chapter-item expanded "><a href="数据结构绪论.html"><strong aria-hidden="true">2.</strong> 数据结构绪论</a></li><li class="chapter-item expanded "><a href="算法绪论.html"><strong aria-hidden="true">3.</strong> 算法绪论</a></li><li class="chapter-item expanded "><a href="线性表.html"><strong aria-hidden="true">4.</strong> 线性表</a></li><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">5.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">6.</strong> 查找算法</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -167,7 +167,67 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="排序算法"><a class="header" href="#排序算法">排序算法</a></h1>
+                        <h1 id="弁言"><a class="header" href="#弁言">弁言</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="数据结构绪论"><a class="header" href="#数据结构绪论">数据结构绪论</a></h1>
+<ul>
+<li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA.html#%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%92%8C%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84">逻辑结构和物理结构</a>
+<ul>
+<li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA.html#%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84">逻辑结构</a></li>
+<li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA.html#%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84">物理结构</a></li>
+</ul>
+</li>
+<li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA.html#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">数据类型</a></li>
+</ul>
+<p>数据结构是相互之间存在一种或多种特定关系的数据元素的集合。</p>
+<h2 id="逻辑结构和物理结构"><a class="header" href="#逻辑结构和物理结构">逻辑结构和物理结构</a></h2>
+<p>按照视点的不同，我们把数据结构分为逻辑结构和物理结构。</p>
+<h3 id="逻辑结构"><a class="header" href="#逻辑结构">逻辑结构</a></h3>
+<p>逻辑结构是指数据对象中数据元素之间的相互关系。其实这也是我们今后最需要关心的问题。逻辑结构分为以下四种。</p>
+<p>（1）集合结构</p>
+<p>集合结构中的数据元素除了同属于一个集合外，它们之间没有其他关系。数据结构中的集合关系就类似于数学中的集合。</p>
+<p>（2）线性结构</p>
+<p>线性结构中的数据元素之间是一对一的关系。</p>
+<p>（3）树形结构</p>
+<p>树型结构中的数据元素之间存在一种一对多的层次关系。</p>
+<p>（4）图形结构</p>
+<p>图形结构的数据元素是多对多的关系。</p>
+<p>从之前的例子也可以看出，逻辑结构是针对具体问题的，是为了解决某个问题，在对问题理解的基础上，选择一个合适的数据结构表示数据元素之间的逻辑关系。</p>
+<h3 id="物理结构"><a class="header" href="#物理结构">物理结构</a></h3>
+<p>物理结构（存储结构）是指数据的逻辑结构在计算机中的存储形式。</p>
+<p>数据的存储结构应正确反映数据元素之间的逻辑关系，这才是最为关键的，如何存储数据元素之间的逻辑关系，是实现物理结构的重点和难点。</p>
+<p>数据元素的存储结构形式有两种：顺序存储和链式存储。</p>
+<p>（1）顺序存储结构</p>
+<p><strong>顺序存储结构是把数据元素存放在地址连续的存储单元里，其数据间的逻辑关系和物理关系是一致的。</strong> 典型的顺序存储结构就是数组。</p>
+<p>（2）链式存储结构</p>
+<p><strong>链式存储结构是把数据元素存放在任意的存储单元里，这组存储单元可以是连续的，也可以是不连续的。数据元素的存储关系并不能反映其逻辑关系，因此需要用一个指针存放数据元素的地址，这样通过地址就可以找到相关联数据元素的位置。</strong></p>
+<p>显然链式存储就灵活多了，数据存在哪里不重要，只要有一个指针存放了相应的地址就能找到它了。</p>
+<h2 id="数据类型"><a class="header" href="#数据类型">数据类型</a></h2>
+<p>数据类型是指一组性质相同的值的集合及定义在此集合上的一些操作的总称。</p>
+<p>在C语言中，按照取值的不同，数据类型可以分为两类：</p>
+<ul>
+<li>原子类型：不可再分解的类型，包括整型、实型、字符型等。</li>
+<li>结构类型：由若干个类型组合而成，是可以再分解的。例如整型数组是由若干整型数据组成的。</li>
+</ul>
+<p><strong>抽象是指抽取出事物具有的普遍性的本质</strong>。它是抽出问题的特征而忽略非本质的细节，是对具体事物的一个概括。抽象是一种思考问题的方式，它隐藏了繁杂的细节，只保留实现目标所必需的信息。 </p>
+<p>抽象数据类型（Abstract Data Type，ADT）：一个数学模型及定义在该模型上的一组操作。抽象数据类型的定义仅取决于它的一组逻辑特性，而与其在计算机内部如何表示和实现无关。</p>
+<p>实际上，<strong>抽象数据类型体现了程序设计中问题分解、抽象和信息隐藏的特性</strong>。抽象数据类型把实际生活中的问题分解为多个小规模且容易处理的问题，然后建立一个计算机能处理的数据类型，并把每个功能模块的实现细节作为一个独立的单元，从而使具体实现过程隐藏起来。</p>
+<p>为了便于在之后的讲解中对抽象数据类型进行规范的描述，我们给出了抽象数据类型的标准格式：</p>
+<pre><code>ADT 抽象数据类型名
+Data
+	数据元素之间逻辑关系的定义
+Operation
+	操作1
+		初始条件
+		操作结构描述
+	操作2
+		...
+	操作3
+		...
+endADT
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="算法绪论"><a class="header" href="#算法绪论">算法绪论</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="线性表"><a class="header" href="#线性表">线性表</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="排序算法"><a class="header" href="#排序算法">排序算法</a></h1>
 <ul>
 <li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序</a></li>
 <li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a></li>
