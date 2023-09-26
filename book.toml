@@ -7,3 +7,5 @@ title = "资料结构与演算法"
 [preprocessor.toc]
 command = "mdbook-toc"
 renderer = ["html"]
+[preprocessor.katex]
+after = ["links"]
