@@ -166,7 +166,773 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="线性表"><a class="header" href="#线性表">线性表</a></h1>
+                        <h1 id="线性表linear-list"><a class="header" href="#线性表linear-list">线性表Linear List</a></h1>
+<ul>
+<li><a href="#%E5%BC%95%E5%AD%90%E5%A4%9A%E9%A1%B9%E5%BC%8F%E8%A1%A8%E7%A4%BA">引子：多项式表示</a></li>
+<li><a href="#%E7%BA%BF%E6%80%A7%E8%A1%A8%E5%AE%9A%E4%B9%89">线性表定义</a>
+<ul>
+<li><a href="#%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89">线性表的抽象数据类型定义</a></li>
+<li><a href="#%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0">线性表的顺序存储实现</a></li>
+<li><a href="#%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0">线性表的链式存储实现</a></li>
+<li><a href="#%E5%B9%BF%E4%B9%89%E8%A1%A8%E5%92%8C%E5%A4%9A%E9%87%8D%E9%93%BE%E8%A1%A8">广义表和多重链表</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="引子多项式表示"><a class="header" href="#引子多项式表示">引子：多项式表示</a></h2>
+<p>一元多项式及其运算：$f(x)=a_0+a_1x+...+a_nx^n$</p>
+<p>主要运算：多项式相加、相减、相乘等</p>
+<p>分析：如何表示多项式？</p>
+<p>（1）顺序存储结构直接表示</p>
+<p>数组各分量对应多项式各项，<code>a[i]</code>：项$x_i$的系数$a_i$</p>
+<p>两个多项式相加：两个数组对应分量相加</p>
+<p>问题：如何表示多项式$f(x)=x+3x^{2000}$？</p>
+<p>空间利用率较低</p>
+<p>（2）顺序存储结构表示非零项</p>
+<p>每个非零项$a_ix^i$涉及两个信息：系数$a_i$和指数i</p>
+<p>可以将一个多项式看成是一个$(a_i,i)$二元组的集合。</p>
+<p>用结构数组表示：数组分量是由系数$a_i$、指数i组成的结构，对应一个非零项</p>
+<p>例如：$P1(x)=9x^{12}+15x^8+3x^2$       $P2(x)=26x^{19}-4x^8-13x^6+82$</p>
+<p>为了方便相加可以<strong>按指数大小存储</strong>！</p>
+<p>相加过程：从头开始，比较两个多项式当前对应项的指数</p>
+<p>（3）链表结构存储非零项</p>
+<p>链表中每个节点存储多项式中的一个非零项，包括系数和指数两个数据域以及一个指针域</p>
+<div class="table-wrapper"><table><thead><tr><th>coef</th><th>expon</th><th>link</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<pre><code class="language-c">typedef struct PolyNode *Polynomial;
+
+struct PolyNode
+{
+    int coef;
+    int expon;
+    Polynomial link;
+};
+</code></pre>
+<h2 id="线性表定义"><a class="header" href="#线性表定义">线性表定义</a></h2>
+<p>多项式表示问题的启示：</p>
+<p>1.同一个问题可以有不同的表示（存储）方法</p>
+<p>2.有一类共性问题：有序线性序列的组织和管理</p>
+<p>线性表：0个或多个同类型数据元素的<font color="red">有限序列</font>。</p>
+<p>班级同学的花名册是线性表，因为这是有限序列。在较复杂的线性表中，一个数据元素可以由若干个数据项组成。</p>
+<h3 id="线性表的抽象数据类型定义"><a class="header" href="#线性表的抽象数据类型定义">线性表的抽象数据类型定义</a></h3>
+<p>线性表的抽象数据类型定义如下：</p>
+<pre><code>ADT 线性表(List)
+Data
+	线性表的数据对象集合为{a1,a2,...,an}，每个元素的类型均为DataType。其中，除第一个元素a1外，每一个元素有且只有一个直接前驱元素，除了最后一个元素an，每一个元素有且只有一个直接后继元素。数据元素之间的关系是一对一的关系。
+Operation
+	InitList(*L):初始化操作，建立一个空的线性表L。
+	ListEmpty(L):若线性表为空，返回true，否则返回false。
+	ClearList(*L)：将线性表清空。
+	GetElem(L,i,*e)：将线性表L中的第i个未知元素值返回给e。
+	LocateElem(L,e)：在线性表L中查找与给定值e相等的元素，如果查找成功，返回该元素在表中序号表示成功；否则，返回0表示失败。
+	ListInsert(*L,i,e)：在线性表L中的第i个位置插入新元素e。
+	ListDelete(*L,i,*e)：删除线性表L中第i个位置元素，并用e返回其值。
+	ListLength(L)：返回线性表L的元素个数。
+endADT
+</code></pre>
+<h3 id="线性表的顺序存储实现"><a class="header" href="#线性表的顺序存储实现">线性表的顺序存储实现</a></h3>
+<p>利用数组的连续存储空间顺序存放线性表的各元素</p>
+<pre><code class="language-c">typedef struct LNode* List;
+
+struct LNode
+{
+    ElementType Data[MAXSIZE];
+    int Last;//记录最后一位有效位
+};
+struct LNode L;
+List PtrL;
+</code></pre>
+<p>访问下标为i的元素：<code>L.Data[i]</code>或<code>PtrL-&gt;Data[i]</code></p>
+<p>线性表的长度：<code>L.Last+1</code>或<code>PtrL-&gt;Last+1</code></p>
+<p>陈越姥姥《数据结构》课程实现版本：</p>
+<pre><code class="language-c">#define MAXSIZE 20 /*存储空间初始分配量*/
+
+typedef struct LNode* List;
+
+struct LNode
+{
+    ElementType Data[MAXSIZE];
+    int Last;//记录最后一位有效位
+};
+struct LNode L;
+List PtrL;
+
+List MakeEmpty()
+{
+    List PtrL;
+    PtrL=(List)malloc(sizeof(struct LNode));
+    PtrL-&gt;Last=-1;
+    return PtrL;
+}
+int Find(ElementType X,List PtrL)
+{
+    int i=0;
+    while(i&lt;=PtrL-&gt;Last&amp;&amp;PtrL-&gt;Data[i]!=X)
+        i++;
+    if(i&gt;PtrL-&gt;Last) return -1;//如果没找到，返回-1
+    else return i;//找到后返回的是存储位置（下标）
+}
+
+/*插入（第i（1&lt;=i&lt;=n+1）个位置上插入一个值为X的新元素*/
+
+void Insert(ElementType X,int i,List PtrL)       /*i是序数，为下标+1，不是下标*/
+{
+    int j;
+    if(PtrL-&gt;Last==MAXSIZE-1) /*表空间已满，不能插入*/
+    {
+        printf(&quot;表满&quot;);
+        return;
+    }
+    if(i&lt;1||i&gt;PtrL-&gt;Last+2)    /*检查插入位置的合法性*/
+    {
+        printf(&quot;位置不合法&quot;);
+        return;
+    }
+    for(j=PtrL-&gt;Last;j&gt;=i-1;j--)
+        PtrL-&gt;Data[j+1]=PtrL-&gt;Data[j];    /*将ai~an倒序向后移动*/
+    PtrL-&gt;Data[i-1]=X;       /*新元素插入*/
+    PtrL-&gt;Last++;        /*Last仍指向最后一个元素*/
+    return;
+}
+
+/*删除：删除表的第i（1&lt;=i&lt;=n）个位置上的元素*/
+
+void Delete(int i,List PtrL)
+{
+    int j;
+    if(i&lt;1||i&gt;PtrL-&gt;Last+1)    /*检查是否为空表及删除位置的合法性*/
+    {
+        printf(&quot;不存在第%d个元素&quot;,i);
+        return;
+    }
+    for(j=i;j&lt;=PtrL-&gt;Last;j++)
+        PtrL-&gt;Data[j-1]=PtrL-&gt;Data[j];     /*将a(i+1)~an顺序向前移动*/
+    PtrL-&gt;Last--;         /*Last仍指向最后一个元素*/
+    return;
+}
+</code></pre>
+<p>《大话数据结构》给出的顺序存储的链表实例：</p>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MAXSIZE 100
+#define OK 1
+#define ERROR 0
+#define OVERFLOW -2             //这样就为 `OVERFLOW` 定义了一个值为 `-2` 的常量。
+
+typedef int ElemType;
+typedef int Status;
+
+typedef struct
+{
+    ElemType *elem;
+    int length;
+}SqList;
+
+//线性表的初始化
+Status InitList(SqList &amp;L)
+{
+    L.elem=new ElemType[MAXSIZE];
+    if(!L.elem)
+        exit(OVERFLOW);
+    L.length=0;
+    return OK;
+}
+//线性表的取值
+Status GetElem(SqList L,int i,ElemType &amp;e)
+{
+    if(i&lt;1||i&gt;L.length)
+        return ERROR;
+    e=L.elem[i-1];
+    return OK;
+}
+//查找元素
+int LocateElem(SqList L,ElemType e)
+{
+    for(int i=0;i&lt;L.length;i++)
+    {
+        if(L.elem[i]==e)
+            return i+1;
+    }
+    return 0;
+}
+//线性表插入元素
+Status ListInsert(SqList &amp;L,int i,ElemType e)
+{
+    if(i&lt;1||i&gt;L.length+1)
+        return ERROR;
+    if(L.length==MAXSIZE)
+        return ERROR;
+    for(int j=L.length-1;j&gt;=i-1;j--)
+    {
+        L.elem[j+1]=L.elem[j];
+    }
+    L.elem[i-1]=e;
+    L.length++;
+    return OK;
+}
+//线性表删除元素
+Status ListDelete(SqList &amp;L,int i)
+{
+    if(i&lt;1||i&gt;L.length)
+        return ERROR;
+    for(int j=i;j&lt;=L.length-1;j++)
+        L.elem[j-1]=L.elem[j];
+    L.length--;
+    return OK;
+}
+//打印线性表
+Status Display(SqList &amp;L)
+{
+    for(int i=0;i&lt;L.length;i++)
+        printf(&quot;%d &quot;,L.elem[i]);
+    printf(&quot;\n&quot;);
+    return 0;
+}
+
+int main()
+{
+    SqList L;
+    int v,k,opt;
+    InitList(L);
+    printf(&quot;1：在线性表中存入5个值\n&quot;);
+    printf(&quot;2：查找线性表中的元素\n&quot;);
+    printf(&quot;3：向线性表中插入一个元素\n&quot;);
+    printf(&quot;4：从线性表中删除一个元素\n&quot;);
+    printf(&quot;5：退出\n&quot;);
+    while(1)
+    {
+        printf(&quot;输入你的选择：&quot;);
+        cin&gt;&gt;opt;
+        if(opt==1)
+        {
+            printf(&quot;请输入要插入的5个值：&quot;);
+            for(int i=1;i&lt;=5;i++)
+            {
+                cin&gt;&gt;v;
+                ListInsert(L,i,v);
+            }
+            printf(&quot;当前线性表为：&quot;);
+            Display(L);
+        }
+        else if(opt==2)
+        {
+            printf(&quot;请输入要查找的元素：&quot;);
+            cin&gt;&gt;v;
+            k=LocateElem(L,v);
+            printf(&quot;要查找的元素的所在的位置为：%d\n&quot;,k);
+        }
+        else if(opt==3)
+        {
+            printf(&quot;请输入要插入的元素及插入的位置：&quot;);
+            cin&gt;&gt;v&gt;&gt;k;
+            ListInsert(L,k,v);
+            printf(&quot;插入元素后的线性表为：&quot;);
+            Display(L);
+        }
+        else if(opt==4)
+        {
+            printf(&quot;输入要删除的元素的序数：&quot;);
+            cin&gt;&gt;v;
+            ListDelete(L,v);
+            printf(&quot;删除后的线性表为：&quot;);
+            Display(L);
+        }
+        else if(opt==5)
+        {
+            printf(&quot;退出成功！&quot;);
+            break;
+        }
+    }
+    return 0;
+
+}
+</code></pre>
+<pre><code>1：在线性表中存入5个值
+2：查找线性表中的元素
+3：向线性表中插入一个元素
+4：从线性表中删除一个元素
+5：退出
+输入你的选择：1
+请输入要插入的5个值：9 4 2 1 0
+当前线性表为：9 4 2 1 0
+输入你的选择：2
+请输入要查找的元素：4
+要查找的元素的所在的位置为：2
+输入你的选择：3
+请输入要插入的元素及插入的位置：5 3
+插入元素后的线性表为：9 4 5 2 1 0
+输入你的选择：4
+输入要删除的元素的序数：6
+删除后的线性表为：9 4 5 2 1
+输入你的选择：5
+退出成功！
+</code></pre>
+<h3 id="线性表的链式存储实现"><a class="header" href="#线性表的链式存储实现">线性表的链式存储实现</a></h3>
+<p>不要求逻辑上相邻的两个元素物理上也相邻；通过”链“建立起数据元素之间的逻辑关系。</p>
+<p>插入、删除元素不需要移动数据元素，只需要修改”链“。</p>
+<p>如果只知道链表头，该怎么访问序号为i的元素？以及怎么求线性表的长度？</p>
+<p>建立结构体和结构体指针：</p>
+<pre><code class="language-c">typedef struct LNode *List;
+
+struct LNode
+{
+    ElementType Data;
+    List Next;
+};
+struct LNode L;
+List PtrL;
+</code></pre>
+<p>展示链表结构：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+struct  list_node
+{
+	int data ;
+	struct list_node *next ;
+};
+
+typedef struct list_node list_single ;
+list_single *create_list_node(int data)
+{
+	list_single *node = NULL ;
+	node = (list_single *)malloc(sizeof(list_single));
+	if(node == NULL){
+		printf(&quot;malloc fair!\n&quot;);
+	}
+	memset(node,0,sizeof(list_single));
+	node-&gt;data = data;
+	node-&gt;next = NULL ;
+	return node ;
+}
+int main(void)
+{
+	int data = 100 ;
+	list_single *node_ptr = create_list_node(data); //创建一个节点
+	printf(&quot;node_ptr-&gt;data=%d\n&quot;,node_ptr-&gt;data);   //打印节点里的数据
+	printf(&quot;node_ptr-&gt;next=%d\n&quot;,node_ptr-&gt;next);
+	free(node_ptr);
+	return 0 ;
+}
+</code></pre>
+<pre><code>node_ptr-&gt;data=100
+node_ptr-&gt;next=0
+</code></pre>
+<p>1.求链表的长度</p>
+<pre><code class="language-c">int Length(List Ptrl)
+{
+    List p=Ptrl;     //p指向表的第一个结点
+    int j=0;
+    while(p)
+    {
+        p=p-&gt;Next;     
+        j++;        //当前p指向的是第j个结点
+    }
+    return j;
+}
+</code></pre>
+<p>2.查找（1）按序号（不是下标）查找：<code>FindKth</code></p>
+<pre><code class="language-c">List FindKth(int K,List PtrL)
+{
+    List p=PtrL;
+    int i=1;
+    while(p!=NULL&amp;&amp;i&lt;K)
+    {
+        p=p-&gt;Next;
+        i++;
+    }
+    if(i==K)
+        return p;     //找到第K个，返回指针
+    else
+        return NULL;  //否则返回空
+}
+</code></pre>
+<p>（2）按值查找</p>
+<pre><code class="language-c">List Find(ElementType X,List PtrL)
+{
+    List p=PtrL;
+    while(p!=NULL &amp;&amp; p-&gt;Data!=X)
+    {
+        p=p-&gt;Next;
+    }
+    return p;
+}
+</code></pre>
+<p>3.插入（在$i-1（1\leq i \leq n+1）$个结点后插入一个值为X的新结点</p>
+<p>这个结点是第i个结点。</p>
+<p>步骤（1）先构造一个新结点，用s指向；（2）再找到链表的第i-1个结点，用p指向；（3）然后修改指针，插入结点（p之后插入的新结点是s）。</p>
+<p><strong>链表要先断再接，顺序不能更改！！</strong></p>
+<p><strong>链表要先断再接，顺序不能更改！！</strong></p>
+<p><strong>链表要先断再接，顺序不能更改！！</strong></p>
+<pre><code class="language-c">List Insert(ElementType X,int i,List PtrL) 
+{
+    List p,s;
+    if(i==1)           //新节点插在表头
+    {
+        s=(List)malloc(sizeof(struct LNode));     //申请、填装结点
+        s-&gt;Data=X;
+        s-&gt;Next=Ptrl;
+        return s;           //返回新表头指针
+    }
+    p=FindKth(i-1;PtrL);       //查找第i-1个结点
+    if(p==NULL)        //第i-1个不存在，不能插入
+    {
+        printf(&quot;参数i错&quot;);
+        return NULL;
+    }
+    else
+    {
+        s=(List)malloc(sizeof(struct LNode));      //申请、填装结点
+        s.Data=X;
+        s-&gt;Next=p-&gt;Next;         //新节点插在第i-1个结点的后面
+        p-&gt;Next=s;
+        return PtrL;
+    }
+}
+</code></pre>
+<p>4.删除（删除链表的$第i个（1\leq i \leq n）$个位置上的的结点</p>
+<p>步骤：（1）先找到链表的第i-1个结点，用p指向；（2）再用指针s指向要被删除的结点（p的下一个结点）；（3）然后修改指针，删除s所指结点；（4）最后释放s所指结点的空间。</p>
+<p>步骤不能更改！！！</p>
+<p>步骤不能更改！！！</p>
+<p>步骤不能更改！！！</p>
+<pre><code class="language-c">List Delete(int i,List PtrL) 
+{
+    List p,s;
+    if(i==1)           //若要删除的是表的第一个结点
+    {
+        s=PtrL;         //s指向第一个结点
+        if(PtrL!=NULL)
+            PtrL=PtrL-&gt;Next;   //从链表中删除
+        else
+            return NULL;
+        free(s);             //释放被删除结点
+        return PtrL;           //返回新表头指针
+    }
+    p=FindKth(i-1;PtrL);       //查找第i-1个结点
+    if(p==NULL)        
+    {
+        printf(&quot;第%d个结点不存在&quot;,i-1);
+        return NULL;
+    }
+    else if(p-&gt;Next==NULL)        
+    {
+        printf(&quot;第%d个结点不存在&quot;,i);
+        return NULL;
+    }
+    else
+    {
+        s=p-&gt;Next;               //s指向第i个结点
+        p-&gt;Next=s-&gt;Next;         //从链表中删除
+        free(s);           //释放被删除结点
+        return PtrL;
+    }
+}
+</code></pre>
+<p>陈越姥姥《数据结构》课程给出的完整代码如下：</p>
+<pre><code class="language-c">typedef struct LNode *List;
+
+struct LNode
+{
+    ElementType Data;
+    List Next;
+};
+struct LNode L;
+List PtrL;
+
+int Length(List Ptrl)
+{
+    List p=Ptrl;     //p指向表的第一个结点
+    int j=0;
+    while(p)
+    {
+        p=p-&gt;Next;     
+        j++;        //当前p指向的是第j个结点
+    }
+    return j;
+}
+
+List FindKth(int K,List PtrL)
+{
+    List p=PtrL;
+    int i=1;
+    while(p!=NULL&amp;&amp;i&lt;K)
+    {
+        p=p-&gt;Next;
+        i++;
+    }
+    if(i==K)
+        return p;     //找到第K个，返回指针
+    else
+        return NULL;  //否则返回空
+}
+
+List Find(ElementType X,List PtrL)
+{
+    List p=PtrL;
+    while(p!=NULL &amp;&amp; p-&gt;Data!=X)
+    {
+        p=p-&gt;Next;
+    }
+    return p;
+}
+
+List Insert(ElementType X,int i,List PtrL) 
+{
+    List p,s;
+    if(i==1)           //新节点插在表头
+    {
+        s=(List)malloc(sizeof(struct LNode));     //申请、填装结点
+        s-&gt;Data=X;
+        s-&gt;Next=Ptrl;
+        return s;           //返回新表头指针
+    }
+    p=FindKth(i-1;PtrL);       //查找第i-1个结点
+    if(p==NULL)        //第i-1个不存在，不能插入
+    {
+        printf(&quot;参数i错&quot;);
+        return NULL;
+    }
+    else
+    {
+        s=(List)malloc(sizeof(struct LNode));      //申请、填装结点
+        s.Data=X;
+        s-&gt;Next=p-&gt;Next;         //新节点插在第i-1个结点的后面
+        p-&gt;Next=s;
+        return PtrL;
+    }
+}
+
+List Delete(int i,List PtrL) 
+{
+    List p,s;
+    if(i==1)           //若要删除的是表的第一个结点
+    {
+        s=PtrL;         //s指向第一个结点
+        if(PtrL!=NULL)
+            PtrL=PtrL-&gt;Next;   //从链表中删除
+        else
+            return NULL;
+        free(s);             //释放被删除结点
+        return PtrL;           //返回新表头指针
+    }
+    p=FindKth(i-1;PtrL);       //查找第i-1个结点
+    if(p==NULL)        
+    {
+        printf(&quot;第%d个结点不存在&quot;,i-1);
+        return NULL;
+    }
+    else if(p-&gt;Next==NULL)        
+    {
+        printf(&quot;第%d个结点不存在&quot;,i);
+        return NULL;
+    }
+    else
+    {
+        s=p-&gt;Next;               //s指向第i个结点
+        p-&gt;Next=s-&gt;Next;         //从链表中删除
+        free(s);           //释放被删除结点
+        return PtrL;
+    }
+}
+</code></pre>
+<p>《大话数据结构》中链式存储的链表实例：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define ERROR 0
+#define OK 1
+typedef int Status;
+typedef int ElementType;
+
+typedef struct LNode *List;
+
+struct LNode
+{
+    ElementType Data;
+    List Next;
+};
+struct LNode L;
+List PtrL;
+
+//表的创建（头插法）
+
+void CreateListHead(List *L,int m[],int n)
+{
+    List p;
+    int i;
+    *L=(List)malloc(sizeof(struct LNode));
+    (*L)-&gt;Next=NULL;
+    for(i=0;i&lt;n;i++)
+    {
+        p=(List)malloc(sizeof(struct LNode));
+        p-&gt;Data=m[i];
+        p-&gt;Next=(*L)-&gt;Next;
+        (*L)-&gt;Next=p;
+    }
+}
+
+//表的创建（尾插法）
+void CreateListTail(List *L,int m[],int n)
+{
+    List p,r;
+    int i;
+    *L=(List)malloc(sizeof(struct LNode));
+    r=*L;
+    for(i=0;i&lt;n;i++)
+    {
+        p=(List)malloc(sizeof(struct LNode));
+        p-&gt;Data=m[i];
+        r-&gt;Next=p;
+        r=p;
+    }
+    r-&gt;Next=NULL;
+}
+
+Status GetElem(List L,int i,ElementType *e)
+{
+    int j;
+    List p;
+    p=L-&gt;Next;
+    j=1;
+    while(p&amp;&amp;j&lt;i)
+    {
+        p=p-&gt;Next;
+        j++;
+    }
+    if(!p||j&gt;i)
+        return ERROR;
+    *e=p-&gt;Data;
+    return OK;
+}
+Status ListInsert(List *L,int i,ElementType e)
+{
+    int j;
+    List p,s;
+    p=*L;
+    j=1;
+    while(p&amp;&amp;j&lt;i)
+    {
+        p=p-&gt;Next;
+        j++;
+    }
+    if(!p||j&gt;i)
+        return ERROR;
+    s=(List)malloc(sizeof(struct LNode));
+    s-&gt;Data=e;
+    s-&gt;Next=p-&gt;Next;
+    p-&gt;Next=s;
+    return OK;
+}
+
+Status ListDelete(List *L,int i)
+{
+    int j;
+    List p,q;
+    p=*L;
+    j=1;
+    while(p-&gt;Next&amp;&amp;j&lt;i)
+    {
+        p=p-&gt;Next;
+        j++;
+    }
+    if(!(p-&gt;Next)||j&gt;i)
+        return ERROR;
+
+    q=p-&gt;Next;
+    p-&gt;Next=q-&gt;Next;
+    free(q);
+    return OK;
+}
+Status Output(List L)
+{
+    List p;
+    p=L-&gt;Next;
+    while(p)
+    {
+        printf(&quot;%d&quot;,p-&gt;Data);
+        p=p-&gt;Next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main()
+{
+    List L;
+    int i,j,k,n,e,m[100];
+    printf(&quot;请输入要存储元素的总个数：&quot;);
+    scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;请输入各个元素的值：&quot;);
+    for(i=0;i&lt;n;i++)
+        scanf(&quot;%d&quot;,&amp;m[i]);
+
+    CreateListHead(&amp;L,m,n);
+    printf(&quot;此时链表的元素如下所示：\n&quot;);
+    Output(L);
+    printf(&quot;请输入要获取的第j个元素并返回到e值中（输入j的值）：&quot;);
+    scanf(&quot;%d&quot;,&amp;j);
+    GetElem(L,j,&amp;e);
+    printf(&quot;此时e的值为第j个元素值：%d\n&quot;,e);
+    printf(&quot;请输入在第k个元素前插入一个元素e1：&quot;);
+    int e1;
+    scanf(&quot;%d%d&quot;,&amp;k,&amp;e1);
+    ListInsert(&amp;L,k,e1);
+    printf(&quot;此时链表的个元素如下：\n&quot;);
+    Output(L);
+    printf(&quot;请输入要删除元素的序号：&quot;);
+    int l;
+    scanf(&quot;%d&quot;,&amp;l);
+    ListDelete(&amp;L,l);
+    printf(&quot;此时链表的各元素如下：\n&quot;);
+    Output(L);
+    return 0;
+
+}
+</code></pre>
+<pre><code>请输入要存储元素的总个数：5
+请输入各个元素的值：1 2 3 4 5
+此时链表的元素如下所示：
+54321
+请输入要获取的第j个元素并返回到e值中（输入j的值）：2
+此时e的值为第j个元素值：4
+请输入在第k个元素前插入一个元素e1：1 2
+此时链表的个元素如下：
+254321
+请输入要删除元素的序号：2
+此时链表的各元素如下：
+24321
+</code></pre>
+<h3 id="广义表和多重链表"><a class="header" href="#广义表和多重链表">广义表和多重链表</a></h3>
+<p>我们知道了一元多项式的表示，那么二元多项式又该如何表示呢？比如给定二元多项式：$P(x,y)=9x^{12}y^2+4x^{12}+15x^8y^3-x^8y+3x^2$</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202309231015068.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202309231016967.png" alt="" /></p>
+<p>广义表（Generalized List）</p>
+<ul>
+<li>广义表是线性表的推广；</li>
+<li>对于线性表而言，n个元素都是基本的单元素；</li>
+<li>广义表中，这些元素不仅可以是单元素也可以是另一个广义表。</li>
+</ul>
+<pre><code class="language-c">typedef struct GNode *Glist;
+struct GNode
+{
+    int Tag;    //标志域：0表示结点是单元素，1表示结点是广义表
+    union
+    {
+        ElementType Data;    //子表指针域SubList与单元素数据域Data复用，即共用存储空间
+        GList SubList;
+    }URegion;
+    GList Next;      //指向后继结点
+};
+</code></pre>
+<p>多重链表：链表中的结点可能同时隶属于多个链</p>
+<ul>
+<li>多重链表中结点的指针域会有多个，如前面例子包含了Next和SubList两个指针域</li>
+<li>但包含两个指针域的链表并不一定是多重链表，比如双向链表不是多重链表</li>
+</ul>
+<p>多重链表有广泛的用途：基本上如树、图这样相对复杂的数据结构都可以采用多重链表的方式存储。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202309231035479.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202309231037452.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202309231038863.png" alt="" /></p>
 
                     </main>
 
