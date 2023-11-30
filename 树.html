@@ -174,7 +174,93 @@
                 <div id="content" class="content">
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-<h1 id="树"><a class="header" href="#树">树</a></h1>
+<ul>
+<li><a href="#%E5%BC%95%E5%AD%90%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE">引子：二分查找</a></li>
+<li><a href="#%E6%A0%91%E7%9A%84%E5%AE%9A%E4%B9%89">树的定义</a></li>
+</ul>
+<h2 id="引子二分查找"><a class="header" href="#引子二分查找">引子：二分查找</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071516238.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071517513.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071517306.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071518809.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071518159.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071520969.png" alt="" /></p>
+<pre><code class="language-c">int BinarySearch(StaticTable *Tbl,ElementType K)
+{
+    int left,right,mid,NotFound = -1;
+    left = 1;
+    right = Tbl-&gt;Length;
+
+    while(left &lt;= right)
+    {
+        mid = (left + right) / 2;
+        if(K &gt; Tbl-&gt;Element[mid])
+            left = mid + 1;
+        else if(K &lt; Tbl-&gt;Element[mid])
+            right = mid - 1;
+        else
+            return mid;
+    }
+    return NotFound;
+}
+</code></pre>
+<p>在分量1~11的数组中按从小到大顺序存放11个元素，如果用顺序查找和二分查找分别查找这11个元素，哪个位置的元素在这两种方法的查找中总次数最少？1</p>
+<p>在分量1~11的数组中按从小到大顺序存放11个元素，如果进行二分查找，查找次数最少的元素位于什么位置？6</p>
+<p>测试程序如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int OrderSearch(int arr[],int n,int x)
+{
+    for(int i = 0 ; i &lt; n; i++)
+    {
+        if(x == arr[i])
+            return i;
+    }
+    return -1;
+}
+
+int BinarySearch(int arr[],int n,int x)
+{
+    int left = 0;
+    int right = n-1;
+    int mid;
+    while(left &lt;= right)
+    {
+        mid = (left + right) / 2;
+        if(arr[mid] &lt; x)
+            left = mid + 1;
+        else if(arr[mid] &gt; x)
+            right = mid - 1;
+        else
+            return mid;
+    }
+    return -1;
+}
+
+int main()
+{
+    int n = 10;
+    int arr[10] = {1,2,3,4,5,6,7,8,9,10};
+    int x = 3;
+    printf(&quot;%d\n&quot;,BinarySearch(arr,n,x));
+    printf(&quot;%d\n&quot;,OrderSearch(arr,n,x));
+    return 0;
+}
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071525846.png" alt="" /></p>
+<p>ASL：Average Search Length平均查找长度</p>
+<h2 id="树的定义"><a class="header" href="#树的定义">树的定义</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071534677.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071534726.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071535966.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071535157.png" alt="" /></p>
+<p>有一个m棵树的集合（也叫森林）共有k条边，问这m颗树共有多少个结点？k+m</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071536714.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071537314.png" alt="" /></p>
+<p>在用“儿子-兄弟”法表示的树中，如果从根结点开始访问其“次子”的“次子”，所经过的结点数与从根结点开始访问其“长子”的“长子”的“长子”的“长子”一样。(注意:比较的是结点数,而不是路径)</p>
+<p>一棵度为 m的树有n个节点。若每个节点直接用m个链指向相应的儿子，则表示这个树所需要的总空间是n*(m+1) (假定每个链以及表示节点的数据域都是一个单位空间).。当采用儿子/兄弟（First Child/Next Sibling）表示法时，所需的总空间是：3n</p>
+<p>树的集合称为森林。是否也可以使用“儿子-兄弟”表示法存储森林？如何实现？</p>
+<p>是的，可以使用&quot;儿子-兄弟&quot;表示法（又称作&quot;左孩子-右兄弟&quot;表示法或&quot;孩子兄弟链表&quot;）来存储森林，其中每个节点表示一棵树。这种表示法适用于多叉树和森林结构，它使用两个指针来表示树中的节点之间的关系：左孩子指针和右兄弟指针。左孩子指针指向当前节点的第一个子节点，而右兄弟指针指向当前节点的兄弟节点。</p>
 
                     </main>
 
