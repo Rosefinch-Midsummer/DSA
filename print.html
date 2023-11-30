@@ -1845,6 +1845,251 @@ A B C D E F
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="二叉搜索树"><a class="header" href="#二叉搜索树">二叉搜索树</a></h1>
+<p>查找分为静态查找和动态查找。静态查找可以使用二分查找方式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121615700.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121616062.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121616955.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121623845.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121623598.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121624932.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121624587.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121624794.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121625911.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121625860.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121625854.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121626802.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121626053.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+
+typedef struct TreeNode *BinTree;
+
+typedef BinTree Position;
+
+typedef struct TreeNode
+{
+    ElementType Data;
+    BinTree Left;
+    BinTree Right;
+}*LPNODE;
+
+BinTree Insert(ElementType X,BinTree BST)
+{
+    if(!BST)
+    {
+        /*若原树为空，生成并返回一个结点的二叉搜索树*/
+        BST = (BinTree)malloc(sizeof(struct TreeNode));
+        BST-&gt;Data = X;
+        BST-&gt;Left = NULL;
+        BST-&gt;Right = NULL;
+    }
+    else   /*开始找要插入元素的位置*/
+    {
+        if(BST-&gt;Data &lt; X)
+            BST-&gt;Right = Insert(X,BST-&gt;Right);
+        else if(BST-&gt;Data &gt; X)
+            BST-&gt;Left = Insert(X,BST-&gt;Left);
+        /*else X已经存在，什么都不做 */
+    }
+    return BST;
+}
+
+
+/*尾递归方式查找*/
+ElementType Find(ElementType X,BinTree BST)
+{
+    if(!BST)
+        return NULL;
+    if(BST-&gt;Data &lt; X)
+        return Find(X,BST-&gt;Right);
+    else if(BST-&gt;Data &gt; X)
+        return Find(X,BST-&gt;Left);
+    else       /*X == BST-&gt;Data*/
+        return BST; /*查找成功，返回找到结点的地址*/
+}
+
+/*迭代、非递归方式*/
+Position FindMax(BinTree BST)
+{
+    if(BST)
+        while(BST-&gt;Right)
+            BST = BST-&gt;Right;
+    return BST;
+}
+
+
+
+Position FindMin(BinTree BST)
+{
+    if(!BST)
+        return NULL;
+    else if(!BST-&gt;Left)  /*有根结点，但没有左子树，直接返回根*/
+            return BST;
+    else
+        return FindMin(BST-&gt;Left);
+}
+
+BinTree Delete(ElementType X,BinTree BST)
+{
+    Position Tmp;
+    if(!BST)
+        printf(&quot;找不到要删除的元素！\n&quot;);
+    else if(X &lt; BST-&gt;Data)
+        BST-&gt;Left = Delete(X,BST-&gt;Left);
+    else if(X &gt; BST-&gt;Data)
+        BST-&gt;Right = Delete(X,BST-&gt;Right);
+    else
+    {
+        if(BST-&gt;Left &amp;&amp; BST-&gt;Right)
+        {
+            Tmp = FindMin(BST-&gt;Right);
+            BST-&gt;Data = Tmp-&gt;Data;
+            BST-&gt;Right = Delete(BST-&gt;Data,BST-&gt;Right);
+        }
+        else
+        {
+            Tmp = BST;
+            if(!BST-&gt;Left)
+                BST = BST-&gt;Right;
+            else if(!BST-&gt;Right)
+                BST = BST-&gt;Left;
+            free(Tmp);
+        }
+    }
+    return BST;
+
+}
+
+void PreOrderTraversalByStack(BinTree BST)
+{
+    if(!BST)
+        return;
+    BinTree pMove = BST;
+    BinTree stack[100];
+    int stackTop = -1;
+
+    while(pMove || stackTop != -1 )
+    {
+        while(pMove)
+        {
+            printf(&quot;%d &quot;,pMove-&gt;Data);
+            stack[++stackTop] = pMove;
+            pMove = pMove-&gt;Left;
+        }
+        if(stackTop != -1)
+        {
+            pMove = stack[stackTop--];
+            pMove = pMove-&gt;Right;
+            while(pMove)
+            {
+                printf(&quot;%d &quot;,pMove-&gt;Data);
+                stack[++stackTop] = pMove;
+                pMove = pMove-&gt;Left;
+            }
+        }
+    }
+}
+
+void InOrderTraversalByStack(BinTree BST)
+{
+    if(!BST)
+        return;
+    BinTree pMove = BST;
+    BinTree stack[100];
+    int stackTop = -1;
+
+    while(pMove || stackTop != -1 )
+    {
+        while(pMove)
+        {
+            stack[++stackTop] = pMove;
+            pMove = pMove-&gt;Left;
+        }
+        if(stackTop != -1)
+        {
+            pMove = stack[stackTop--];
+            printf(&quot;%d &quot;,pMove-&gt;Data);
+            pMove = pMove-&gt;Right;
+            while(pMove)
+            {
+                stack[++stackTop] = pMove;
+                pMove = pMove-&gt;Left;
+            }
+        }
+    }
+}
+
+
+void LevelTraversal(BinTree BT)
+{
+    LPNODE pMove = BT;
+    LPNODE queue[100];
+    int front = 0;
+    int tail = 0;
+    queue[tail++] = pMove;
+    printf(&quot;%d &quot;,pMove-&gt;Data);
+    while(front != tail)
+    {
+        pMove = queue[front++];
+        if(pMove-&gt;Left != NULL)
+        {
+            queue[tail++] = pMove-&gt;Left;
+            printf(&quot;%d &quot;,pMove-&gt;Left-&gt;Data);
+        }
+        if(pMove-&gt;Right != NULL)
+        {
+            queue[tail++] = pMove-&gt;Right;
+            printf(&quot;%d &quot;,pMove-&gt;Right-&gt;Data);
+        }
+
+    }
+
+}
+
+int main()
+{
+    BinTree BST = NULL;
+    BST = Insert(5,BST);
+    BST = Insert(3,BST);
+    BST = Insert(4,BST);
+    BST = Insert(9,BST);
+    BST = Insert(20,BST);
+    BST = Insert(30,BST);
+    BST = Insert(40,BST);
+    BST = Insert(43,BST);
+    BST = Insert(34,BST);
+    BST = Insert(6,BST);
+    BST = Insert(7,BST);
+    BST = Insert(8,BST);
+    LevelTraversal(BST);
+    printf(&quot;\n%d&quot;,FindMax(BST)-&gt;Data);
+    printf(&quot;\n%d&quot;,FindMin(BST)-&gt;Data);
+    BST = Delete(43,BST);
+    BST = Delete(3,BST);
+    printf(&quot;\n&quot;);
+    LevelTraversal(BST);
+    printf(&quot;\n%d&quot;,FindMax(BST)-&gt;Data);
+    printf(&quot;\n%d&quot;,FindMin(BST)-&gt;Data);
+    BinTree Tmp = Find(100,BST);
+    if(!Tmp)
+        printf(&quot;\nNULL\n&quot;);
+    else
+        printf(&quot;\n%d\n&quot;,Find(100,BST));
+        //printf(&quot;\n%d\n&quot;,Tmp-&gt;Data);
+    return 0;
+
+}
+</code></pre>
+<pre><code>5 3 9 4 6 20 7 30 8 40 34 43
+43
+3
+5 4 9 6 20 7 30 8 40 34
+40
+4
+NULL
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="二叉平衡树"><a class="header" href="#二叉平衡树">二叉平衡树</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
