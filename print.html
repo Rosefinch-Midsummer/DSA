@@ -1684,6 +1684,561 @@ struct GNode
 <h1 id="队列"><a class="header" href="#队列">队列</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="mooc-pta线性结构题目"><a class="header" href="#mooc-pta线性结构题目">MOOC-PTA线性结构题目</a></h1>
+<ul>
+<li><a href="MOOC-PTA%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E9%A2%98%E7%9B%AE.html#pta-02-%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%841-%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8%E5%BA%8F%E5%88%97%E7%9A%84%E5%90%88%E5%B9%B6">PTA 02-线性结构1 两个有序链表序列的合并</a></li>
+<li><a href="MOOC-PTA%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E9%A2%98%E7%9B%AE.html#pta02-%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%842-%E4%B8%80%E5%85%83%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84%E4%B9%98%E6%B3%95%E4%B8%8E%E5%8A%A0%E6%B3%95%E8%BF%90%E7%AE%97">PTA02-线性结构2 一元多项式的乘法与加法运算</a></li>
+<li><a href="MOOC-PTA%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E9%A2%98%E7%9B%AE.html#pta-02-%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%843-reversing-linked-list">PTA 02-线性结构3 Reversing Linked List</a></li>
+<li><a href="MOOC-PTA%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E9%A2%98%E7%9B%AE.html#pta-02-%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%844-pop-sequence">PTA 02-线性结构4 Pop Sequence</a></li>
+</ul>
+<h2 id="pta-02-线性结构1-两个有序链表序列的合并"><a class="header" href="#pta-02-线性结构1-两个有序链表序列的合并">PTA 02-线性结构1 两个有序链表序列的合并</a></h2>
+<p>本题要求实现一个函数，将两个链表表示的递增整数序列合并为一个非递减的整数序列。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">List Merge( List L1, List L2 );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef struct Node *PtrToNode;
+struct Node {
+    ElementType Data; /* 存储结点数据 */
+    PtrToNode   Next; /* 指向下一个结点的指针 */
+};
+typedef PtrToNode List; /* 定义单链表类型 */
+</code></pre>
+<p><code>L1</code>和<code>L2</code>是给定的带头结点的单链表，其结点存储的数据是递增有序的；函数<code>Merge</code>要将<code>L1</code>和<code>L2</code>合并为一个非递减的整数序列。应直接使用原序列中的结点，返回归并后的带头结点的链表头指针。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+typedef struct Node *PtrToNode;
+struct Node {
+    ElementType Data;
+    PtrToNode   Next;
+};
+typedef PtrToNode List;
+
+List Read(); /* 细节在此不表 */
+void Print( List L ); /* 细节在此不表；空链表将输出NULL */
+
+List Merge( List L1, List L2 );
+
+int main()
+{
+    List L1, L2, L;
+    L1 = Read();
+    L2 = Read();
+    L = Merge(L1, L2);
+    Print(L);
+    Print(L1);
+    Print(L2);
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code>3
+1 3 5
+5
+2 4 6 8 10
+</code></pre>
+<p>输出样例：</p>
+<pre><code>1 2 3 4 5 6 8 10 
+NULL
+NULL
+</code></pre>
+<p>能AC的代码如下：</p>
+<pre><code class="language-c">List Merge( List L1, List L2 )
+{
+    if(L1 == NULL || L2 == NULL)
+        return (L1 == NULL)?L2:L1;
+    List head = (List)malloc(sizeof(struct Node));
+    List cur1 = L1-&gt;Next;
+    List cur2 = L2-&gt;Next;
+    List pre = head;
+    while(cur1 != NULL &amp;&amp; cur2 != NULL)
+    {
+        if(cur1-&gt;Data &lt;= cur2-&gt;Data)
+        {
+            pre-&gt;Next = cur1;
+            cur1 = cur1-&gt;Next;
+        }
+        else
+        {
+            pre-&gt;Next = cur2;
+            cur2 = cur2-&gt;Next;
+        }
+        pre = pre-&gt;Next;
+    }
+    pre-&gt;Next = (cur1 != NULL)?cur1:cur2;
+    L1-&gt;Next = NULL;
+    L2-&gt;Next = NULL;
+    return head;
+
+}
+</code></pre>
+<h2 id="pta02-线性结构2-一元多项式的乘法与加法运算"><a class="header" href="#pta02-线性结构2-一元多项式的乘法与加法运算">PTA02-线性结构2 一元多项式的乘法与加法运算</a></h2>
+<p>设计函数分别求两个一元多项式的乘积与和。</p>
+<p>输入格式:</p>
+<p>输入分2行，每行分别先给出多项式非零项的个数，再以指数递降方式输入一个多项式非零项系数和指数（绝对值均为不超过1000的整数）。数字间以空格分隔。</p>
+<p>输出格式:</p>
+<p>输出分2行，分别以指数递降方式输出乘积多项式以及和多项式非零项的系数和指数。数字间以空格分隔，但结尾不能有多余空格。零多项式应输出<code>0 0</code>。</p>
+<p>输入样例:</p>
+<pre><code>4 3 4 -5 2  6 1  -2 0
+3 5 20  -7 4  3 1
+</code></pre>
+<p>输出样例:</p>
+<pre><code>15 24 -25 22 30 21 -10 20 -21 8 35 6 -33 5 14 4 -15 3 18 2 -6 1
+5 20 -4 4 -5 2 9 1 -2 0
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311042023348.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311042023470.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311042023690.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311042024293.png" alt="" /></p>
+<p>如果当前p1指向项的（系数，指数）为（2，4），同时P2指向项为(2，6)，那么循环中的switch是执行case -1。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311042024746.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311091547345.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct PolyNode *Polynomial;
+struct PolyNode
+{
+    int coef;
+    int expon;
+    Polynomial link;
+};
+
+Polynomial ReadPoly()
+{
+    Polynomial P,Rear,temp;
+    int n,e,c;
+    scanf(&quot;%d&quot;,&amp;n);
+    P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P-&gt;link = NULL;
+    Rear = P;
+    while(n--)
+    {
+        scanf(&quot;%d %d&quot;,&amp;c,&amp;e);
+        Attach(c,e,&amp;Rear);
+    }
+    temp = P;
+    P = P-&gt;link;
+    free(temp);
+    return P;
+}
+
+void Attach(int c,int e,Polynomial *pRear)
+{
+    Polynomial P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P-&gt;coef = c;
+    P-&gt;expon = e;
+    P-&gt;link = NULL;
+    (*pRear)-&gt;link = P;
+    *pRear = P;
+}
+
+int Compare(int a,int b)
+{
+    if(a&gt;b)
+        return 1;
+    else if(a&lt;b)
+        return -1;
+    else
+        return 0;
+}
+/*
+Polynomial AddPoly(Polynomial P1,Polynomial P2)
+{
+    Polynomial front,rear,temp;
+    int sum = 0;
+    rear = (Polynomial)malloc(sizeof(struct PolyNode));
+    front = rear;
+    while(P1&amp;&amp;P2)
+    {
+        switch(Compare(P1-&gt;expon,P2-&gt;expon))
+        {
+        case 1:
+            Attach(P1-&gt;coef,P1-&gt;expon,&amp;rear);
+            P1 = P1-&gt;link;
+            break;
+        case -1:
+            Attach(P2-&gt;coef,P2-&gt;expon,&amp;rear);
+            P2 = P2-&gt;link;
+            break;
+        case 0:
+            sum = P1-&gt;coef + P2-&gt;coef;
+            if(sum)
+                Attach(sum,P1-&gt;expon,&amp;rear);
+            P1 = P1-&gt;link;
+            P2 = P2-&gt;link;
+            break;
+        }
+        for(;P1;P1 = P1-&gt;link)
+            Attach(P1-&gt;coef,P1-&gt;expon,&amp;rear);
+        for(;P2;P2 = P2-&gt;link)
+            Attach(P2-&gt;coef,P2-&gt;expon,&amp;rear);
+        rear-&gt;link = NULL;
+        temp = front;
+        front = front-&gt;link;
+        free(temp);
+        return front;
+
+    }
+}
+
+*/
+
+
+Polynomial AddPoly(Polynomial P1,Polynomial P2)
+{
+    Polynomial t1,t2,P,Rear,temp;
+    int sum;
+    t1 = P1;
+    t2 = P2;
+    P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P-&gt;link = NULL;
+    Rear = P;
+    while(t1&amp;&amp;t2)
+    {
+        if(t1-&gt;expon == t2-&gt;expon)
+        {
+            sum = t1-&gt;coef + t2-&gt;coef;
+            if(sum)
+                Attach(sum,t1-&gt;expon,&amp;Rear);
+            t1 = t1-&gt;link;
+            t2 = t2-&gt;link;
+        }
+        else if(t1-&gt;expon &gt; t2-&gt;expon)
+        {
+            Attach(t1-&gt;coef,t1-&gt;expon,&amp;Rear);
+            t1 = t1-&gt;link;
+        }
+        else
+        {
+            Attach(t2-&gt;coef,t2-&gt;expon,&amp;Rear);
+            t2 = t2-&gt;link;
+        }
+    }
+    while(t1)
+    {
+        Attach(t1-&gt;coef,t1-&gt;expon,&amp;Rear);
+        t1 = t1-&gt;link;
+    }
+    while(t2)
+    {
+        Attach(t2-&gt;coef,t2-&gt;expon,&amp;Rear);
+        t2 = t2-&gt;link;
+    }
+    Rear-&gt;link = NULL;
+    temp = P;
+    P = P-&gt;link;
+    free(temp);
+    return P;
+}
+
+Polynomial MultPoly(Polynomial P1,Polynomial P2)
+{
+    Polynomial t1,t2,temp,P,Rear;
+    int c,e;
+    if(!P1 || !P2)
+        return NULL;
+    t1 = P1;
+    t2 = P2;
+    P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P-&gt;link = NULL;
+    Rear = P;
+    while(t2)
+    {
+        Attach(t1-&gt;coef * t2-&gt;coef,t1-&gt;expon + t2-&gt;expon,&amp;Rear);
+        t2 = t2-&gt;link;
+    }
+    t1 = t1-&gt;link;
+    while(t1)
+    {
+        t2 = P2;
+        Rear = P;
+        while(t2)
+        {
+            e = t1-&gt;expon + t2-&gt;expon;
+            c = t1-&gt;coef * t2-&gt;coef;
+            while(Rear-&gt;link &amp;&amp; Rear-&gt;link-&gt;expon &gt; e)
+                Rear = Rear-&gt;link;
+            if(Rear-&gt;link &amp;&amp; Rear-&gt;link-&gt;expon == e)
+            {
+                if(Rear-&gt;link-&gt;coef + c)
+                    Rear-&gt;link-&gt;coef += c;
+                else
+                {
+                    temp = Rear-&gt;link;
+                    Rear-&gt;link = temp-&gt;link;
+                    free(temp);
+                }
+            }
+            else
+            {
+                temp = (Polynomial)malloc(sizeof(struct PolyNode));
+                temp-&gt;coef = c;
+                temp-&gt;expon = e;
+                temp-&gt;link = Rear-&gt;link;
+                Rear-&gt;link = temp;
+                Rear = Rear-&gt;link;
+            }
+            t2 = t2-&gt;link;
+        }
+        t1 = t1-&gt;link;
+    }
+    t2 = P;
+    P = P-&gt;link;
+    free(t2);
+    return P;
+
+}
+
+void PrintPoly(Polynomial P)
+{
+    int flag = 0;
+    if(!P)
+    {
+        printf(&quot;0 0\n&quot;);
+        return;
+    }
+    while(P)
+    {
+        if(!flag)
+            flag = 1;
+        else
+            printf(&quot; &quot;);
+        printf(&quot;%d %d&quot;,P-&gt;coef,P-&gt;expon);
+        P = P-&gt;link;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main()
+{
+    Polynomial P1,P2,PP,PS;
+    P1 = ReadPoly();
+    P2 = ReadPoly();
+    PP = MultPoly(P1,P2);
+    PrintPoly(PP);
+    PS = AddPoly(P1,P2);
+    PrintPoly(PS);
+    return 0;
+
+}
+</code></pre>
+<h2 id="pta-02-线性结构3-reversing-linked-list"><a class="header" href="#pta-02-线性结构3-reversing-linked-list">PTA 02-线性结构3 Reversing Linked List</a></h2>
+<p>Given a constant K and a singly linked list L, you are supposed to reverse the links of every K elements on L. For example, given L being 1→2→3→4→5→6, if K=3, then you must output 3→2→1→6→5→4; if K=4, you must output 4→3→2→1→5→6.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. For each case, the first line contains the address of the first node, a positive N (≤105) which is the total number of nodes, and a positive K (≤N) which is the length of the sublist to be reversed. The address of a node is a 5-digit nonnegative integer, and NULL is represented by -1.</p>
+<p>Then N lines follow, each describes a node in the format:</p>
+<pre><code>Address Data Next
+</code></pre>
+<p>where <code>Address</code> is the position of the node, <code>Data</code> is an integer, and <code>Next</code> is the position of the next node.</p>
+<p>Output Specification:</p>
+<p>For each case, output the resulting ordered linked list. Each node occupies a line, and is printed in the same format as in the input.</p>
+<p>Sample Input:</p>
+<pre><code>00100 6 4
+00000 4 99999
+00100 1 12309
+68237 6 -1
+33218 3 00000
+99999 5 68237
+12309 2 33218
+</code></pre>
+<p>Sample Output:</p>
+<pre><code>00000 4 33218
+33218 3 12309
+12309 2 00100
+00100 1 99999
+99999 5 68237
+68237 6 -1
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312131450347.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312131451609.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312131451508.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int Address;
+typedef int Data;
+typedef struct Node *Ptr;
+#define MaxSize 100001
+
+struct Node
+{
+    Data data;
+    Address next;
+}Nodes[MaxSize];
+
+int List[MaxSize];
+
+void Reverse(Address head, Address tail)
+{
+    int tempHead = head;
+    int tempTail = tail;
+    int list;
+    while(tempTail &gt; tempHead)
+    {
+        list = List[tempHead];
+        List[tempHead] = List[tempTail];
+        List[tempTail] = list;
+        tempHead++;
+        tempTail--;
+    }
+}
+
+
+int main()
+{
+    int n;
+    Address root;
+    int K;
+    scanf(&quot;%d %d %d&quot;,&amp;root,&amp;n,&amp;K);
+    Address address;
+    Data data;
+    Address next;
+    for(int i=0; i&lt;n; i++)
+    {
+        scanf(&quot;%d %d %d&quot;, &amp;address,&amp;data,&amp;next);
+        Nodes[address].data = data;
+        Nodes[address].next = next;
+    }
+    int maxn = 0;
+    int pMove = root;
+    while(pMove != -1)
+    {
+        List[maxn++] = pMove;
+        pMove = Nodes[pMove].next;
+    }
+    int i = 0;
+    while(i + K &lt; maxn)
+    {
+        Reverse(i,i+K-1);
+        i = i + K;
+    }
+    for(i=0;i&lt;maxn-1;i++)
+        printf(&quot;%05d %d %05d\n&quot;,List[i],Nodes[List[i]].data,List[i+1]);
+    printf(&quot;%05d %d -1\n&quot;,List[i],Nodes[List[i]].data);
+    return 0;
+}
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312131634780.png" alt="" /></p>
+<p>使用C++的reverse函数解法如下：</p>
+<pre><code class="language-c">#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+#include&lt;algorithm&gt;    ///使用到reverse 翻转函数
+using namespace std;
+ 
+#define MAXSIZE 1000010   ///最大为五位数的地址
+ 
+struct node    ///使用顺序表存储data和下一地址next
+{
+   int data;   
+   int next;
+}node[MAXSIZE];
+ 
+int List[MAXSIZE];   ///存储可以连接上的顺序表
+int main()
+{
+    int First, n, k;  
+    cin&gt;&gt;First&gt;&gt;n&gt;&gt;k;   ///输入头地址 和 n，k；
+    int Address,Data,Next;
+    for(int i=0;i&lt;n;i++)
+    {
+        cin&gt;&gt;Address&gt;&gt;Data&gt;&gt;Next;
+        node[Address].data=Data;
+        node[Address].next=Next;
+    }
+ 
+    int j=0;  ///j用来存储能够首尾相连的节点数
+    int p=First;   ///p指示当前结点
+    while(p!=-1)
+    {
+        List[j++]=p;
+        p=node[p].next;
+    }
+    int i=0;
+    while(i+k&lt;=j)   ///每k个节点做一次翻转
+    {
+        reverse(&amp;List[i],&amp;List[i+k]);
+        i=i+k;
+    }
+    for(i=0;i&lt;j-1;i++)
+        printf(&quot;%05d %d %05d\n&quot;,List[i],node[List[i]].data,List[i+1]);
+    printf(&quot;%05d %d -1\n&quot;,List[i],node[List[i]].data);
+    return 0;
+}
+</code></pre>
+<h2 id="pta-02-线性结构4-pop-sequence"><a class="header" href="#pta-02-线性结构4-pop-sequence">PTA 02-线性结构4 Pop Sequence</a></h2>
+<p>Given a stack which can keep M numbers at most. Push N numbers in the order of 1, 2, 3, ..., N and pop randomly. You are supposed to tell if a given sequence of numbers is a possible pop sequence of the stack. For example, if M is 5 and N is 7, we can obtain 1, 2, 3, 4, 5, 6, 7 from the stack, but not 3, 2, 1, 7, 5, 6, 4.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. For each case, the first line contains 3 numbers (all no more than 1000): M (the maximum capacity of the stack), N (the length of push sequence), and K (the number of pop sequences to be checked). Then K lines follow, each contains a pop sequence of N numbers. All the numbers in a line are separated by a space.</p>
+<p>Output Specification:</p>
+<p>For each pop sequence, print in one line &quot;YES&quot; if it is indeed a possible pop sequence of the stack, or &quot;NO&quot; if not.</p>
+<p>Sample Input:</p>
+<p><code>5 7 5 1 2 3 4 5 6 7 3 2 1 7 5 6 4 7 6 5 4 3 2 1 5 6 4 3 7 2 1 1 7 6 5 4 3 2   </code></p>
+<p>Sample Output:</p>
+<pre><code class="language-out">YES
+NO
+NO
+YES
+NO
+</code></pre>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define Maxsize 1000//最大容量
+typedef struct Node
+{
+    int Top;//栈顶
+    int Data[Maxsize];//元素
+    int Capacity;//容量
+}*Stack;
+
+int Test(int Array[],int M,int N)
+{
+    int count = 0;
+    Stack Pile = (Stack)malloc(sizeof(struct Node));//申请并初始化一个空栈
+    Pile-&gt;Capacity = M;
+    Pile-&gt;Top = -1;
+    for(int i = 1;i &lt;= N;i++)
+    {
+        if(Pile-&gt;Capacity == Pile-&gt;Top+1)//栈满
+            return 0;
+        else
+            Pile-&gt;Data[++Pile-&gt;Top] = i;//入栈
+        while(Pile-&gt;Data[Pile-&gt;Top] == Array[count])
+        {//比较栈顶是否与某数相等
+            Pile-&gt;Top--;//出栈
+            count++;//数组往后移位
+        }
+    }
+    if(count == N)//全部找到并且输出时
+        return 1;
+    else
+        return 0;
+}
+
+int main()
+{
+    int M,N,K;
+    scanf(&quot;%d %d %d&quot;,&amp;M,&amp;N,&amp;K);
+    int Array[N];
+    for(int i=0; i&lt;K; i++)
+    {
+        for(int j=0; j&lt;N; j++)
+        {
+            scanf(&quot;%d&quot;,&amp;Array[j]);
+        }
+        if(Test(Array,M,N))
+            printf(&quot;YES\n&quot;);
+        else
+            printf(&quot;NO\n&quot;);
+    }
+    return 0;
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <ul>
 <li><a href="%E6%A0%91.html#%E5%BC%95%E5%AD%90%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE">引子：二分查找</a></li>
