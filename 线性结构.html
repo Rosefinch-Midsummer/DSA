@@ -175,6 +175,1652 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="线性结构"><a class="header" href="#线性结构">线性结构</a></h1>
+<ul>
+<li><a href="#%E9%93%BE%E8%A1%A8">链表</a>
+<ul>
+<li><a href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E8%AF%A6%E7%BB%86%E7%89%88">单链表功能实现详细版</a>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BA%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4">创建、插入、删除</a></li>
+<li><a href="#%E5%90%88%E5%B9%B6%E5%8F%8D%E8%BD%AC">合并、反转</a></li>
+<li><a href="#%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8">有序链表</a></li>
+<li><a href="#%E6%97%A0%E5%A4%B4%E5%8D%95%E9%93%BE%E8%A1%A8">无头单链表</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8">双向链表</a>
+<ul>
+<li><a href="#%E6%99%AE%E9%80%9A%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8">普通双向链表</a></li>
+<li><a href="#%E5%8F%8C%E5%90%91%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8">双向循环链表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE">单链表题目</a>
+<ul>
+<li><a href="#pta6-1-%E5%8D%95%E9%93%BE%E8%A1%A8%E9%80%86%E8%BD%AC">PTA6-1 单链表逆转</a></li>
+<li><a href="#pta-6-2-%E9%A1%BA%E5%BA%8F%E8%A1%A8%E6%93%8D%E4%BD%9C%E9%9B%86">PTA 6-2 顺序表操作集</a></li>
+<li><a href="#pta-6-3-%E6%B1%82%E9%93%BE%E5%BC%8F%E8%A1%A8%E7%9A%84%E8%A1%A8%E9%95%BF">PTA 6-3 求链式表的表长</a></li>
+<li><a href="#pta-6-4-%E9%93%BE%E5%BC%8F%E8%A1%A8%E7%9A%84%E6%8C%89%E5%BA%8F%E5%8F%B7%E6%9F%A5%E6%89%BE">PTA 6-4 链式表的按序号查找</a></li>
+<li><a href="#pta-6-5-%E9%93%BE%E5%BC%8F%E8%A1%A8%E6%93%8D%E4%BD%9C%E9%9B%86">PTA 6-5 链式表操作集</a></li>
+</ul>
+</li>
+</ul>
+<p>线性结构主要包括线性表、栈和队列。</p>
+<p>线性表可以分成由数组实现的顺序表和由指针实现的链式表。</p>
+<ul>
+<li><strong>线性表：</strong> 逻辑结构， 就是对外暴露数据之间的关系，不关心底层如何实现，数据结构的逻辑结构大分类就是线性结构和非线性结构而顺序表、链表都是一种线性表。</li>
+<li><strong>顺序表、链表：</strong> 物理结构，他是实现一个结构实际物理地址上的结构。比如顺序表就是用<strong>数组</strong>实现。而链表用<strong>指针</strong>完成主要工作。不同的结构在不同的场景有不同的区别。</li>
+</ul>
+<h1 id="链表"><a class="header" href="#链表">链表</a></h1>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311121348370.png" alt="" /></p>
+<h2 id="单链表功能实现详细版"><a class="header" href="#单链表功能实现详细版">单链表功能实现详细版</a></h2>
+<h3 id="创建插入删除"><a class="header" href="#创建插入删除">创建、插入、删除</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef int ElementType;
+
+typedef struct Node
+{
+    ElementType Data;
+    struct Node *Next;
+}NODE,*LIST,*LPNODE;
+
+LIST createHead();
+LPNODE createNode(ElementType X);
+void insertByHead(LIST headNode, ElementType X);
+void insertByBack(LIST headNode, ElementType X);
+void insertByAppoin(LIST headNode, ElementType X, int posData);
+
+void deleteByHead(LIST headNode);
+void deleteByBack(LIST headNode);
+void deleteByAppoin(LIST headNode, int posData);
+
+void printList(LIST headNode);
+void freeList(LIST* headNode);
+
+
+LIST createHead()
+{
+    LIST headNode = (LIST)malloc(sizeof(struct Node));
+    assert(headNode);
+    headNode-&gt;Next = NULL;
+    return headNode;
+}
+
+LPNODE createNode(ElementType X)
+{
+    LPNODE newNode = (LPNODE)malloc(sizeof(NODE));
+    assert(newNode);
+    newNode-&gt;Data = X;
+    newNode-&gt;Next = NULL;
+    return newNode;
+}
+
+void InsertByHead(LIST headNode, ElementType X)
+{
+    LPNODE newNode = createNode(X);
+    newNode-&gt;Next = headNode-&gt;Next;
+    headNode-&gt;Next = newNode;
+
+}
+
+
+void insertByBack(LIST headNode, ElementType X)
+{
+    LPNODE pMove = headNode;
+    while(pMove-&gt;Next)
+        pMove = pMove-&gt;Next;
+    LPNODE newNode = createNode(X);
+    pMove-&gt;Next = newNode;
+}
+
+void insertByAppoin(LIST headNode, ElementType X, int posData)
+{
+    LPNODE posLeftNode = headNode;
+    LPNODE posNode = headNode-&gt;Next;
+    while(posNode != NULL &amp;&amp; posData != posNode-&gt;Data)
+    {
+        posLeftNode = posNode;
+        posNode = posNode-&gt;Next;
+    }
+    if(!posNode)
+        printf(&quot;未找到，无法做指定数据所在的位置插入！\n&quot;);
+    else
+    {
+        LPNODE newNode = createNode(X);
+        newNode-&gt;Next = posNode;
+        posLeftNode-&gt;Next = newNode;
+        //这里可以不考虑顺序
+    }
+}
+
+void deleteByHead(LIST headNode)
+{
+    LPNODE temp = headNode-&gt;Next;
+    if(!temp)
+        printf(&quot;链表为空，无法删除！\n&quot;);
+    else
+    {
+        headNode-&gt;Next = temp-&gt;Next;
+        free(temp);
+    }
+}
+void deleteByBack(LIST headNode)
+{
+    LPNODE pTailLeft = headNode;
+    LPNODE pTail = headNode-&gt;Next;
+    while(pTail != NULL &amp;&amp; pTail-&gt;Next != NULL)
+    {
+        pTailLeft = pTail;
+        pTail = pTail-&gt;Next;
+    }
+    if(pTail == NULL)
+        printf(&quot;链表为空，无法删除！\n&quot;);
+    else
+    {
+        free(pTail);
+        pTailLeft-&gt;Next = NULL;
+    }
+}
+void deleteByAppoin(LIST headNode, int posData)
+{
+    LPNODE posLeftNode = headNode;
+    LPNODE posNode = headNode-&gt;Next;
+    while(posNode &amp;&amp; posNode-&gt;Data != posData)
+    {
+        posLeftNode = posNode;
+        posNode = posNode-&gt;Next;
+    }
+    if(!posNode)
+        printf(&quot;无法删除指定数据！\n&quot;);
+    else
+    {
+        posLeftNode-&gt;Next = posNode-&gt;Next;
+        free(posNode);
+        posNode = NULL;
+    }
+}
+
+void printList(LIST headNode)
+{
+    if(headNode == NULL)
+    {
+        printf(&quot;无法打印链表，链表为空！\n&quot;);
+        return;
+    }
+    LPNODE pMove = headNode-&gt;Next;
+    while(pMove != NULL)
+    {
+        printf(&quot;%d &quot;,pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    printf(&quot;\n&quot;);
+}
+void freeList(LIST* headNode)
+{
+    if(headNode == NULL)  //写成if((*headNode) == NULL)也行
+        return;
+    LPNODE nextNode = NULL;
+    while((*headNode) != NULL)
+    {
+        nextNode = (*headNode)-&gt;Next;
+        free(*headNode);
+        *headNode = nextNode;
+    }
+}
+
+int main()
+{
+    LIST list = createHead();
+    InsertByHead(list,1);
+    InsertByHead(list,2);
+    InsertByHead(list,3);
+    InsertByHead(list,4);
+    InsertByHead(list,5);
+    printList(list);
+    insertByBack(list,5);
+    insertByBack(list,4);
+    insertByBack(list,3);
+    printList(list);
+    insertByAppoin(list,6,2);
+    insertByAppoin(list,7,2);
+    printList(list);
+    deleteByHead(list);
+    deleteByBack(list);
+    deleteByAppoin(list,2);
+    printList(list);
+    freeList(&amp;list);
+    printList(list);
+
+    return 0;
+}
+</code></pre>
+<pre><code>5 4 3 2 1
+5 4 3 2 1 5 4 3
+5 4 3 6 7 2 1 5 4 3
+4 3 6 7 1 5 4
+无法打印链表，链表为空！
+</code></pre>
+<h3 id="合并反转"><a class="header" href="#合并反转">合并、反转</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef int ElementType;
+
+typedef struct Node
+{
+    ElementType Data;
+    struct Node *Next;
+}NODE,*LIST,*LPNODE;
+
+LIST createHead();
+LPNODE createNode(ElementType X);
+void insertByHead(LIST headNode, ElementType X);
+void insertByBack(LIST headNode, ElementType X);
+
+void printList(LIST headNode);
+
+
+LIST createHead()
+{
+    LIST headNode = (LIST)malloc(sizeof(struct Node));
+    assert(headNode);
+    headNode-&gt;Next = NULL;
+    return headNode;
+}
+
+LPNODE createNode(ElementType X)
+{
+    LPNODE newNode = (LPNODE)malloc(sizeof(NODE));
+    assert(newNode);
+    newNode-&gt;Data = X;
+    newNode-&gt;Next = NULL;
+    return newNode;
+}
+
+void InsertByHead(LIST headNode, ElementType X)
+{
+    LPNODE newNode = createNode(X);
+    newNode-&gt;Next = headNode-&gt;Next;
+    headNode-&gt;Next = newNode;
+
+}
+
+
+void insertByBack(LIST headNode, ElementType X)
+{
+    LPNODE pMove = headNode;
+    while(pMove-&gt;Next)
+        pMove = pMove-&gt;Next;
+    LPNODE newNode = createNode(X);
+    pMove-&gt;Next = newNode;
+}
+
+void printList(LIST headNode)
+{
+    if(headNode == NULL)
+    {
+        printf(&quot;无法打印链表，链表为空！\n&quot;);
+        return;
+    }
+    LPNODE pMove = headNode-&gt;Next;
+    while(pMove != NULL)
+    {
+        printf(&quot;%d &quot;,pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+void freeList(LIST* headNode)
+{
+    if(headNode == NULL)  //写成if((*headNode) == NULL)也行
+        return;
+    LPNODE nextNode = NULL;
+    while((*headNode) != NULL)
+    {
+        nextNode = (*headNode)-&gt;Next;
+        free(*headNode);
+        *headNode = nextNode;
+    }
+}
+
+LIST listCat(LIST list1, LIST list2)   //把list2加到list1的末尾。
+{
+    if(list1-&gt;Next == NULL || list2-&gt;Next == NULL)
+        return (list1-&gt;Next == NULL) ? list2 : list1;
+    LPNODE pMove = list1;
+    while(pMove-&gt;Next)
+    {
+        pMove = pMove-&gt;Next;
+    }
+    pMove-&gt;Next = list2-&gt;Next;
+    return list1;
+}
+
+LIST listCatByBack(LIST list1, LIST list2)   //把list2加到list1的末尾。这里使用尾插法
+{
+
+    LPNODE pMove = list2-&gt;Next;
+    while(pMove != NULL)
+    {
+        insertByBack(list1,pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    return list1;
+}
+
+LIST listCatByValue(LIST list1, LIST list2)
+{
+    LIST list3 = createHead();
+    LPNODE pFirst = list1-&gt;Next;
+
+    while(pFirst)
+    {
+        LPNODE pSecond = list2-&gt;Next;
+        while(pSecond)
+        {
+            if(pFirst-&gt;Data == pSecond-&gt;Data)
+            {
+                insertByBack(list3,pFirst-&gt;Data);
+                break;
+            }
+            pSecond = pSecond-&gt;Next;
+        }
+        pFirst = pFirst-&gt;Next;
+
+    }
+    return list3;
+}
+
+void ListReverseFirst(LIST* list)
+{
+    LIST new_list = createHead();
+    LPNODE pMove = (*list)-&gt;Next;
+    while(pMove)
+    {
+        InsertByHead(new_list, pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    freeList(list);
+    *list = new_list;
+}
+
+LIST ListReverse1(LIST list)
+{
+    LIST new_list = createHead();
+    LPNODE pMove = list-&gt;Next;
+    while(pMove)
+    {
+        InsertByHead(new_list, pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    return new_list;
+}
+
+void ListReverse2(LIST list)
+{
+    LPNODE pre = NULL;
+    LPNODE cur = list-&gt;Next;
+    LPNODE nextNode = list-&gt;Next;
+    while(cur)
+    {
+        //先存储下一个，再反转
+        nextNode = cur-&gt;Next;
+        cur-&gt;Next = pre;
+        pre = cur;
+        cur = nextNode;
+    }
+    list-&gt;Next = pre;
+}
+
+
+
+int main()
+{
+    LIST list1 = createHead();
+    InsertByHead(list1,4);
+    InsertByHead(list1,2);
+    InsertByHead(list1,1);
+    printList(list1);
+    LIST list2 =createHead();
+    InsertByHead(list2,4);
+    InsertByHead(list2,2);
+    printList(list2);
+    //LIST list3 = listCat(list1,list2);
+    //printList(list3);
+    //ListReverseFirst(&amp;list1);
+    //printList(list1);
+    ListReverse2(list1);
+    printList(list1);
+    return 0;
+}
+
+</code></pre>
+<pre><code>1 2 4
+2 4
+4 2 1
+</code></pre>
+<h3 id="有序链表"><a class="header" href="#有序链表">有序链表</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef int ElementType;
+
+typedef struct Node
+{
+    ElementType Data;
+    struct Node *Next;
+}NODE,*LIST,*LPNODE;
+
+LIST createHead()
+{
+    LIST headNode = (LIST)malloc(sizeof(struct Node));
+    assert(headNode);
+    headNode-&gt;Next = NULL;
+    return headNode;
+}
+
+LPNODE createNode(ElementType X)
+{
+    LPNODE newNode = (LPNODE)malloc(sizeof(NODE));
+    assert(newNode);
+    newNode-&gt;Data = X;
+    newNode-&gt;Next = NULL;
+    return newNode;
+}
+
+
+void InsertBySort(LIST headNode, ElementType X)
+{
+    LPNODE newNode = createNode(X);
+    LPNODE preNode = headNode;
+    LPNODE posNode = headNode-&gt;Next;
+    while(posNode != NULL &amp;&amp; posNode-&gt;Data &lt; X)
+    {
+        preNode = posNode;
+        posNode = posNode-&gt;Next;
+    }
+    if(posNode == NULL)
+    {
+        preNode-&gt;Next = newNode;
+    }
+    else
+    {
+        preNode-&gt;Next = newNode;
+        newNode-&gt;Next = posNode;
+    }
+}
+
+void printList(LIST headNode)
+{
+    if(headNode == NULL)
+    {
+        printf(&quot;无法打印链表，链表为空！\n&quot;);
+        return;
+    }
+    LPNODE pMove = headNode-&gt;Next;
+    while(pMove != NULL)
+    {
+        printf(&quot;%d &quot;,pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+
+int main()
+{
+    LIST list3 = createHead();
+    InsertBySort(list3,4);
+    InsertBySort(list3,5);
+    InsertBySort(list3,1);
+    InsertBySort(list3,40);
+    InsertBySort(list3,53);
+    InsertBySort(list3,12);
+    InsertBySort(list3,49);
+    InsertBySort(list3,25);
+    InsertBySort(list3,19);
+    printList(list3);
+    return 0;
+}
+</code></pre>
+<pre><code>1 2 4
+2 4
+1 4 5 12 19 25 40 49 53
+</code></pre>
+<h3 id="无头单链表"><a class="header" href="#无头单链表">无头单链表</a></h3>
+<p>核心在于表头的处理，插入操作需要使用二级指针来修改头指针。要考虑链表为空的状态。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef int ElementType;
+
+struct Node
+{
+    ElementType Data;
+    struct Node *Next;
+};
+
+struct Node* createNode(ElementType X)
+{
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    assert(newNode);
+    newNode-&gt;Data = X;
+    newNode-&gt;Next = NULL;
+    return newNode;
+}
+
+void InsertByHead(struct Node** headNode, ElementType X)
+{
+    struct Node* newNode = createNode(X);
+    newNode-&gt;Next = *headNode;
+    *headNode = newNode;
+}
+
+void InsertByBack(struct Node** headNode, ElementType X)
+{
+    if(headNode == NULL)
+    {
+        InsertByHead(headNode,X);
+    }
+    else
+    {
+        struct Node* pMove = *headNode;
+        while(pMove-&gt;Next)
+        {
+            pMove = pMove-&gt;Next;
+        }
+        struct Node* newNode = createNode(X);
+        pMove-&gt;Next = newNode;
+    }
+}
+
+void printList(struct Node* headNode)
+{
+    struct Node* pMove = headNode;
+    while(pMove != NULL)
+    {
+        printf(&quot;%d &quot;,pMove-&gt;Data);
+        pMove = pMove-&gt;Next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+
+int main()
+{
+    struct Node* list3 = NULL;
+    InsertByHead(&amp;list3,4);
+    InsertByHead(&amp;list3,5);
+    InsertByHead(&amp;list3,1);
+    InsertByHead(&amp;list3,40);
+    printList(list3);
+    printf(&quot;\n&quot;);
+    InsertByBack(&amp;list3,53);
+    InsertByBack(&amp;list3,12);
+    InsertByBack(&amp;list3,49);
+    InsertByBack(&amp;list3,25);
+    InsertByBack(&amp;list3,19);
+    printList(list3);
+    return 0;
+}
+</code></pre>
+<pre><code>40 1 5 4
+
+40 1 5 4 53 12 49 25 19
+</code></pre>
+<h2 id="双向链表"><a class="header" href="#双向链表">双向链表</a></h2>
+<h3 id="普通双向链表"><a class="header" href="#普通双向链表">普通双向链表</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef struct Node *LPNODE;
+typedef int ElementType;
+
+struct Node
+{
+    LPNODE prev;
+    LPNODE next;
+    ElementType data;
+};
+
+LPNODE createNode(ElementType data)
+{
+    LPNODE newNode = (LPNODE)malloc((sizeof(struct Node)));
+    assert(newNode);
+    newNode-&gt;prev = NULL;
+    newNode-&gt;next = NULL;
+    newNode-&gt;data = data;
+    return newNode;
+}
+
+//再封装的方式描述链表特性
+struct List
+{
+    LPNODE firstNode;
+    LPNODE lastNode;
+    int listSize;
+};
+//创建链表，描述链表的初始状态
+struct List* creatList()
+{
+    struct List* list = (struct List*)malloc(sizeof(struct List));
+    //assert(list);
+    //这里也可以写成if语句形式
+    if(list == NULL)
+        return NULL;
+    list-&gt;firstNode = NULL;
+    list-&gt;lastNode = NULL;
+    list-&gt;listSize = 0;
+    return list;
+}
+//表头插入
+void InsertByHead(struct List* list, ElementType data)
+{
+    LPNODE newNode = createNode(data);
+    if(list-&gt;listSize == 0)
+    {
+	    //第一次插入
+        list-&gt;firstNode = newNode;
+        list-&gt;lastNode = newNode;
+        list-&gt;listSize++;
+    }
+    else
+    {
+        newNode-&gt;next = list-&gt;firstNode;
+        list-&gt;firstNode-&gt;prev = newNode;
+        list-&gt;firstNode = newNode;
+        list-&gt;listSize++;
+    }
+}
+
+void printListByHead(struct List* list)
+{
+    LPNODE pMove = list-&gt;firstNode;
+    while(pMove)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+void printListByRear(struct List* list)
+{
+    LPNODE pMove = list-&gt;lastNode;
+    while(pMove)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;prev;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main()
+{
+    struct List* list = creatList();
+    for(int i=0; i&lt;5; i++)
+        InsertByHead(list, i);
+    printListByHead(list);
+    printListByRear(list);
+}
+</code></pre>
+<pre><code>4       3       2       1       0
+0       1       2       3       4
+</code></pre>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef struct Node *LPNODE;
+typedef int ElementType;
+
+struct Node
+{
+    LPNODE prev;
+    LPNODE next;
+    ElementType data;
+};
+
+LPNODE createNode(ElementType data)
+{
+    LPNODE newNode = (LPNODE)malloc((sizeof(struct Node)));
+    assert(newNode);
+    newNode-&gt;prev = NULL;
+    newNode-&gt;next = NULL;
+    newNode-&gt;data = data;
+    return newNode;
+}
+
+//再封装的方式描述链表特性
+struct List
+{
+    LPNODE firstNode;
+    LPNODE lastNode;
+    int listSize;
+};
+//创建链表，描述链表的初始状态
+struct List* creatList()
+{
+    struct List* list = (struct List*)malloc(sizeof(struct List));
+    //assert(list);
+    //这里也可以写成if语句形式
+    if(list == NULL)
+        return NULL;
+    list-&gt;firstNode = NULL;
+    list-&gt;lastNode = NULL;
+    list-&gt;listSize = 0;
+    return list;
+}
+//表头插入
+void InsertByHead(struct List* list, ElementType data)
+{
+    LPNODE newNode = createNode(data);
+    if(list-&gt;listSize == 0)
+    {
+        list-&gt;firstNode = newNode;
+        list-&gt;lastNode = newNode;
+        list-&gt;listSize++;
+    }
+    else
+    {
+        newNode-&gt;next = list-&gt;firstNode;
+        list-&gt;firstNode-&gt;prev = newNode;
+        list-&gt;firstNode = newNode;
+        list-&gt;listSize++;
+    }
+}
+
+//表尾插入
+void InsertByTail(struct List* list, ElementType data)
+{
+    LPNODE newNode = createNode(data);
+    if(list-&gt;listSize == 0)
+    {
+        list-&gt;firstNode = newNode;
+        list-&gt;lastNode = newNode;
+        list-&gt;listSize++;
+    }
+    else
+    {
+        newNode-&gt;prev = list-&gt;lastNode;
+        list-&gt;lastNode-&gt;next = newNode;
+        list-&gt;lastNode = newNode;
+        list-&gt;listSize++;
+    }
+}
+
+//指定数据处插入方式1
+void InsertByAppointment(struct List* list, ElementType data, ElementType posData)
+{
+    LPNODE pos = list-&gt;firstNode;
+    LPNODE preNode = NULL;
+    while(pos != NULL &amp;&amp; pos-&gt;data != posData)
+    {
+        preNode = pos;
+        pos = pos-&gt;next;
+    }
+    if(pos == NULL)
+    {
+        printf(&quot;Failed! There is no posData in this linked list!\n&quot;);
+    }
+    else if(pos == list-&gt;firstNode)
+    {
+        //指定位置为第一个结点，这时使用头插法
+        InsertByHead(list,data);
+    }
+    else
+    {
+        LPNODE newNode = createNode(data);
+        preNode-&gt;next = newNode;
+        newNode-&gt;prev = preNode;
+        newNode-&gt;next = pos;
+        pos-&gt;prev = newNode;
+        list-&gt;listSize++;
+    }
+}
+
+void DeleteByHead(struct List* list)
+{
+    if(list-&gt;listSize == 0)
+    {
+        printf(&quot;The linked list is empty!\n&quot;);
+        return;
+    }
+    LPNODE nextNode = list-&gt;firstNode-&gt;next;
+    free(list-&gt;firstNode);
+    list-&gt;firstNode = nextNode;
+    if(list-&gt;listSize == 1)
+        list-&gt;lastNode = NULL;
+    else
+        nextNode-&gt;prev = NULL;
+    list-&gt;listSize--;
+}
+
+void DeleteByTail(struct List* list)
+{
+    if(list-&gt;listSize == 0)
+    {
+        printf(&quot;The linked list is empty!\n&quot;);
+        return;
+    }
+    LPNODE prevNode = list-&gt;lastNode-&gt;prev;
+    free(list-&gt;lastNode);
+    list-&gt;lastNode = prevNode;
+    if(list-&gt;listSize == 1)
+        list-&gt;firstNode = NULL;
+    else
+        prevNode-&gt;next = NULL;
+    list-&gt;listSize--;
+}
+
+int IsEmpty(struct List* list)
+{
+    return list-&gt;listSize == 0;
+}
+
+void printListByHead(struct List* list)
+{
+    LPNODE pMove = list-&gt;firstNode;
+    while(pMove)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+void printListByRear(struct List* list)
+{
+    LPNODE pMove = list-&gt;lastNode;
+    while(pMove)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;prev;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main()
+{
+    struct List* list = creatList();
+    for(int i=0; i&lt;5; i++)
+        InsertByHead(list, i);
+    printListByHead(list);
+    printListByRear(list);
+    DeleteByHead(list);
+    printListByHead(list);
+    printListByRear(list);
+    for(int i=0; i&lt;5; i++)
+        InsertByTail(list, i);
+    printListByHead(list);
+    printListByRear(list);
+    InsertByAppointment(list,100,4);
+    printListByRear(list);
+    InsertByAppointment(list,100,2);
+    InsertByTail(list,30);
+    printListByRear(list);
+    InsertByAppointment(list,200,30);
+    printListByHead(list);
+    printListByRear(list);
+    while(!IsEmpty(list))
+    {
+        DeleteByTail(list);
+        printListByHead(list);
+        printListByRear(list);
+    }
+}
+</code></pre>
+<pre><code>4       3       2       1       0
+0       1       2       3       4
+3       2       1       0
+0       1       2       3
+3       2       1       0       0       1       2       3       4
+4       3       2       1       0       0       1       2       3
+4       100     3       2       1       0       0       1       2       3
+30      4       100     3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2       3       100     4       200     30
+30      200     4       100     3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2       3       100     4       200
+200     4       100     3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2       3       100     4
+4       100     3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2       3       100
+100     3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2       3
+3       2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1       2
+2       1       0       0       1       2       100     3
+3       100     2       1       0       0       1
+1       0       0       1       2       100     3
+3       100     2       1       0       0
+0       0       1       2       100     3
+3       100     2       1       0
+0       1       2       100     3
+3       100     2       1
+1       2       100     3
+3       100     2
+2       100     3
+3       100
+100     3
+3
+3
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311261330779.png" alt="" /></p>
+<p>指定位置删除需要特殊处理头和尾。。。</p>
+<h3 id="双向循环链表"><a class="header" href="#双向循环链表">双向循环链表</a></h3>
+<p>注意：这里最好写有头（头节点不存数据即可）的双向循环链表。。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311261348761.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;assert.h&gt;
+
+typedef struct Node *LPNODE;
+typedef int ElementType;
+
+struct Node
+{
+    LPNODE prev;
+    LPNODE next;
+    ElementType data;
+};
+
+LPNODE createNode(ElementType data)
+{
+    //新节点不需要是环形
+    LPNODE newNode = (LPNODE)malloc((sizeof(struct Node)));
+    assert(newNode);
+    newNode-&gt;prev = NULL;
+    newNode-&gt;next = NULL;
+    newNode-&gt;data = data;
+    return newNode;
+}
+
+//创建链表，描述链表的初始状态
+struct Node* creatList()
+{
+    //单个节点指向自身，形成环形
+    struct Node* headNode = (struct Node*)malloc(sizeof(struct Node));
+    //assert(list);
+    //这里也可以写成if语句形式
+    if(headNode == NULL)
+        return NULL;
+    headNode-&gt;prev = headNode;
+    headNode-&gt;next = headNode;
+    return headNode;
+}
+
+//表尾插入
+void InsertByTail(struct Node* headNode, ElementType data)
+{
+    LPNODE newNode = createNode(data);
+    LPNODE temp = headNode-&gt;prev;
+    //headNode-&gt;prev是最后一个结点
+    newNode-&gt;next = headNode;
+    headNode-&gt;prev = newNode;
+    temp-&gt;next = newNode;
+    newNode-&gt;prev = temp;
+}
+
+void InsertByAppointment(struct Node* headNode, ElementType data, ElementType posData)
+{
+    LPNODE preNode = headNode;
+    LPNODE posNode = headNode-&gt;next;
+    while(headNode != posNode &amp;&amp; posData != posNode-&gt;data)
+    {
+        preNode = posNode;
+        posNode = posNode-&gt;next;
+    }
+    if(headNode == posNode)
+    {
+        printf(&quot;The posData is not in this linked list!\n&quot;);
+        return;
+    }
+    else
+    {
+        LPNODE newNode = createNode(data);
+        newNode-&gt;next = posNode;
+        posNode-&gt;prev = newNode;
+        preNode-&gt;next = newNode;
+        newNode-&gt;prev = preNode;
+    }
+}
+
+void printListByHead(struct Node* headNode)
+{
+    LPNODE pMove = headNode-&gt;next;
+    while(pMove != headNode)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+void printListByTail(struct Node* headNode)
+{
+    LPNODE pMove = headNode-&gt;prev;
+    while(pMove != headNode)
+    {
+        printf(&quot;%d\t&quot;,pMove-&gt;data);
+        pMove = pMove-&gt;prev;
+    }
+    printf(&quot;\n&quot;);
+}
+
+
+int main()
+{
+    struct Node* list = creatList();
+    for(int i=0; i&lt;5; i++)
+        InsertByTail(list, i);
+    printListByHead(list);
+    printListByTail(list);
+    InsertByAppointment(list, 100, 2);
+    printListByHead(list);
+    printListByTail(list);
+    return 0;
+}
+</code></pre>
+<pre><code>0       1       2       3       4
+4       3       2       1       0
+0       1       100     2       3       4
+4       3       2       100     1       0
+</code></pre>
+<h1 id="单链表题目"><a class="header" href="#单链表题目">单链表题目</a></h1>
+<h2 id="pta6-1-单链表逆转"><a class="header" href="#pta6-1-单链表逆转">PTA6-1 单链表逆转</a></h2>
+<p>本题要求实现一个函数，将给定的单链表逆转。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">List Reverse( List L );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef struct Node *PtrToNode;
+struct Node {
+    ElementType Data; /* 存储结点数据 */
+    PtrToNode   Next; /* 指向下一个结点的指针 */
+};
+typedef PtrToNode List; /* 定义单链表类型 */
+</code></pre>
+<p><code>L</code>是给定单链表，函数<code>Reverse</code>要返回被逆转后的链表。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+typedef struct Node *PtrToNode;
+struct Node {
+    ElementType Data;
+    PtrToNode   Next;
+};
+typedef PtrToNode List;
+
+List Read(); /* 细节在此不表 */
+void Print( List L ); /* 细节在此不表 */
+
+List Reverse( List L );
+
+int main()
+{
+    List L1, L2;
+    L1 = Read();
+    L2 = Reverse(L1);
+    Print(L1);
+    Print(L2);
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code>5
+1 3 4 5 2
+</code></pre>
+<p>输出样例：</p>
+<pre><code>1
+2 5 4 3 1
+</code></pre>
+<p>双指针解法：</p>
+<pre><code class="language-c">List Reverse( List L )
+{
+    List cur = L;
+    List pre = NULL;
+    while(cur!=NULL)
+    {
+        List temp = cur-&gt;Next;
+        cur-&gt;Next = pre;
+        pre = cur;
+        cur = temp;
+    }
+    return pre;
+}
+</code></pre>
+<p>递归解法：</p>
+<pre><code class="language-c">List Reverse( List L )
+{
+    if(L==NULL||L-&gt;Next==NULL)
+        return L;
+    List cur = Reverse(L-&gt;Next);
+    L-&gt;Next-&gt;Next=L;
+    L-&gt;Next=NULL;
+    
+    return cur;
+    
+}
+</code></pre>
+<h2 id="pta-6-2-顺序表操作集"><a class="header" href="#pta-6-2-顺序表操作集">PTA 6-2 顺序表操作集</a></h2>
+<p>本题要求实现顺序表的操作集。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">List MakeEmpty(); 
+Position Find( List L, ElementType X );
+bool Insert( List L, ElementType X, Position P );
+bool Delete( List L, Position P );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef int Position;
+typedef struct LNode *List;
+struct LNode {
+    ElementType Data[MAXSIZE];
+    Position Last; /* 保存线性表中最后一个元素的位置 */
+};
+</code></pre>
+<p>各个操作函数的定义为：</p>
+<p><code>List MakeEmpty()</code>：创建并返回一个空的线性表；</p>
+<p><code>Position Find( List L, ElementType X )</code>：返回线性表中X的位置。若找不到则返回ERROR；</p>
+<p><code>bool Insert( List L, ElementType X, Position P )</code>：将X插入在位置P并返回true。若空间已满，则打印“FULL”并返回false；如果参数P指向非法位置，则打印“ILLEGAL POSITION”并返回false；</p>
+<p><code>bool Delete( List L, Position P )</code>：将位置P的元素删除并返回true。若参数P指向非法位置，则打印“POSITION P EMPTY”（其中P是参数值）并返回false。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAXSIZE 5
+#define ERROR -1
+typedef enum {false, true} bool;
+typedef int ElementType;
+typedef int Position;
+typedef struct LNode *List;
+struct LNode {
+    ElementType Data[MAXSIZE];
+    Position Last; /* 保存线性表中最后一个元素的位置 */
+};
+
+List MakeEmpty(); 
+Position Find( List L, ElementType X );
+bool Insert( List L, ElementType X, Position P );
+bool Delete( List L, Position P );
+
+int main()
+{
+    List L;
+    ElementType X;
+    Position P;
+    int N;
+
+    L = MakeEmpty();
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;X);
+        if ( Insert(L, X, 0)==false )
+            printf(&quot; Insertion Error: %d is not in.\n&quot;, X);
+    }
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;X);
+        P = Find(L, X);
+        if ( P == ERROR )
+            printf(&quot;Finding Error: %d is not in.\n&quot;, X);
+        else
+            printf(&quot;%d is at position %d.\n&quot;, X, P);
+    }
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;P);
+        if ( Delete(L, P)==false )
+            printf(&quot; Deletion Error.\n&quot;);
+        if ( Insert(L, 0, P)==false )
+            printf(&quot; Insertion Error: 0 is not in.\n&quot;);
+    }
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code class="language-in">6
+1 2 3 4 5 6
+3
+6 5 1
+2
+-1 6
+</code></pre>
+<p>输出样例：</p>
+<pre><code class="language-out">FULL Insertion Error: 6 is not in.
+Finding Error: 6 is not in.
+5 is at position 0.
+1 is at position 4.
+POSITION -1 EMPTY Deletion Error.
+FULL Insertion Error: 0 is not in.
+POSITION 6 EMPTY Deletion Error.
+FULL Insertion Error: 0 is not in.
+</code></pre>
+<pre><code class="language-c">List MakeEmpty()
+{
+    List PtrL;
+    PtrL=(List)malloc(sizeof(struct LNode));
+    PtrL-&gt;Last=-1;
+    return PtrL;
+}
+Position Find( List L, ElementType X )
+{
+    for(Position i=0;i&lt;=L-&gt;Last+1;i++)
+    {
+        if(L-&gt;Data[i]==X)
+            return i;
+    }
+    return ERROR;
+    /*int i=0;
+    while(i&lt;L-&gt;Last&amp;&amp;L-&gt;Data[i]!=X)
+        i++;
+    if(i&gt;L-&gt;Last) return ERROR;//如果没找到，返回ERROR
+    else return i;//找到后返回的是存储位置*/
+}
+bool Insert( List L, ElementType X, Position P )
+{
+    if(L-&gt;Last==MAXSIZE-1)
+    {
+        printf(&quot;FULL&quot;);
+        return false;
+    }
+    if(P&lt;0||P&gt;L-&gt;Last+1||P&gt;=MAXSIZE)
+    {
+        printf(&quot;ILLEGAL POSITION&quot;);
+        return false;
+    }
+    for(int j=L-&gt;Last;j&gt;=P;j--)
+    {
+        L-&gt;Data[j+1]=L-&gt;Data[j];
+    }
+    L-&gt;Data[P]=X;
+    L-&gt;Last++;
+    return true;
+
+}
+bool Delete( List L, Position P )
+{
+    if(P&lt;0||P&gt;L-&gt;Last)
+    {
+        printf(&quot;POSITION %d EMPTY&quot;,P);
+        return false;
+    }
+    if(P!=L-&gt;Last)
+    {
+        for(int j=P;j&lt;L-&gt;Last;j++)
+            L-&gt;Data[j]=L-&gt;Data[j+1];
+    }
+    L-&gt;Last--;
+    return true;
+}
+</code></pre>
+<h2 id="pta-6-3-求链式表的表长"><a class="header" href="#pta-6-3-求链式表的表长">PTA 6-3 求链式表的表长</a></h2>
+<p>本题要求实现一个函数，求链式表的表长。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">int Length( List L );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode List;
+</code></pre>
+<p><code>L</code>是给定单链表，函数<code>Length</code>要返回链式表的长度。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode List;
+
+List Read(); /* 细节在此不表 */
+
+int Length( List L );
+
+int main()
+{
+    List L = Read();
+    printf(&quot;%d\n&quot;, Length(L));
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code>1 3 4 5 2 -1
+</code></pre>
+<p>输出样例：</p>
+<pre><code>5
+</code></pre>
+<pre><code class="language-c">int Length( List L )
+{
+    List head=L;
+    int length=0;
+    while(head!=NULL)
+    {
+        length++;
+        head=head-&gt;Next;
+    }
+    return length;
+}
+</code></pre>
+<h2 id="pta-6-4-链式表的按序号查找"><a class="header" href="#pta-6-4-链式表的按序号查找">PTA 6-4 链式表的按序号查找</a></h2>
+<p>本题要求实现一个函数，找到并返回链式表的第K个元素。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">ElementType FindKth( List L, int K );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode List;
+</code></pre>
+<p><code>L</code>是给定单链表，函数<code>FindKth</code>要返回链式表的第<code>K</code>个元素。如果该元素不存在，则返回<code>ERROR</code>。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define ERROR -1
+typedef int ElementType;
+typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode List;
+
+List Read(); /* 细节在此不表 */
+
+ElementType FindKth( List L, int K );
+
+int main()
+{
+    int N, K;
+    ElementType X;
+    List L = Read();
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;K);
+        X = FindKth(L, K);
+        if ( X!= ERROR )
+            printf(&quot;%d &quot;, X);
+        else
+            printf(&quot;NA &quot;);
+    }
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code class="language-in">1 3 4 5 2 -1
+6
+3 6 1 5 4 2
+</code></pre>
+<p>输出样例：</p>
+<pre><code class="language-out">4 NA 1 2 5 3 
+</code></pre>
+<pre><code class="language-C">ElementType FindKth( List L, int K )
+{
+    List p = L;
+    if(p==NULL)
+        return ERROR;
+    int i = 1;
+    while(p!=NULL &amp;&amp; i&lt;K)
+    {
+        p=p-&gt;Next;
+        i++;
+    }
+    if(i==K)
+        return p-&gt;Data;
+    else return ERROR; 
+    
+}
+</code></pre>
+<p>这样写会在测试题中数据时报错<code>段错误</code>，这是<code>if(i==K)</code>这个判断条件不严谨导致的。</p>
+<p>设想一下K=2; L的长度仅为1，这个程序会进入while循环，然后i=2，但此时p结点对应的Data不存在。这时输出会报错<code>段错误</code>。修改后能AC的代码如下：</p>
+<pre><code class="language-c">ElementType FindKth( List L, int K )
+{
+    List p = L;
+    int i = 1;
+    if(p==NULL)
+        return ERROR;
+    else
+    {
+        while(p!=NULL &amp;&amp; i&lt;K)
+        {
+            p=p-&gt;Next;
+            i++;
+        }
+        if(p!=NULL &amp;&amp; i==K)
+            return p-&gt;Data;
+        else return ERROR; 
+    }
+    
+}
+</code></pre>
+<p>下面是另一种能AC的代码：</p>
+<pre><code class="language-c">ElementType FindKth( List L, int K )
+{
+    int i = 1;
+    while(L)
+    {
+        if(i==K)
+            return L-&gt;Data;
+        i++;
+        L=L-&gt;Next;
+    }
+    return ERROR;
+    
+}
+</code></pre>
+<p>这里的if语句要放在链表后移操作之前，因为要判断当前结点是否满足条件，如果放在后面就会漏掉第一个值。</p>
+<p>若能找到符合要求的值，则在while循环中就会返回内容；如果while循环结束也没找到，程序会直接返回ERROR。</p>
+<p>补全的<code>Read()</code>函数代码如下：</p>
+<pre><code class="language-c">List Read()
+{
+    List L,p,r;
+    int num = 0;
+    L = (List)malloc(sizeof(List));
+    r = L;
+    do
+    {
+        scanf(&quot;%d&quot;,&amp;num);
+        p=(List)malloc(sizeof(List));
+        p-&gt;Data = num;
+        r-&gt;Next = p;
+        r = p;
+    }while(getchar()!='\n');
+
+    r-&gt;Next = NULL;
+    return L-&gt;Next;
+}
+</code></pre>
+<h2 id="pta-6-5-链式表操作集"><a class="header" href="#pta-6-5-链式表操作集">PTA 6-5 链式表操作集</a></h2>
+<p>本题要求实现链式表的操作集。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c">Position Find( List L, ElementType X );
+List Insert( List L, ElementType X, Position P );
+List Delete( List L, Position P );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode Position;
+typedef PtrToLNode List;
+</code></pre>
+<p>各个操作函数的定义为：</p>
+<p><code>Position Find( List L, ElementType X )</code>：返回线性表中首次出现X的位置。若找不到则返回ERROR；</p>
+<p><code>List Insert( List L, ElementType X, Position P )</code>：将X插入在位置P指向的结点之前，返回链表的表头。如果参数P指向非法位置，则打印“Wrong Position for Insertion”，返回ERROR；</p>
+<p><code>List Delete( List L, Position P )</code>：将位置P的元素删除并返回链表的表头。若参数P指向非法位置，则打印“Wrong Position for Deletion”并返回ERROR。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define ERROR NULL
+typedef int ElementType;
+typedef struct LNode *PtrToLNode;
+struct LNode {
+    ElementType Data;
+    PtrToLNode Next;
+};
+typedef PtrToLNode Position;
+typedef PtrToLNode List;
+
+Position Find( List L, ElementType X );
+List Insert( List L, ElementType X, Position P );
+List Delete( List L, Position P );
+
+int main()
+{
+    List L;
+    ElementType X;
+    Position P, tmp;
+    int N;
+
+    L = NULL;
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;X);
+        L = Insert(L, X, L);
+        if ( L==ERROR ) printf(&quot;Wrong Answer\n&quot;);
+    }
+    scanf(&quot;%d&quot;, &amp;N);
+    while ( N-- ) {
+        scanf(&quot;%d&quot;, &amp;X);
+        P = Find(L, X);
+        if ( P == ERROR )
+            printf(&quot;Finding Error: %d is not in.\n&quot;, X);
+        else {
+            L = Delete(L, P);
+            printf(&quot;%d is found and deleted.\n&quot;, X);
+            if ( L==ERROR )
+                printf(&quot;Wrong Answer or Empty List.\n&quot;);
+        }
+    }
+    L = Insert(L, X, NULL);
+    if ( L==ERROR ) printf(&quot;Wrong Answer\n&quot;);
+    else
+        printf(&quot;%d is inserted as the last element.\n&quot;, X);
+    P = (Position)malloc(sizeof(struct LNode));
+    tmp = Insert(L, X, P);
+    if ( tmp!=ERROR ) printf(&quot;Wrong Answer\n&quot;);
+    tmp = Delete(L, P);
+    if ( tmp!=ERROR ) printf(&quot;Wrong Answer\n&quot;);
+    for ( P=L; P; P = P-&gt;Next ) printf(&quot;%d &quot;, P-&gt;Data);
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>输入样例：</p>
+<pre><code class="language-in">6
+12 2 4 87 10 2
+4
+2 12 87 5
+</code></pre>
+<p>输出样例：</p>
+<pre><code class="language-out">2 is found and deleted.
+12 is found and deleted.
+87 is found and deleted.
+Finding Error: 5 is not in.
+5 is inserted as the last element.
+Wrong Position for Insertion
+Wrong Position for Deletion
+10 4 2 5 
+</code></pre>
+<p>根据课堂代码改写的代码如下：</p>
+<pre><code class="language-c">Position Find( List L, ElementType X )
+{
+    List p = L;
+    while(p!=NULL &amp;&amp; p-&gt;Data!=X)
+        p=p-&gt;Next;
+    return p;
+}
+</code></pre>
+<p>另一种能AC的代码如下：</p>
+<pre><code class="language-c">
+Position Find( List L, ElementType X )
+{
+    while(L)
+    {
+        if(L-&gt;Data==X)
+            return L;
+        L = L-&gt;Next;
+    }
+    return ERROR;
+}
+List Insert( List L, ElementType X, Position P )
+{
+    List head = L;
+    List p = (List)malloc(sizeof(List));
+    p-&gt;Data = X;
+    p-&gt;Next = NULL;
+    if(L==P)
+    {
+        p-&gt;Next = L;
+        return p;
+    }
+    while(L)
+    {
+        if(P==L-&gt;Next)
+        {
+            p-&gt;Next = L-&gt;Next;
+            L-&gt;Next = p;
+            return head;
+        }
+        L=L-&gt;Next;
+    }
+    printf(&quot;Wrong Position for Insertion\n&quot;);
+    return ERROR;
+
+
+}
+List Delete( List L, Position P )
+{
+    if(L==P)
+    {
+        L = L-&gt;Next;
+        return L;
+    }
+    List head = L;
+    while(L)
+    {
+        if(L-&gt;Next==P)
+        {
+            L-&gt;Next=P-&gt;Next;
+            return head;
+        }
+        L=L-&gt;Next;
+    }
+    printf(&quot;Wrong Position for Deletion\n&quot;);
+    return ERROR;
+}
+</code></pre>
 
                     </main>
 
