@@ -174,7 +174,412 @@
                 <div id="content" class="content">
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-<h1 id="队列"><a class="header" href="#队列">队列</a></h1>
+<h1 id="队列queue"><a class="header" href="#队列queue">队列Queue</a></h1>
+<ul>
+<li><a href="#%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0">队列的顺序存储实现</a></li>
+<li><a href="#%E9%98%9F%E5%88%97%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0">队列的链式存储实现</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E7%94%A8%E4%B8%A4%E4%B8%AA%E5%A0%86%E6%A0%88%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97">如何用两个堆栈模拟实现一个队列?</a></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051520569.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051522166.png" alt="" /></p>
+<h2 id="队列的顺序存储实现"><a class="header" href="#队列的顺序存储实现">队列的顺序存储实现</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051600042.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051600901.png" alt="" /></p>
+<p>这里对rear和front位置无要求。</p>
+<p>如果空队列开始时front和rear值都是-1，当插入4个元素并删除2个元素后，front和rear值分别是多少？1和3</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051601299.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311071815252.png" alt="" /></p>
+<p>现采用大小为10的数组实现一个循环队列。设在某一时刻，队列为空且此时front和rear值均为5。经过若干操作后，front为8，rear为2，问：此时队列中有4个元素。</p>
+<p>通用的队列长度计算公式：队列长度=（rear - front + MaxSize) % MaxSize</p>
+<p>解释：front、rear方向一致，front指向实际存在的结点的前一个结点，rear指向实际存在的最后一个结点，此时队列中有9、0、1、2四个位置上的元素。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051602307.png" alt="" /></p>
+<p>《数据结构》课程给出的队列顺序存储实现方式如下：</p>
+<pre><code class="language-c">typedef int Position;
+struct QNode {
+    ElementType *Data;     /* 存储元素的数组 */
+    Position Front, Rear;  /* 队列的头、尾指针 */
+    int MaxSize;           /* 队列最大容量 */
+};
+typedef struct QNode *Queue;
+
+Queue CreateQueue( int MaxSize )
+{
+    Queue Q = (Queue)malloc(sizeof(struct QNode));
+    Q-&gt;Data = (ElementType *)malloc(MaxSize * sizeof(ElementType));
+    Q-&gt;Front = Q-&gt;Rear = 0;
+    Q-&gt;MaxSize = MaxSize;
+    return Q;
+}
+
+bool IsFull( Queue Q )
+{
+    return ((Q-&gt;Rear+1)%Q-&gt;MaxSize == Q-&gt;Front);
+}
+
+bool AddQ( Queue Q, ElementType X )
+{
+    if ( IsFull(Q) ) {
+        printf(&quot;队列满&quot;);
+        return false;
+    }
+    else {
+        Q-&gt;Rear = (Q-&gt;Rear+1)%Q-&gt;MaxSize;
+        Q-&gt;Data[Q-&gt;Rear] = X;
+        return true;
+    }
+}
+
+bool IsEmpty( Queue Q )
+{
+    return (Q-&gt;Front == Q-&gt;Rear);
+}
+
+ElementType DeleteQ( Queue Q )
+{
+    if ( IsEmpty(Q) ) { 
+        printf(&quot;队列空&quot;);
+        return ERROR;
+    }
+    else  {
+        Q-&gt;Front =(Q-&gt;Front+1)%Q-&gt;MaxSize;
+        return  Q-&gt;Data[Q-&gt;Front];
+    }
+}
+</code></pre>
+<p>测试程序如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define ERROR 0
+
+typedef int ElementType;
+
+typedef struct QNode *Queue;
+
+struct QNode
+{
+    ElementType *Data;
+    int MaxSize;
+    int front;
+    int rear;
+};
+
+Queue CreateQueue(int MaxSize)
+{
+    Queue q = (Queue)malloc(sizeof(struct QNode));
+    q-&gt;Data = (ElementType*)malloc(sizeof(ElementType)*MaxSize);
+    q-&gt;front = 0;
+    q-&gt;rear = 0;
+    q-&gt;MaxSize = MaxSize;
+    return q;
+}
+
+bool IsFullQ(Queue q)
+{
+    return (((q-&gt;rear+1)%q-&gt;MaxSize) == q-&gt;front);
+}
+
+
+bool AddQ(Queue q,ElementType item)
+{
+    if(IsFullQ(q))
+    {
+        printf(&quot;队列已满\n&quot;);
+        return false;
+    }
+    else
+    {
+        q-&gt;rear = (q-&gt;rear+1)%(q-&gt;MaxSize);
+        q-&gt;Data[q-&gt;rear] = item;
+        return true;
+    }
+}
+
+bool IsEmptyQ(Queue q)
+{
+    return (q-&gt;rear == q-&gt;front);
+}
+
+ElementType DeleteQ(Queue q)
+{
+    if(IsEmptyQ(q))
+    {
+        printf(&quot;队列为空\n&quot;);
+        return ERROR;
+    }
+    else
+    {
+        q-&gt;front = (q-&gt;front+1)%(q-&gt;MaxSize);
+        return (q-&gt;Data[q-&gt;front]);
+    }
+}
+
+int main()
+{
+    Queue q = CreateQueue(10);
+    int choice;
+
+    while(1)
+    {
+        printf(&quot;输入1添加1个元素，输入2删除1个元素，输入0结束循环\n&quot;);
+        scanf(&quot;%d&quot;,&amp;choice);
+        if(choice == 1)
+        {
+            ElementType X;
+            scanf(&quot;%d&quot;,&amp;X);
+            AddQ(q,X);
+        }
+        else if(choice == 2)
+        {
+            ElementType X = DeleteQ(q);
+            printf(&quot;%d\n&quot;,X);
+        }
+        else
+            return 0;
+    }
+
+}
+</code></pre>
+<pre><code>输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+2
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+3
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+1
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+4
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+5
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+6
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+2
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+3
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+1
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+4
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+5
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+6
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+队列为空
+0
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+0
+
+Process returned 0 (0x0)   execution time : 56.625 s
+Press any key to continue.
+</code></pre>
+<h2 id="队列的链式存储实现"><a class="header" href="#队列的链式存储实现">队列的链式存储实现</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051608152.png" alt="" /></p>
+<p>队列的front只能设在链表头部。如果front放在链表尾部，删除当前结点后无法找到上一个结点。</p>
+<p>在一个链表表示的队列中， f和r分别指向队列的头和尾。<code>r-&gt;next=s; r=s;</code>能正确地将s结点插入到队列中。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202311051608220.png" alt="" /></p>
+<p>《数据结构》课程给出的队列链式存储实现方式如下：</p>
+<pre><code class="language-c">typedef struct Node *PtrToNode;
+struct Node { /* 队列中的结点 */
+    ElementType Data;
+    PtrToNode Next;
+};
+typedef PtrToNode Position;
+
+struct QNode {
+    Position Front, Rear;  /* 队列的头、尾指针 */
+    int MaxSize;           /* 队列最大容量 */
+};
+typedef struct QNode *Queue;
+
+bool IsEmpty( Queue Q )
+{
+    return ( Q-&gt;Front == NULL);
+}
+
+ElementType DeleteQ( Queue Q )
+{
+    Position FrontCell; 
+    ElementType FrontElem;
+    
+    if  ( IsEmpty(Q) ) {
+        printf(&quot;队列空&quot;);
+        return ERROR;
+    }
+    else {
+        FrontCell = Q-&gt;Front;
+        if ( Q-&gt;Front == Q-&gt;Rear ) /* 若队列只有一个元素 */
+            Q-&gt;Front = Q-&gt;Rear = NULL; /* 删除后队列置为空 */
+        else                     
+            Q-&gt;Front = Q-&gt;Front-&gt;Next;
+        FrontElem = FrontCell-&gt;Data;
+
+        free( FrontCell );  /* 释放被删除结点空间  */
+        return  FrontElem;
+    }
+}
+</code></pre>
+<p>测试程序如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;assert.h&gt;
+#define ERROR 0
+
+typedef int ElementType;
+
+typedef struct Node *PtrToNode;
+
+struct Node
+{
+    ElementType Data;
+    PtrToNode Next;
+};
+
+PtrToNode CreateNode(ElementType Data)
+{
+    PtrToNode newNode = (PtrToNode)malloc(sizeof(struct Node));
+    assert(newNode);
+    newNode-&gt;Data = Data;
+    newNode-&gt;Next = NULL;
+    return newNode;
+}
+
+typedef PtrToNode Position;
+
+typedef struct QNode *Queue;
+
+struct QNode
+{
+    PtrToNode Front,Rear;
+    int curSize;
+};
+
+Queue CreateQueue()
+{
+    Queue q = (Queue)malloc(sizeof(struct QNode));
+    assert(q);
+    q-&gt;curSize = 0;
+    q-&gt;Front = q-&gt;Rear = NULL;
+    return q;
+}
+
+void AddQ(Queue q,ElementType item)
+{
+    //PtrToNode s = (PtrToNode)malloc(sizeof(struct Node));
+    //s-&gt;Data = item;
+    //s-&gt;Next = NULL;
+    PtrToNode s = CreateNode(item);
+    if(q-&gt;curSize == 0)
+        q-&gt;Front = s;
+    else
+        q-&gt;Rear-&gt;Next = s;
+    q-&gt;Rear = s;
+    q-&gt;curSize++;
+}
+bool IsEmptyQ(Queue q)
+{
+    return (q-&gt;Front == NULL);
+}
+
+ElementType DeleteQ(Queue q)
+{
+    PtrToNode FrontCell;
+    ElementType FrontElem;
+    if(IsEmptyQ(q))
+    {
+        printf(&quot;队列空!\n&quot;);
+        return ERROR;
+    }
+    else
+    {
+        FrontCell = q-&gt;Front;
+        if(q-&gt;Front == q-&gt;Rear)
+            q-&gt;Front = q-&gt;Rear = NULL;
+        else
+            q-&gt;Front = q-&gt;Front-&gt;Next;
+        FrontElem = FrontCell-&gt;Data;
+        free(FrontCell);
+        q-&gt;curSize--;
+        return FrontElem;
+    }
+
+}
+
+int main()
+{
+    Queue q = CreateQueue();
+    int choice;
+
+    while(1)
+    {
+        printf(&quot;输入1添加1个元素，输入2删除1个元素，输入0结束循环\n&quot;);
+        scanf(&quot;%d&quot;,&amp;choice);
+        if(choice == 1)
+        {
+            ElementType X;
+            scanf(&quot;%d&quot;,&amp;X);
+            AddQ(q,X);
+        }
+        else if(choice == 2)
+        {
+            ElementType X = DeleteQ(q);
+            printf(&quot;%d\n&quot;,X);
+        }
+        else
+            return 0;
+    }
+
+}
+</code></pre>
+<pre><code>输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+2
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+3
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+4
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+1
+5
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+2
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+3
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+4
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+5
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+2
+队列空!
+0
+输入1添加1个元素，输入2删除1个元素，输入0结束循环
+0
+
+Process returned 0 (0x0)   execution time : 22.052 s
+Press any key to continue.
+</code></pre>
+<h2 id="如何用两个堆栈模拟实现一个队列"><a class="header" href="#如何用两个堆栈模拟实现一个队列">如何用两个堆栈模拟实现一个队列?</a></h2>
+<p>如何用两个堆栈模拟实现一个队列?  如果这两个堆栈的容量分别是m和n（m&gt;n)，你的方法能保证的队列容量是多少？</p>
 
                     </main>
 
