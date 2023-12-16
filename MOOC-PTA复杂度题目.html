@@ -1,0 +1,566 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MOOC-PTA复杂度题目 - 资料结构与演算法</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="弁言.html"><strong aria-hidden="true">1.</strong> 弁言</a></li><li class="chapter-item expanded "><a href="数据结构与算法概论.html"><strong aria-hidden="true">2.</strong> 数据结构与算法概论</a></li><li class="chapter-item expanded "><a href="MOOC-PTA复杂度题目.html" class="active"><strong aria-hidden="true">3.</strong> MOOC-PTA复杂度题目</a></li><li class="chapter-item expanded "><a href="线性结构.html"><strong aria-hidden="true">4.</strong> 线性结构</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="线性表.html"><strong aria-hidden="true">4.1.</strong> 线性表</a></li><li class="chapter-item expanded "><a href="栈.html"><strong aria-hidden="true">4.2.</strong> 栈</a></li><li class="chapter-item expanded "><a href="队列.html"><strong aria-hidden="true">4.3.</strong> 队列</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA线性结构题目.html"><strong aria-hidden="true">5.</strong> MOOC-PTA线性结构题目</a></li><li class="chapter-item expanded "><a href="树.html"><strong aria-hidden="true">6.</strong> 树</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="二叉树.html"><strong aria-hidden="true">6.1.</strong> 二叉树</a></li><li class="chapter-item expanded "><a href="二叉搜索树.html"><strong aria-hidden="true">6.2.</strong> 二叉搜索树</a></li><li class="chapter-item expanded "><a href="二叉平衡树.html"><strong aria-hidden="true">6.3.</strong> 二叉平衡树</a></li><li class="chapter-item expanded "><a href="哈夫曼树.html"><strong aria-hidden="true">6.4.</strong> 哈夫曼树</a></li><li class="chapter-item expanded "><a href="并查集.html"><strong aria-hidden="true">6.5.</strong> 并查集</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA树题目.html"><strong aria-hidden="true">7.</strong> MOOC-PTA树题目</a></li><li class="chapter-item expanded "><a href="图.html"><strong aria-hidden="true">8.</strong> 图</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="图的存储.html"><strong aria-hidden="true">8.1.</strong> 图的存储</a></li><li class="chapter-item expanded "><a href="图的遍历.html"><strong aria-hidden="true">8.2.</strong> 图的遍历</a></li><li class="chapter-item expanded "><a href="最短路径算法.html"><strong aria-hidden="true">8.3.</strong> 最短路径算法</a></li><li class="chapter-item expanded "><a href="最小生成树算法.html"><strong aria-hidden="true">8.4.</strong> 最小生成树算法</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA图题目.html"><strong aria-hidden="true">9.</strong> MOOC-PTA图题目</a></li><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">10.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA排序题目.html"><strong aria-hidden="true">11.</strong> MOOC-PTA排序题目</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">12.</strong> 查找算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA查找题目.html"><strong aria-hidden="true">13.</strong> MOOC-PTA查找题目</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">资料结构与演算法</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="mooc-pta复杂度题目"><a class="header" href="#mooc-pta复杂度题目">MOOC-PTA复杂度题目</a></h1>
+<ul>
+<li><a href="#pta-01-%E5%A4%8D%E6%9D%82%E5%BA%A61-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%88%97%E5%92%8C%E9%97%AE%E9%A2%98">PTA 01-复杂度1 最大子列和问题</a>
+<ul>
+<li><a href="#%E4%B8%89%E9%87%8D%E5%BE%AA%E7%8E%AF%E6%B1%82%E8%A7%A3">三重循环求解</a></li>
+<li><a href="#%E4%BA%8C%E9%87%8D%E5%BE%AA%E7%8E%AF%E6%B1%82%E8%A7%A3">二重循环求解</a></li>
+<li><a href="#%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a></li>
+<li><a href="#%E5%9C%A8%E7%BA%BF%E5%A4%84%E7%90%86%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">在线处理（动态规划）</a></li>
+</ul>
+</li>
+<li><a href="#pta-01-%E5%A4%8D%E6%9D%82%E5%BA%A62-maximum-subsequence-sum">PTA 01-复杂度2 Maximum Subsequence Sum</a></li>
+<li><a href="#pta-01-%E5%A4%8D%E6%9D%82%E5%BA%A63-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE">PTA 01-复杂度3 二分查找</a></li>
+</ul>
+<h2 id="pta-01-复杂度1-最大子列和问题"><a class="header" href="#pta-01-复杂度1-最大子列和问题">PTA 01-复杂度1 最大子列和问题</a></h2>
+<p>给定K个整数组成的序列{ N1​, N2​, ..., NK​ }，“连续子列”被定义为{ Ni​, Ni+1​, ..., Nj​ }，其中 1≤i≤j≤K。“最大子列和”则被定义为所有连续子列元素的和中最大者。例如给定序列{ -2, 11, -4, 13, -5, -2 }，其连续子列{ 11, -4, 13 }有最大的和20。现要求你编写程序，计算给定整数序列的最大子列和。</p>
+<p>本题旨在测试各种不同的算法在各种数据情况下的表现。各组测试数据特点如下：</p>
+<ul>
+<li>数据1：与样例等价，测试基本正确性；</li>
+<li>数据2：102个随机整数；</li>
+<li>数据3：103个随机整数；</li>
+<li>数据4：104个随机整数；</li>
+<li>数据5：105个随机整数；</li>
+</ul>
+<p>输入格式:</p>
+<p>输入第1行给出正整数K (≤100000)；第2行给出K个整数，其间以空格分隔。</p>
+<p>输出格式:</p>
+<p>在一行中输出最大子列和。如果序列中所有整数皆为负数，则输出0。</p>
+<p>输入样例:</p>
+<pre><code class="language-in">6
+-2 11 -4 13 -5 -2
+</code></pre>
+<p>输出样例:</p>
+<pre><code class="language-out">20
+</code></pre>
+<h3 id="三重循环求解"><a class="header" href="#三重循环求解">三重循环求解</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202310081535329.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int MaxSubSeq(int A[], int N)
+{
+    int ThisSum = 0,MaxSum = 0;
+    for(int i=0;i &lt; N;i++)
+    {
+        for(int j = i;j &lt; N;j++)
+        {
+            ThisSum = 0;
+            for(int k=i;k&lt;=j;k++)
+                ThisSum += A[k];
+            if(ThisSum&gt;MaxSum)
+                MaxSum = ThisSum;
+        }
+    }
+    return MaxSum;
+}
+
+int main()
+{
+    int arr[100];
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++)
+        scanf(&quot;%d&quot;,&amp;arr[i]);
+    printf(&quot;%d&quot;,MaxSubSeq(arr,n));
+    return 0;
+}
+</code></pre>
+<h3 id="二重循环求解"><a class="header" href="#二重循环求解">二重循环求解</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202310081535616.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int MaxSubSeq(int A[], int N)
+{
+    int ThisSum = 0,MaxSum = 0;
+    for(int i=0;i &lt; N;i++)
+    {
+        ThisSum = 0;
+        for(int j = i;j &lt; N;j++)
+        {
+            ThisSum += A[j];
+            if(ThisSum&gt;MaxSum)
+                MaxSum = ThisSum;
+        }
+    }
+    return MaxSum;
+}
+
+int main()
+{
+    int arr[100];
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++)
+        scanf(&quot;%d&quot;,&amp;arr[i]);
+    printf(&quot;%d&quot;,MaxSubSeq(arr,n));
+    return 0;
+}
+</code></pre>
+<h3 id="分治算法"><a class="header" href="#分治算法">分治算法</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202310081546769.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int Max3( int A, int B, int C )
+{ /* 返回3个整数中的最大值 */
+    return A &gt; B ? A &gt; C ? A : C : B &gt; C ? B : C;
+}
+
+int DivideAndConquer( int List[], int left, int right )
+{ /* 分治法求List[left]到List[right]的最大子列和 */
+    int MaxLeftSum, MaxRightSum; /* 存放左右子问题的解 */
+    int MaxLeftBorderSum, MaxRightBorderSum; /*存放跨分界线的结果*/
+
+    int LeftBorderSum, RightBorderSum;
+    int center, i;
+
+    if( left == right )  { /* 递归的终止条件，子列只有1个数字 */
+        if( List[left] &gt; 0 )  return List[left];
+        else return 0;
+    }
+
+    /* 下面是&quot;分&quot;的过程 */
+    center = ( left + right ) / 2; /* 找到中分点 */
+    /* 递归求得两边子列的最大和 */
+    MaxLeftSum = DivideAndConquer( List, left, center );
+    MaxRightSum = DivideAndConquer( List, center+1, right );
+
+    /* 下面求跨分界线的最大子列和 */
+    MaxLeftBorderSum = 0; LeftBorderSum = 0;
+    for( i=center; i&gt;=left; i-- ) { /* 从中线向左扫描 */
+        LeftBorderSum += List[i];
+        if( LeftBorderSum &gt; MaxLeftBorderSum )
+            MaxLeftBorderSum = LeftBorderSum;
+    } /* 左边扫描结束 */
+
+    MaxRightBorderSum = 0; RightBorderSum = 0;
+    for( i=center+1; i&lt;=right; i++ ) { /* 从中线向右扫描 */
+        RightBorderSum += List[i];
+        if( RightBorderSum &gt; MaxRightBorderSum )
+            MaxRightBorderSum = RightBorderSum;
+    } /* 右边扫描结束 */
+
+    /* 下面返回&quot;治&quot;的结果 */
+    return Max3( MaxLeftSum, MaxRightSum, MaxLeftBorderSum + MaxRightBorderSum );
+}
+
+int MaxSubseqSum3( int List[], int N )
+{ /* 保持与前2种算法相同的函数接口 */
+    return DivideAndConquer( List, 0, N-1 );
+}
+
+int main()
+{
+    int arr[100];
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++)
+        scanf(&quot;%d&quot;,&amp;arr[i]);
+    printf(&quot;%d&quot;,MaxSubseqSum3(arr,n));
+    return 0;
+}
+</code></pre>
+<h3 id="在线处理动态规划"><a class="header" href="#在线处理动态规划">在线处理（动态规划）</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost01/img/202310081549404.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int MaxSubSeq(int A[], int N)
+{
+    int i;
+    int ThisSum,MaxSum;
+    ThisSum = 0,MaxSum = 0;
+    for(i=0;i &lt; N;i++)
+    {
+        ThisSum += A[i];
+        if(ThisSum &gt; MaxSum)
+            MaxSum = ThisSum;
+        else if(ThisSum &lt; 0)
+            ThisSum = 0;
+    }
+    return MaxSum;
+}
+
+int main()
+{
+    int arr[100];
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++)
+        scanf(&quot;%d&quot;,&amp;arr[i]);
+    printf(&quot;%d&quot;,MaxSubSeq(arr,n));
+    return 0;
+}
+</code></pre>
+<h2 id="pta-01-复杂度2-maximum-subsequence-sum"><a class="header" href="#pta-01-复杂度2-maximum-subsequence-sum">PTA 01-复杂度2 Maximum Subsequence Sum</a></h2>
+<p>Given a sequence of K integers { N1​, N2​, ..., NK​ }. A continuous subsequence is defined to be { Ni​, Ni+1​, ..., Nj​ } where 1≤i≤j≤K. The Maximum Subsequence is the continuous subsequence which has the largest sum of its elements. For example, given sequence { -2, 11, -4, 13, -5, -2 }, its maximum subsequence is { 11, -4, 13 } with the largest sum being 20.</p>
+<p>Now you are supposed to find the largest sum, together with the first and the last numbers of the maximum subsequence.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. Each case occupies two lines. The first line contains a positive integer K (≤10000). The second line contains K numbers, separated by a space.</p>
+<p>Output Specification:</p>
+<p>For each test case, output in one line the largest sum, together with the first and the last numbers of the maximum subsequence. The numbers must be separated by one space, but there must be no extra space at the end of a line. In case that the maximum subsequence is not unique, output the one with the smallest indices i and j (as shown by the sample case). If all the K numbers are negative, then its maximum sum is defined to be 0, and you are supposed to output the first and the last numbers of the whole sequence.</p>
+<p>Sample Input:</p>
+<pre><code class="language-in">10
+-10 1 2 3 4 -5 -23 3 7 -21
+</code></pre>
+<p>Sample Output:</p>
+<pre><code class="language-out">10 1 4
+</code></pre>
+<p>注意：这里需特别注意输出部分，因为题目中说“<em>If all the K numbers are negative, then its maximum sum is defined to be 0, and you are supposed to output the first and the last numbers of the whole sequence.</em>”（当输入的这K个数全为负时，输出的最大子列和应为0，并输出整个输入序列的首尾两个数）。那就需要对应MaxSum &gt;= 0和MaxSum &lt; 0的情况，之所以要把 = 0的情况放到前者，是因为 = 0可能是输入序列中有0有负的结果，比如输入6个数-2，0，-1，0，0，0。那最大子列和也是0但是显然不应输出题意要求的全为负情况下的首末两个数（-2和0）而是输出正常比较后的0和0（对应下标都为1）。</p>
+<p>这也涉及到和前一题不同的MaxSum初值问题，因为输入全为负的情况下，累加时ThisSum不断重置为0，MaxSum保持不变，最后直接进入输出的else情况，符合题意。</p>
+<pre><code>6
+-2 0 -1 0 0 0
+ThisSum=0, MaxSum=-1, MaxIndex=0, MinIndex=0, tmpMinIndex=1
+ThisSum=0, MaxSum=0, MaxIndex=1, MinIndex=1, tmpMinIndex=1
+ThisSum=0, MaxSum=0, MaxIndex=1, MinIndex=1, tmpMinIndex=3
+ThisSum=0, MaxSum=0, MaxIndex=1, MinIndex=1, tmpMinIndex=3
+ThisSum=0, MaxSum=0, MaxIndex=1, MinIndex=1, tmpMinIndex=3
+ThisSum=0, MaxSum=0, MaxIndex=1, MinIndex=1, tmpMinIndex=3
+0 0 0
+</code></pre>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void MaxSubSumWithIndex(int List[], int K)
+{
+    int i;
+    int MaxIndex = 0, MinIndex = 0, tmpMinIndex = 0;
+    int ThisSum = 0, MaxSum = -1;    //这里MaxSum不能改成0
+    for(i = 0; i &lt; K; i++)
+    {
+        ThisSum += List[i];
+        if (ThisSum &gt; MaxSum)
+        {
+            MaxSum = ThisSum;
+            MaxIndex = i;
+            MinIndex = tmpMinIndex;
+        }else if(ThisSum &lt; 0)
+        {
+            ThisSum = 0;
+            tmpMinIndex = i + 1;
+        }
+        printf(&quot;ThisSum=%d, MaxSum=%d, MaxIndex=%d, MinIndex=%d, tmpMinIndex=%d\n&quot;,ThisSum, MaxSum, MaxIndex, MinIndex, tmpMinIndex);
+    }
+    if(MaxSum &gt;= 0)
+      printf(&quot;%d %d %d\n&quot;, MaxSum, List[MinIndex], List[MaxIndex]);
+    else
+      printf(&quot;0 %d %d\n&quot;, List[0], List[K - 1]);
+}
+
+int main()
+{
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    int arr[n];
+    for(int i = 0; i&lt;n; i++)
+        scanf(&quot;%d&quot;,&amp;arr[i]);
+    MaxSubSumWithIndex(arr, n);
+    return 0;
+}
+</code></pre>
+<h2 id="pta-01-复杂度3-二分查找"><a class="header" href="#pta-01-复杂度3-二分查找">PTA 01-复杂度3 二分查找</a></h2>
+<p>本题要求实现二分查找算法。</p>
+<p>函数接口定义：</p>
+<pre><code class="language-c++">Position BinarySearch( List L, ElementType X );
+</code></pre>
+<p>其中<code>List</code>结构定义如下：</p>
+<pre><code class="language-c">typedef int Position;
+typedef struct LNode *List;
+struct LNode {
+    ElementType Data[MAXSIZE];
+    Position Last; /* 保存线性表中最后一个元素的位置 */
+};
+</code></pre>
+<p><code>L</code>是用户传入的一个线性表，其中<code>ElementType</code>元素可以通过&gt;、<code>==</code>、&lt;进行比较，并且题目保证传入的数据是递增有序的。函数<code>BinarySearch</code>要查找<code>X</code>在<code>Data</code>中的位置，即数组下标（注意：元素从下标1开始存储）。找到则返回下标，否则返回一个特殊的失败标记<code>NotFound</code>。</p>
+<p>裁判测试程序样例：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAXSIZE 10
+#define NotFound 0
+typedef int ElementType;
+
+typedef int Position;
+typedef struct LNode *List;
+struct LNode {
+    ElementType Data[MAXSIZE];
+    Position Last; /* 保存线性表中最后一个元素的位置 */
+};
+
+List ReadInput(); /* 裁判实现，细节不表。元素从下标1开始存储 */
+Position BinarySearch( List L, ElementType X );
+
+int main()
+{
+    List L;
+    ElementType X;
+    Position P;
+
+    L = ReadInput();
+    scanf(&quot;%d&quot;, &amp;X);
+    P = BinarySearch( L, X );
+    printf(&quot;%d\n&quot;, P);
+
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+</code></pre>
+<p>\输入样例1：</p>
+<pre><code>5
+12 31 55 89 101
+31
+</code></pre>
+<p>输出样例1：</p>
+<pre><code>2
+</code></pre>
+<p>输入样例2：</p>
+<pre><code>3
+26 78 233
+31
+</code></pre>
+<p>输出样例2：</p>
+<pre><code>0
+</code></pre>
+<pre><code class="language-c">Position BinarySearch( List L, ElementType X )
+{
+    Position left = 1;
+    Position right = L-&gt;Last;
+    Position mid;
+    while(left &lt;= right)
+    {
+        mid = (left + right) / 2;
+        if(L-&gt;Data[mid] &lt; X)
+            left = mid + 1;
+        else if(L-&gt;Data[mid] &gt; X)
+            right = mid - 1;
+        else
+            return mid;
+    }
+    return NotFound;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="数据结构与算法概论.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="线性结构.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="数据结构与算法概论.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="线性结构.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
