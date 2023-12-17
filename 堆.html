@@ -1,0 +1,725 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>堆 - 资料结构与演算法</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="弁言.html"><strong aria-hidden="true">1.</strong> 弁言</a></li><li class="chapter-item expanded "><a href="数据结构与算法概论.html"><strong aria-hidden="true">2.</strong> 数据结构与算法概论</a></li><li class="chapter-item expanded "><a href="MOOC-PTA复杂度题目.html"><strong aria-hidden="true">3.</strong> MOOC-PTA复杂度题目</a></li><li class="chapter-item expanded "><a href="线性结构.html"><strong aria-hidden="true">4.</strong> 线性结构</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="线性表.html"><strong aria-hidden="true">4.1.</strong> 线性表</a></li><li class="chapter-item expanded "><a href="栈.html"><strong aria-hidden="true">4.2.</strong> 栈</a></li><li class="chapter-item expanded "><a href="队列.html"><strong aria-hidden="true">4.3.</strong> 队列</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA线性结构题目.html"><strong aria-hidden="true">5.</strong> MOOC-PTA线性结构题目</a></li><li class="chapter-item expanded "><a href="树.html"><strong aria-hidden="true">6.</strong> 树</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="二叉树.html"><strong aria-hidden="true">6.1.</strong> 二叉树</a></li><li class="chapter-item expanded "><a href="二叉搜索树.html"><strong aria-hidden="true">6.2.</strong> 二叉搜索树</a></li><li class="chapter-item expanded "><a href="平衡二叉树.html"><strong aria-hidden="true">6.3.</strong> 平衡二叉树</a></li><li class="chapter-item expanded "><a href="堆.html" class="active"><strong aria-hidden="true">6.4.</strong> 堆</a></li><li class="chapter-item expanded "><a href="哈夫曼树.html"><strong aria-hidden="true">6.5.</strong> 哈夫曼树</a></li><li class="chapter-item expanded "><a href="并查集.html"><strong aria-hidden="true">6.6.</strong> 并查集</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA树题目.html"><strong aria-hidden="true">7.</strong> MOOC-PTA树题目</a></li><li class="chapter-item expanded "><a href="图.html"><strong aria-hidden="true">8.</strong> 图</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="图的存储.html"><strong aria-hidden="true">8.1.</strong> 图的存储</a></li><li class="chapter-item expanded "><a href="图的遍历.html"><strong aria-hidden="true">8.2.</strong> 图的遍历</a></li><li class="chapter-item expanded "><a href="最短路径算法.html"><strong aria-hidden="true">8.3.</strong> 最短路径算法</a></li><li class="chapter-item expanded "><a href="最小生成树算法.html"><strong aria-hidden="true">8.4.</strong> 最小生成树算法</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA图题目.html"><strong aria-hidden="true">9.</strong> MOOC-PTA图题目</a></li><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">10.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA排序题目.html"><strong aria-hidden="true">11.</strong> MOOC-PTA排序题目</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">12.</strong> 查找算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA查找题目.html"><strong aria-hidden="true">13.</strong> MOOC-PTA查找题目</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">资料结构与演算法</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="堆"><a class="header" href="#堆">堆</a></h1>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89">定义</a></li>
+<li><a href="#%E6%9C%80%E5%A4%A7%E5%A0%86">最大堆</a></li>
+<li><a href="#%E6%9C%80%E5%B0%8F%E5%A0%86">最小堆</a></li>
+<li><a href="#%E5%AE%9E%E4%BE%8B-pta-05-%E6%A0%917-%E5%A0%86%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84">实例 PTA 05-树7 堆中的路径</a></li>
+</ul>
+<h2 id="定义"><a class="header" href="#定义">定义</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161522460.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161522058.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161523874.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161524907.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161525913.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161525582.png" alt="" /></p>
+<p>堆的定义与操作代码：</p>
+<pre><code class="language-c">typedef struct HNode *Heap; /* 堆的类型定义 */
+struct HNode {
+    ElementType *Data; /* 存储元素的数组 */
+    int Size;          /* 堆中当前元素个数 */
+    int Capacity;      /* 堆的最大容量 */
+};
+typedef Heap MaxHeap; /* 最大堆 */
+typedef Heap MinHeap; /* 最小堆 */
+
+#define MAXDATA 1000  /* 该值应根据具体情况定义为大于堆中所有可能元素的值 */
+
+MaxHeap CreateHeap( int MaxSize )
+{ /* 创建容量为MaxSize的空的最大堆 */
+
+    MaxHeap H = (MaxHeap)malloc(sizeof(struct HNode));
+    H-&gt;Data = (ElementType *)malloc((MaxSize+1)*sizeof(ElementType));
+    H-&gt;Size = 0;
+    H-&gt;Capacity = MaxSize;
+    H-&gt;Data[0] = MAXDATA; /* 定义&quot;哨兵&quot;为大于堆中所有可能元素的值*/
+
+    return H;
+}
+
+bool IsFull( MaxHeap H )
+{
+    return (H-&gt;Size == H-&gt;Capacity);
+}
+
+bool Insert( MaxHeap H, ElementType X )
+{ /* 将元素X插入最大堆H，其中H-&gt;Data[0]已经定义为哨兵 */
+    int i;
+ 
+    if ( IsFull(H) ) { 
+        printf(&quot;最大堆已满&quot;);
+        return false;
+    }
+    i = ++H-&gt;Size; /* i指向插入后堆中的最后一个元素的位置 */
+    for ( ; H-&gt;Data[i/2] &lt; X; i/=2 )
+        H-&gt;Data[i] = H-&gt;Data[i/2]; /* 上滤X */
+    H-&gt;Data[i] = X; /* 将X插入 */
+    return true;
+}
+
+#define ERROR -1 /* 错误标识应根据具体情况定义为堆中不可能出现的元素值 */
+
+bool IsEmpty( MaxHeap H )
+{
+    return (H-&gt;Size == 0);
+}
+
+ElementType DeleteMax( MaxHeap H )
+{ /* 从最大堆H中取出键值为最大的元素，并删除一个结点 */
+    int Parent, Child;
+    ElementType MaxItem, X;
+
+    if ( IsEmpty(H) ) {
+        printf(&quot;最大堆已为空&quot;);
+        return ERROR;
+    }
+
+    MaxItem = H-&gt;Data[1]; /* 取出根结点存放的最大值 */
+    /* 用最大堆中最后一个元素从根结点开始向上过滤下层结点 */
+    X = H-&gt;Data[H-&gt;Size--]; /* 注意当前堆的规模要减小 */
+    for( Parent=1; Parent*2&lt;=H-&gt;Size; Parent=Child ) {
+        Child = Parent * 2;
+        if( (Child!=H-&gt;Size) &amp;&amp; (H-&gt;Data[Child]&lt;H-&gt;Data[Child+1]) )
+            Child++;  /* Child指向左右子结点的较大者 */
+        if( X &gt;= H-&gt;Data[Child] ) break; /* 找到了合适位置 */
+        else  /* 下滤X */
+            H-&gt;Data[Parent] = H-&gt;Data[Child];
+    }
+    H-&gt;Data[Parent] = X;
+
+    return MaxItem;
+} 
+
+/*----------- 建造最大堆 -----------*/
+void PercDown( MaxHeap H, int p )
+{ /* 下滤：将H中以H-&gt;Data[p]为根的子堆调整为最大堆 */
+    int Parent, Child;
+    ElementType X;
+
+    X = H-&gt;Data[p]; /* 取出根结点存放的值 */
+    for( Parent=p; Parent*2&lt;=H-&gt;Size; Parent=Child ) {
+        Child = Parent * 2;
+        if( (Child!=H-&gt;Size) &amp;&amp; (H-&gt;Data[Child]&lt;H-&gt;Data[Child+1]) )
+            Child++;  /* Child指向左右子结点的较大者 */
+        if( X &gt;= H-&gt;Data[Child] ) break; /* 找到了合适位置 */
+        else  /* 下滤X */
+            H-&gt;Data[Parent] = H-&gt;Data[Child];
+    }
+    H-&gt;Data[Parent] = X;
+}
+
+void BuildHeap( MaxHeap H )
+{ /* 调整H-&gt;Data[]中的元素，使满足最大堆的有序性  */
+  /* 这里假设所有H-&gt;Size个元素已经存在H-&gt;Data[]中 */
+
+    int i;
+
+    /* 从最后一个结点的父节点开始，到根结点1 */
+    for( i = H-&gt;Size/2; i&gt;0; i-- )
+        PercDown( H, i );
+}
+</code></pre>
+<h2 id="最大堆"><a class="header" href="#最大堆">最大堆</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161526556.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161527923.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161527298.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161528060.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161528366.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161529828.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161529994.png" alt="" /></p>
+<p>建堆时，最坏情况下需要挪动元素次数是等于树中各结点的高度和。问：对于元素个数为12的堆，其各结点的高度之和是多少？10</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161530234.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311161530537.png" alt="" /></p>
+<p>在最大堆 {97,76,65,50,49,13,27}中插入83后，该最大堆为： {97,83,65,76,49,13,27,50}</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+typedef int ElementType;
+typedef struct HNode *Heap;
+
+struct HNode
+{
+    ElementType *Data;  //存储元素的数组
+    int Size;           //堆中当前元素个数
+    int Capacity;       //堆的最大容量
+};
+
+typedef Heap MaxHeap;
+typedef Heap MinHeap;
+
+#define MAXDATA  1000  //该值应根据具体情况定义为大于堆中所有可能元素的值
+
+MaxHeap CreateHeap(int MaxSize)  //创建容量为MaxSize的空的最大堆
+{
+    MaxHeap H = (Heap)malloc(sizeof(struct HNode));
+    H-&gt;Data = (ElementType *)malloc(sizeof(ElementType) * (MaxSize+1));
+    H-&gt;Capacity = MaxSize;
+    H-&gt;Size = 0;
+    H-&gt;Data[0] = MAXDATA;    //定义&quot;哨兵&quot;为大于堆中所有可能元素的值
+    return H;
+}
+
+bool IsFull(MaxHeap H)
+{
+    return (H-&gt;Size == H-&gt;Capacity);
+}
+
+bool Insert(MaxHeap H, ElementType X)  //将元素X插入最大堆H，其中H-&gt;Data[0]已经定义为哨兵
+{
+    if(IsFull(H))
+    {
+        printf(&quot;The heap is full!\n&quot;);
+        return false;
+    }
+    int i = ++H-&gt;Size;                  //i指向插入后堆中的最后一个元素的位置
+    for(;H-&gt;Data[i/2] &lt; X;i/=2)
+    {
+        H-&gt;Data[i] = H-&gt;Data[i/2];       //上滤X
+    }
+    H-&gt;Data[i] = X;
+    return true;
+}
+
+bool IsEmpty(MaxHeap H)
+{
+    return (H-&gt;Size == 0);
+}
+
+#define ERROR -1
+
+ElementType Delete(MaxHeap H)   //从最大堆H中取出键值为最大的元素，并删除一个结点
+{
+    if(IsEmpty(H))
+    {
+        printf(&quot;The heap is empty!\n&quot;);
+        return ERROR;
+    }
+    ElementType MaxItem = H-&gt;Data[1];  //取出根结点存放的最大值
+    //用最大堆中最后一个元素从根结点开始向上过滤下层结点
+    ElementType X = H-&gt;Data[H-&gt;Size--];  //注意当前堆的规模要减小
+    int Parent, Child;
+    for(Parent=1; Parent*2&lt;=H-&gt;Size; Parent=Child)
+    {
+        Child = Parent*2;
+        if((Child!=H-&gt;Size)&amp;&amp;(H-&gt;Data[Child]&lt;H-&gt;Data[Child+1]))
+            Child++;      //Child指向左右子结点的较大者
+        if(X &gt; H-&gt;Data[Child])    //找到了合适位置
+            break;
+        else
+            H-&gt;Data[Parent] = H-&gt;Data[Child]; //下滤X
+    }
+    H-&gt;Data[Parent] = X;
+    return MaxItem;
+}
+
+int main()
+{
+    int MaxSize = 100;
+    MaxHeap H = CreateHeap(MaxSize);
+    Insert(H,97);
+    Insert(H,76);
+    Insert(H,65);
+    Insert(H,50);
+    Insert(H,49);
+    Insert(H,13);
+    Insert(H,27);
+    Insert(H,83);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    printf(&quot;\n&quot;);
+    Delete(H);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    printf(&quot;\n&quot;);
+    Delete(H);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    return 0;
+}
+
+</code></pre>
+<pre><code>97 83 65 76 49 13 27 50
+83 76 65 50 49 13 27
+76 50 65 27 49 13
+</code></pre>
+<p>有个堆其元素在数组中的序列为：58，25，44，18，10，26，20，12。如果调用DeleteMax函数删除最大值元素，请猜猜看：程序中的for循环刚退出时变量parent的值是多少？6</p>
+<h2 id="最小堆"><a class="header" href="#最小堆">最小堆</a></h2>
+<p>对由同样的n个整数构成的二叉搜索树（查找树）和最小堆，下面说法中D是 <strong>不正确</strong> 的:</p>
+<p>A.二叉搜索树（查找树）高度大于等于最小堆高度</p>
+<p>B.对该二叉搜索树（查找树）进行中序遍历可得到从小到大的序列</p>
+<p>C.从最小堆根节点到其任何叶结点的路径上的结点值构成从小到大的序列</p>
+<p>D.对该最小堆进行按层序（level order）遍历可得到从小到大的序列</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define ERROR -1
+
+typedef int ElementType;
+typedef struct HNode *Heap;
+typedef Heap MaxHeap;
+typedef Heap MinHeap;
+
+struct HNode
+{
+    ElementType *Data;
+    int Size;
+    int Capacity;
+};
+
+MinHeap CreateHeap(int MaxSize)
+{
+    MinHeap H = (MinHeap)malloc(sizeof(struct HNode));
+    H-&gt;Data = (ElementType*)malloc(sizeof(ElementType)*MaxSize);
+    H-&gt;Size = 0;
+    H-&gt;Capacity = MaxSize;
+    H-&gt;Data[0] = -100;
+    return H;
+}
+
+bool IsFull(MinHeap H)
+{
+    return (H-&gt;Size == H-&gt;Capacity);
+}
+
+bool Insert(MinHeap H, ElementType X)
+{
+    if(IsFull(H))
+    {
+        printf(&quot;The heap is full!\n&quot;);
+        return false;
+    }
+    int i = ++H-&gt;Size;
+    for(; H-&gt;Data[i/2] &gt;= X; i /= 2)
+    {
+        H-&gt;Data[i] = H-&gt;Data[i/2];
+    }
+    H-&gt;Data[i] = X;
+    return true;
+}
+
+
+
+bool IsEmpty(MinHeap H)
+{
+    return (H-&gt;Size == 0);
+}
+
+
+
+ElementType Delete(MinHeap H)
+{
+    if(IsEmpty(H))
+    {
+        printf(&quot;The heap is empty!\n&quot;);
+        return ERROR;
+    }
+    int Parent, Child;
+    ElementType MinItem,X;
+    MinItem = H-&gt;Data[1];
+    X = H-&gt;Data[H-&gt;Size--];
+    for(Parent = 1; Parent * 2 &lt;= H-&gt;Size; Parent = Child)
+    {
+        Child = Parent * 2;
+        if((Child!=H-&gt;Size)&amp;&amp;(H-&gt;Data[Child] &gt; H-&gt;Data[Child + 1]))
+            Child++;
+        if(X &lt; H-&gt;Data[Child])
+            break;
+        else
+            H-&gt;Data[Parent] = H-&gt;Data[Child];
+    }
+    H-&gt;Data[Parent] = X;
+    return MinItem;
+}
+
+int main()
+{
+    int MaxSize = 100;
+    MinHeap H = CreateHeap(MaxSize);
+    Insert(H,97);
+    Insert(H,76);
+    Insert(H,65);
+    Insert(H,50);
+    Insert(H,49);
+    Insert(H,13);
+    Insert(H,27);
+    Insert(H,83);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    printf(&quot;\n&quot;);
+    Delete(H);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    printf(&quot;\n&quot;);
+    Delete(H);
+    for(int i=1; i&lt;=H-&gt;Size;i++)
+        printf(&quot;%d &quot;,H-&gt;Data[i]);
+    return 0;
+}
+</code></pre>
+<pre><code>13 50 27 83 65 76 49 97
+27 50 49 83 65 76 97
+49 50 76 83 65 97
+</code></pre>
+<h2 id="实例-pta-05-树7-堆中的路径"><a class="header" href="#实例-pta-05-树7-堆中的路径">实例 PTA 05-树7 堆中的路径</a></h2>
+<p>将一系列给定数字依次插入一个初始为空的小顶堆<code>H[]</code>。随后对任意给定的下标<code>i</code>，打印从<code>H[i]</code>到根结点的路径。</p>
+<p>输入格式:</p>
+<p>每组测试第1行包含2个正整数N和M(≤1000)，分别是插入元素的个数、以及需要打印的路径条数。下一行给出区间<code>[-10000, 10000]</code>内的N个要被插入一个初始为空的小顶堆的整数。最后一行给出M个下标。</p>
+<p>输出格式:</p>
+<p>对输入中给出的每个下标<code>i</code>，在一行中输出从<code>H[i]</code>到根结点的路径上的数据。数字间以1个空格分隔，行末不得有多余空格。</p>
+<p>输入样例:</p>
+<pre><code>5 3
+46 23 26 24 10
+5 4 3
+</code></pre>
+<p>输出样例:</p>
+<pre><code>24 23 10
+46 23 10
+26 10
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312171628565.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define ERROR -1
+
+typedef int ElementType;
+typedef struct HNode *Heap;
+typedef Heap MaxHeap;
+typedef Heap MinHeap;
+
+struct HNode
+{
+    ElementType *Data;
+    int Size;
+    int Capacity;
+};
+
+MinHeap CreateHeap(int MaxSize)
+{
+    MinHeap H = (MinHeap)malloc(sizeof(struct HNode));
+    H-&gt;Data = (ElementType*)malloc(sizeof(ElementType)*MaxSize);
+    H-&gt;Size = 0;
+    H-&gt;Capacity = MaxSize;
+    H-&gt;Data[0] = -10001;
+    return H;
+}
+
+bool IsFull(MinHeap H)
+{
+    return (H-&gt;Size == H-&gt;Capacity);
+}
+
+bool Insert(MinHeap H, ElementType X)
+{
+    if(IsFull(H))
+    {
+        printf(&quot;The heap is full!\n&quot;);
+        return false;
+    }
+    int i = ++H-&gt;Size;
+    for(; H-&gt;Data[i/2] &gt;= X; i /= 2)
+    {
+        H-&gt;Data[i] = H-&gt;Data[i/2];
+    }
+    H-&gt;Data[i] = X;
+    return true;
+}
+
+
+
+bool IsEmpty(MinHeap H)
+{
+    return (H-&gt;Size == 0);
+}
+
+
+
+ElementType Delete(MinHeap H)
+{
+    if(IsEmpty(H))
+    {
+        printf(&quot;The heap is empty!\n&quot;);
+        return ERROR;
+    }
+    int Parent, Child;
+    ElementType MinItem,X;
+    MinItem = H-&gt;Data[1];
+    X = H-&gt;Data[H-&gt;Size--];
+    for(Parent = 1; Parent * 2 &lt;= H-&gt;Size; Parent = Child)
+    {
+        Child = Parent * 2;
+        if((Child!=H-&gt;Size)&amp;&amp;(H-&gt;Data[Child] &gt; H-&gt;Data[Child + 1]))
+            Child++;
+        if(X &lt; H-&gt;Data[Child])
+            break;
+        else
+            H-&gt;Data[Parent] = H-&gt;Data[Child];
+    }
+    H-&gt;Data[Parent] = X;
+    return MinItem;
+}
+
+int main()
+{
+    int MaxSize = 1001;
+    MinHeap H = CreateHeap(MaxSize);
+    int N,M;
+    scanf(&quot;%d %d&quot;,&amp;N,&amp;M);
+    for(int i=0; i&lt;N; i++)
+    {
+        int num;
+        scanf(&quot;%d&quot;,&amp;num);
+        Insert(H,num);
+    }
+    for(int i=0; i&lt;M; i++)
+    {
+        int idx;
+        scanf(&quot;%d&quot;,&amp;idx);
+        int Fisrt = 1;
+        for(int j=idx; j&gt;=1; j/=2)
+        {
+            if(Fisrt)
+            {
+                printf(&quot;%d&quot;,H-&gt;Data[j]);
+                Fisrt = 0;
+            }
+            else
+            {
+                printf(&quot; %d&quot;,H-&gt;Data[j]);
+            }
+        }
+        printf(&quot;\n&quot;);
+    }
+    return 0;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="平衡二叉树.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="哈夫曼树.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="平衡二叉树.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="哈夫曼树.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

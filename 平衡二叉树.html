@@ -1,0 +1,454 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>平衡二叉树 - 资料结构与演算法</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="弁言.html"><strong aria-hidden="true">1.</strong> 弁言</a></li><li class="chapter-item expanded "><a href="数据结构与算法概论.html"><strong aria-hidden="true">2.</strong> 数据结构与算法概论</a></li><li class="chapter-item expanded "><a href="MOOC-PTA复杂度题目.html"><strong aria-hidden="true">3.</strong> MOOC-PTA复杂度题目</a></li><li class="chapter-item expanded "><a href="线性结构.html"><strong aria-hidden="true">4.</strong> 线性结构</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="线性表.html"><strong aria-hidden="true">4.1.</strong> 线性表</a></li><li class="chapter-item expanded "><a href="栈.html"><strong aria-hidden="true">4.2.</strong> 栈</a></li><li class="chapter-item expanded "><a href="队列.html"><strong aria-hidden="true">4.3.</strong> 队列</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA线性结构题目.html"><strong aria-hidden="true">5.</strong> MOOC-PTA线性结构题目</a></li><li class="chapter-item expanded "><a href="树.html"><strong aria-hidden="true">6.</strong> 树</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="二叉树.html"><strong aria-hidden="true">6.1.</strong> 二叉树</a></li><li class="chapter-item expanded "><a href="二叉搜索树.html"><strong aria-hidden="true">6.2.</strong> 二叉搜索树</a></li><li class="chapter-item expanded "><a href="平衡二叉树.html" class="active"><strong aria-hidden="true">6.3.</strong> 平衡二叉树</a></li><li class="chapter-item expanded "><a href="堆.html"><strong aria-hidden="true">6.4.</strong> 堆</a></li><li class="chapter-item expanded "><a href="哈夫曼树.html"><strong aria-hidden="true">6.5.</strong> 哈夫曼树</a></li><li class="chapter-item expanded "><a href="并查集.html"><strong aria-hidden="true">6.6.</strong> 并查集</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA树题目.html"><strong aria-hidden="true">7.</strong> MOOC-PTA树题目</a></li><li class="chapter-item expanded "><a href="图.html"><strong aria-hidden="true">8.</strong> 图</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="图的存储.html"><strong aria-hidden="true">8.1.</strong> 图的存储</a></li><li class="chapter-item expanded "><a href="图的遍历.html"><strong aria-hidden="true">8.2.</strong> 图的遍历</a></li><li class="chapter-item expanded "><a href="最短路径算法.html"><strong aria-hidden="true">8.3.</strong> 最短路径算法</a></li><li class="chapter-item expanded "><a href="最小生成树算法.html"><strong aria-hidden="true">8.4.</strong> 最小生成树算法</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA图题目.html"><strong aria-hidden="true">9.</strong> MOOC-PTA图题目</a></li><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">10.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA排序题目.html"><strong aria-hidden="true">11.</strong> MOOC-PTA排序题目</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">12.</strong> 查找算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA查找题目.html"><strong aria-hidden="true">13.</strong> MOOC-PTA查找题目</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">资料结构与演算法</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="平衡二叉树"><a class="header" href="#平衡二叉树">平衡二叉树</a></h1>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89">定义</a></li>
+<li><a href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%B0%83%E6%95%B4">平衡二叉树的调整</a></li>
+<li><a href="#%E5%AE%9E%E4%BE%8B-pta-04-%E6%A0%915-root-of-avl-tree">实例 PTA 04-树5 Root of AVL Tree</a></li>
+</ul>
+<h2 id="定义"><a class="header" href="#定义">定义</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141629827.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141629969.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141630904.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141630738.png" alt="" /></p>
+<p>1将1、2、3、4、5、6顺序插入初始为空的AVL树中，当完成这6个元素的插入后，该AVL树共有多少层？ 3</p>
+<p>2若一AVL树的结点数是21，则该树的高度至多是多少？5</p>
+<p>注：只有一个根节点的树高度为0</p>
+<h2 id="平衡二叉树的调整"><a class="header" href="#平衡二叉树的调整">平衡二叉树的调整</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141631370.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141632853.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141632264.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141632633.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost02/img/202311141633646.png" alt="" /></p>
+<p>《数据结构》课程给出的代码如下：</p>
+<pre><code class="language-c">typedef struct AVLNode *Position;
+typedef Position AVLTree; /* AVL树类型 */
+struct AVLNode{
+    ElementType Data; /* 结点数据 */
+    AVLTree Left;     /* 指向左子树 */
+    AVLTree Right;    /* 指向右子树 */
+    int Height;       /* 树高 */
+};
+
+int Max ( int a, int b )
+{
+    return a &gt; b ? a : b;
+}
+
+AVLTree SingleLeftRotation ( AVLTree A )
+{ /* 注意：A必须有一个左子结点B */
+  /* 将A与B做左单旋，更新A与B的高度，返回新的根结点B */     
+
+    AVLTree B = A-&gt;Left;
+    A-&gt;Left = B-&gt;Right;
+    B-&gt;Right = A;
+    A-&gt;Height = Max( GetHeight(A-&gt;Left), GetHeight(A-&gt;Right) ) + 1;
+    B-&gt;Height = Max( GetHeight(B-&gt;Left), A-&gt;Height ) + 1;
+ 
+    return B;
+}
+
+AVLTree DoubleLeftRightRotation ( AVLTree A )
+{ /* 注意：A必须有一个左子结点B，且B必须有一个右子结点C */
+  /* 将A、B与C做两次单旋，返回新的根结点C */
+    
+    /* 将B与C做右单旋，C被返回 */
+    A-&gt;Left = SingleRightRotation(A-&gt;Left);
+    /* 将A与C做左单旋，C被返回 */
+    return SingleLeftRotation(A);
+}
+
+/*************************************/
+/* 对称的右单旋与右-左双旋请自己实现 */
+/*************************************/
+
+AVLTree Insert( AVLTree T, ElementType X )
+{ /* 将X插入AVL树T中，并且返回调整后的AVL树 */
+    if ( !T ) { /* 若插入空树，则新建包含一个结点的树 */
+        T = (AVLTree)malloc(sizeof(struct AVLNode));
+        T-&gt;Data = X;
+        T-&gt;Height = 0;
+        T-&gt;Left = T-&gt;Right = NULL;
+    } /* if (插入空树) 结束 */
+
+    else if ( X &lt; T-&gt;Data ) {
+        /* 插入T的左子树 */
+        T-&gt;Left = Insert( T-&gt;Left, X);
+        /* 如果需要左旋 */
+        if ( GetHeight(T-&gt;Left)-GetHeight(T-&gt;Right) == 2 )
+            if ( X &lt; T-&gt;Left-&gt;Data ) 
+               T = SingleLeftRotation(T);      /* 左单旋 */
+            else 
+               T = DoubleLeftRightRotation(T); /* 左-右双旋 */
+    } /* else if (插入左子树) 结束 */
+    
+    else if ( X &gt; T-&gt;Data ) {
+        /* 插入T的右子树 */
+        T-&gt;Right = Insert( T-&gt;Right, X );
+        /* 如果需要右旋 */
+        if ( GetHeight(T-&gt;Left)-GetHeight(T-&gt;Right) == -2 )
+            if ( X &gt; T-&gt;Right-&gt;Data ) 
+               T = SingleRightRotation(T);     /* 右单旋 */
+            else 
+               T = DoubleRightLeftRotation(T); /* 右-左双旋 */
+    } /* else if (插入右子树) 结束 */
+
+    /* else X == T-&gt;Data，无须插入 */
+
+    /* 别忘了更新树高 */
+    T-&gt;Height = Max( GetHeight(T-&gt;Left), GetHeight(T-&gt;Right) ) + 1;
+    
+    return T;
+}
+</code></pre>
+<h2 id="实例-pta-04-树5-root-of-avl-tree"><a class="header" href="#实例-pta-04-树5-root-of-avl-tree">实例 PTA 04-树5 Root of AVL Tree</a></h2>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+
+typedef int ElementType;
+typedef struct AVLNode *Position;
+typedef Position AVLTree; /* AVL树类型 */
+struct AVLNode{
+    ElementType Data; /* 结点数据 */
+    AVLTree Left;     /* 指向左子树 */
+    AVLTree Right;    /* 指向右子树 */
+    int Height;       /* 树高 */
+};
+
+int Max ( int a, int b )
+{
+    return a &gt; b ? a : b;
+}
+
+int GetHeight(AVLTree T)
+{
+    if (!T)
+        return -1;
+    else
+        return T-&gt;Height;
+}
+
+
+AVLTree SingleLeftRotation ( AVLTree A )
+{ /* 注意：A必须有一个左子结点B */
+  /* 将A与B做左单旋，更新A与B的高度，返回新的根结点B */
+
+    AVLTree B = A-&gt;Left;
+    A-&gt;Left = B-&gt;Right;
+    B-&gt;Right = A;
+    A-&gt;Height = Max( GetHeight(A-&gt;Left), GetHeight(A-&gt;Right) ) + 1;
+    B-&gt;Height = Max( GetHeight(B-&gt;Left), A-&gt;Height ) + 1;
+
+    return B;
+}
+
+AVLTree SingleRightRotation(AVLTree A)//麻烦结点存在右子树的右边
+{
+    AVLTree B=A-&gt;Right;
+    A-&gt;Right=B-&gt;Left;//右子树的左儿子赋给A的右子树
+    B-&gt;Left=A;//B变成A的父结点
+    A-&gt;Height=Max(GetHeight(A-&gt;Left),GetHeight(A-&gt;Right))+1;
+    B-&gt;Height=Max(A-&gt;Height,GetHeight(B-&gt;Right))+1;
+    return B;
+}
+
+
+AVLTree DoubleRightLeftRotation(AVLTree A)//麻烦结点存在右子树的左边
+{
+    A-&gt;Right=SingleLeftRotation(A-&gt;Right);
+    return SingleRightRotation(A);
+}
+
+AVLTree DoubleLeftRightRotation ( AVLTree A )
+{ /* 注意：A必须有一个左子结点B，且B必须有一个右子结点C */
+  /* 将A、B与C做两次单旋，返回新的根结点C */
+
+    /* 将B与C做右单旋，C被返回 */
+    A-&gt;Left = SingleRightRotation(A-&gt;Left);
+    /* 将A与C做左单旋，C被返回 */
+    return SingleLeftRotation(A);
+}
+
+
+AVLTree Insert( AVLTree T, ElementType X )
+{ /* 将X插入AVL树T中，并且返回调整后的AVL树 */
+    if ( !T ) { /* 若插入空树，则新建包含一个结点的树 */
+        T = (AVLTree)malloc(sizeof(struct AVLNode));
+        T-&gt;Data = X;
+        T-&gt;Height = 0;
+        T-&gt;Left = T-&gt;Right = NULL;
+    } /* if (插入空树) 结束 */
+
+    else if ( X &lt; T-&gt;Data ) {
+        /* 插入T的左子树 */
+        T-&gt;Left = Insert( T-&gt;Left, X);
+        /* 如果需要左旋 */
+        if ( GetHeight(T-&gt;Left)-GetHeight(T-&gt;Right) == 2 )
+            if ( X &lt; T-&gt;Left-&gt;Data )
+               T = SingleLeftRotation(T);      /* 左单旋 */
+            else
+               T = DoubleLeftRightRotation(T); /* 左-右双旋 */
+    } /* else if (插入左子树) 结束 */
+
+    else if ( X &gt; T-&gt;Data ) {
+        /* 插入T的右子树 */
+        T-&gt;Right = Insert( T-&gt;Right, X );
+        /* 如果需要右旋 */
+        if ( GetHeight(T-&gt;Left)-GetHeight(T-&gt;Right) == -2 )
+            if ( X &gt; T-&gt;Right-&gt;Data )
+               T = SingleRightRotation(T);     /* 右单旋 */
+            else
+               T = DoubleRightLeftRotation(T); /* 右-左双旋 */
+    } /* else if (插入右子树) 结束 */
+
+    /* else X == T-&gt;Data，无须插入 */
+
+    /* 别忘了更新树高 */
+    T-&gt;Height = Max( GetHeight(T-&gt;Left), GetHeight(T-&gt;Right) ) + 1;
+
+    return T;
+}
+
+int main()
+{
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    ElementType X;
+    AVLTree T = NULL;
+    for(int i=0; i&lt;n; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;X);
+        T = Insert(T,X);
+    }
+    if(T)
+        printf(&quot;%d&quot;,T-&gt;Data);
+    return 0;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="二叉搜索树.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="堆.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="二叉搜索树.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="堆.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
