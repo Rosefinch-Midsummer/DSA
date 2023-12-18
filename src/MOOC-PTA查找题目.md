@@ -638,6 +638,14 @@ Sample Output:
 1 13 12 21 33 34 38 27 22 32
 ```
 
+
+![](https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181708211.png)
+
+
+![](https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181708591.png)
+
+
+
 ```c
 
 
