@@ -175,6 +175,694 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="mooc-pta查找题目"><a class="header" href="#mooc-pta查找题目">MOOC-PTA查找题目</a></h1>
+<ul>
+<li><a href="#pta-11-%E6%95%A3%E5%88%971-%E7%94%B5%E8%AF%9D%E8%81%8A%E5%A4%A9%E7%8B%82%E4%BA%BA">PTA 11-散列1 电话聊天狂人</a></li>
+<li><a href="#pta-11-%E6%95%A3%E5%88%972-hashing">PTA 11-散列2 Hashing</a></li>
+<li><a href="#pta-11-%E6%95%A3%E5%88%973-qq%E5%B8%90%E6%88%B7%E7%9A%84%E7%94%B3%E8%AF%B7%E4%B8%8E%E7%99%BB%E9%99%86">PTA 11-散列3 QQ帐户的申请与登陆</a></li>
+<li><a href="#pta-11-%E6%95%A3%E5%88%974-hashing---hard-version">PTA 11-散列4 Hashing - Hard Version</a></li>
+<li><a href="#pta-kmp-%E4%B8%B2%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D">PTA KMP 串的模式匹配</a></li>
+</ul>
+<h2 id="pta-11-散列1-电话聊天狂人"><a class="header" href="#pta-11-散列1-电话聊天狂人">PTA 11-散列1 电话聊天狂人</a></h2>
+<p>给定大量手机用户通话记录，找出其中通话次数最多的聊天狂人。</p>
+<p>输入格式:</p>
+<p>输入首先给出正整数N（≤105），为通话记录条数。随后N行，每行给出一条通话记录。简单起见，这里只列出拨出方和接收方的11位数字构成的手机号码，其中以空格分隔。</p>
+<p>输出格式:</p>
+<p>在一行中给出聊天狂人的手机号码及其通话次数，其间以空格分隔。如果这样的人不唯一，则输出狂人中最小的号码及其通话次数，并且附加给出并列狂人的人数。</p>
+<p>输入样例:</p>
+<pre><code>4
+13005711862 13588625832
+13505711862 13088625832
+13588625832 18087925832
+15005713862 13588625832
+</code></pre>
+<p>输出样例:</p>
+<pre><code>13588625832 3
+</code></pre>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+
+#define KEYLENGTH 11
+#define MAXD 5
+#define MAXTABLESIZE 1000000
+
+typedef char ElementType[KEYLENGTH+1];
+typedef int Index;
+
+
+typedef struct LNode *PtrToLNode;
+struct LNode
+{
+    ElementType Data;
+    PtrToLNode Next;
+    int count;
+};
+
+typedef PtrToLNode Position;
+typedef PtrToLNode List;
+
+
+
+typedef struct TblNode *HashTable;
+struct TblNode
+{
+    int TableSize;
+    List Heads;
+};
+
+
+int NextPrime(int N)
+{
+    int i,p = (N%2)?(N+2):(N+1);
+    while(p&lt;=MAXTABLESIZE)
+    {
+        for(i=(int)sqrt(p); i&gt;2; i--)
+        {
+            if(!(p%i))
+                break;
+        }
+        if(i==2)
+            break;
+        else
+            p += 2;
+    }
+    return p;
+}
+
+
+
+HashTable CreateTable(int TableSize)
+{
+    HashTable H = (HashTable)malloc(sizeof(struct TblNode));
+    H-&gt;TableSize = NextPrime(TableSize);
+    H-&gt;Heads = (List)malloc(H-&gt;TableSize * sizeof(struct LNode));
+    for(int i=0; i&lt;H-&gt;TableSize; i++)
+    {
+        H-&gt;Heads[i].Data[0] = '\0';
+        H-&gt;Heads[i].Next = NULL;
+        H-&gt;Heads[i].count = 0;
+    }
+    return H;
+}
+
+int Hash(int Key, int P)
+{
+    return Key%P;
+}
+
+Position Find(HashTable H, ElementType Key)
+{
+    Position P;
+    Index Pos;
+
+    Pos = Hash(atoi(Key+KEYLENGTH-MAXD), H-&gt;TableSize);
+    P = H-&gt;Heads[Pos].Next;
+    while(P &amp;&amp; strcmp(P-&gt;Data,Key))
+        P = P-&gt;Next;
+    return P;
+}
+
+
+bool Insert(HashTable H, ElementType Key)
+{
+    Position P,NewCell;
+    Index Pos;
+
+    P = Find(H,Key);
+    if(!P)
+    {
+        NewCell = (Position)malloc(sizeof(struct LNode));
+        strcpy(NewCell-&gt;Data, Key);
+        NewCell-&gt;count = 1;
+        Pos = Hash(atoi(Key+KEYLENGTH-MAXD), H-&gt;TableSize);
+        NewCell-&gt;Next = H-&gt;Heads[Pos].Next;
+        H-&gt;Heads[Pos].Next = NewCell;
+        return true;
+    }
+    else
+    {
+        P-&gt;count++;
+        return false;
+    }
+}
+
+void ScanAndOutput(HashTable H)
+{
+    int MaxCnt = 0;
+    int pCnt = 0;
+    ElementType MinPhone;
+    List Ptr;
+    MinPhone[0] = '\0';
+    for(int i=0; i&lt;H-&gt;TableSize; i++)
+    {
+        Ptr = H-&gt;Heads[i].Next;
+        while(Ptr)
+        {
+            if(Ptr-&gt;count &gt; MaxCnt)
+            {
+                MaxCnt = Ptr-&gt;count;
+                strcpy(MinPhone, Ptr-&gt;Data);
+                pCnt = 1;
+            }
+            else if(Ptr-&gt;count == MaxCnt)
+            {
+                pCnt++;
+                if(strcmp(MinPhone, Ptr-&gt;Data)&gt;0)
+                {
+                    strcpy(MinPhone, Ptr-&gt;Data);
+                }
+            }
+            Ptr = Ptr-&gt;Next;
+        }
+    }
+    printf(&quot;%s %d&quot;,MinPhone,MaxCnt);
+    if(pCnt &gt; 1)
+        printf(&quot; %d&quot;,pCnt);
+    printf(&quot;\n&quot;);
+}
+
+void DestroyTable( HashTable H )
+{
+    int i;
+    Position P, Tmp;
+
+    //释放每个链表的结点
+    for( i=0; i&lt;H-&gt;TableSize; i++ ) {
+        P = H-&gt;Heads[i].Next;
+        while( P ) {
+            Tmp = P-&gt;Next;
+            free( P );
+            P = Tmp;
+        }
+    }
+    free( H-&gt;Heads ); //释放头结点数组
+    free( H );        //释放散列表结点
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    ElementType Key;
+    HashTable H;
+
+    H = CreateTable(N*2);
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%s&quot;,&amp;Key);
+        Insert(H,Key);
+        scanf(&quot;%s&quot;,&amp;Key);
+        Insert(H,Key);
+    }
+    ScanAndOutput(H);
+    DestroyTable(H);
+    return 0;
+}
+</code></pre>
+<p>下面是Python实现的代码：</p>
+<pre><code class="language-python">dt = {}  
+N = int(input())  
+for i in range(N):  
+    number1, number2 = map(int,input().split())  
+    dt[number1] = dt.get(number1,0) + 1  
+    dt[number2] = dt.get(number2,0) + 1  
+  
+count = 0  
+maxValue = 0  
+min_number = 0  
+for k,v in dt.items():  
+    if v &gt; maxValue:  
+        maxValue = v  
+        min_number = k  
+  
+for k,v in dt.items():  
+    if v == maxValue:  
+        count += 1  
+        if k &lt; min_number:  
+            min_number = k  
+if count == 1:  
+    print(min_number,maxValue)  
+else:  
+    print(min_number,maxValue,count)
+</code></pre>
+<h2 id="pta-11-散列2-hashing"><a class="header" href="#pta-11-散列2-hashing">PTA 11-散列2 Hashing</a></h2>
+<p>The task of this problem is simple: insert a sequence of distinct positive integers into a hash table, and output the positions of the input numbers. The hash function is defined to be H(key)=key%TSize where TSize is the maximum size of the hash table. Quadratic probing (with positive increments only) is used to solve the collisions.</p>
+<p>Note that the table size is better to be prime. If the maximum size given by the user is not prime, you must re-define the table size to be the smallest prime number which is larger than the size given by the user.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. For each case, the first line contains two positive numbers: MSize (≤104) and N (≤MSize) which are the user-defined table size and the number of input numbers, respectively. Then N distinct positive integers are given in the next line. All the numbers in a line are separated by a space.</p>
+<p>Output Specification:</p>
+<p>For each test case, print the corresponding positions (index starts from 0) of the input numbers in one line. All the numbers in a line are separated by a space, and there must be no extra space at the end of the line. In case it is impossible to insert the number, print &quot;-&quot; instead.</p>
+<p>Sample Input:</p>
+<pre><code>4 4
+10 6 4 15
+</code></pre>
+<p>Sample Output:</p>
+<pre><code>0 1 4 -
+</code></pre>
+<p>解题方法：
+这道题目只需要用一个数组就可以解决，开始对数组每个元素先初始化为0，然后通过散列映射到数组中去，如果该映射的下标的元素值为0，则把该下标置为我们输入的值，否则就遍历正向的二次探测。这里大家可能会对什么时候才能结束探测循环表示疑问。因此我们循环只需要到TableSize就可以结束。</p>
+<p>易错点：</p>
+<p>对1来说，他不是素数（质数定义为在大于1的自然数中，除了1和它本身以外不再有其他因数），所以对他而言最小素数为2</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+
+#define MAXTABLESIZE 100000
+typedef int ElementType;
+typedef int Index;
+typedef Index Position;
+typedef enum { Legitimate, Empty, Deleted } EntryType;
+
+typedef struct HashEntry Cell;
+struct HashEntry
+{
+    ElementType Data;
+    EntryType Info;
+};
+
+typedef struct TblNode *HashTable;
+struct TblNode
+{
+    int TableSize;
+    Cell *Cells;
+};
+
+int NextPrime( int N )
+{
+    if(N==1)
+        return 2;
+    int i, p = (N%2)? N+2 : N+1;
+
+    while( p &lt;= MAXTABLESIZE ) {
+        for( i=(int)sqrt(p); i&gt;2; i-- )
+            if ( !(p%i) ) break;
+        if ( i==2 ) break;
+        else  p += 2;
+    }
+    return p;
+}
+
+int Hash(ElementType Key, int TableSize)
+{
+    return (Key%TableSize);
+}
+
+HashTable CreateTable( int TableSize )
+{
+    HashTable H;
+    int i;
+
+    H = (HashTable)malloc(sizeof(struct TblNode));
+    H-&gt;TableSize = NextPrime(TableSize);
+    H-&gt;Cells = (Cell *)malloc(H-&gt;TableSize*sizeof(Cell));
+    for( i=0; i&lt;H-&gt;TableSize; i++ )
+        H-&gt;Cells[i].Info = Empty;
+
+    return H;
+}
+
+void Insert(HashTable H, int key)
+{
+    int Pos = Hash(key, H-&gt;TableSize);
+    if(H-&gt;Cells[Pos].Info == Empty)
+    {
+        H-&gt;Cells[Pos].Data = key;
+        H-&gt;Cells[Pos].Info = Legitimate;
+        printf(&quot;%d&quot;,Pos);
+    }
+    else
+    {
+        int newp = Pos;
+        for(int i=0; i&lt;H-&gt;TableSize; i++)
+        {
+            newp = (Pos + i*i)%(H-&gt;TableSize);
+            if(H-&gt;Cells[newp].Info == Empty)
+            {
+                H-&gt;Cells[newp].Data = key;
+                H-&gt;Cells[newp].Info = Legitimate;
+                printf(&quot;%d&quot;,newp);
+                return;
+            }
+        }
+        printf(&quot;-&quot;);
+    }
+}
+
+int main()
+{
+    int MSize,N;
+    scanf(&quot;%d %d&quot;,&amp;MSize,&amp;N);
+    HashTable H = CreateTable(MSize);
+    for(int i=0; i&lt;N; i++)
+    {
+        int key;
+        scanf(&quot;%d&quot;,&amp;key);
+        Insert(H,key);
+        if(i != N-1)
+        {
+            printf(&quot; &quot;);
+        }
+        else
+        {
+            printf(&quot;\n&quot;);
+        }
+    }
+}
+</code></pre>
+<h2 id="pta-11-散列3-qq帐户的申请与登陆"><a class="header" href="#pta-11-散列3-qq帐户的申请与登陆">PTA 11-散列3 QQ帐户的申请与登陆</a></h2>
+<p>实现QQ新帐户申请和老帐户登陆的简化版功能。最大挑战是：据说现在的QQ号码已经有10位数了。</p>
+<p>输入格式:</p>
+<p>输入首先给出一个正整数N（≤105），随后给出N行指令。每行指令的格式为：“命令符（空格）QQ号码（空格）密码”。其中命令符为“N”（代表New）时表示要新申请一个QQ号，后面是新帐户的号码和密码；命令符为“L”（代表Login）时表示是老帐户登陆，后面是登陆信息。QQ号码为一个不超过10位、但大于1000（据说QQ老总的号码是1001）的整数。密码为不小于6位、不超过16位、且不包含空格的字符串。</p>
+<p>输出格式:</p>
+<p>针对每条指令，给出相应的信息：</p>
+<p>1）若新申请帐户成功，则输出“New: OK”；</p>
+<p>2）若新申请的号码已经存在，则输出“ERROR: Exist”；</p>
+<p>3）若老帐户登陆成功，则输出“Login: OK”；</p>
+<p>4）若老帐户QQ号码不存在，则输出“ERROR: Not Exist”；</p>
+<p>5）若老帐户密码错误，则输出“ERROR: Wrong PW”。</p>
+<p>输入样例:</p>
+<pre><code>5
+L 1234567890 myQQ@qq.com
+N 1234567890 myQQ@qq.com
+N 1234567890 myQQ@qq.com
+L 1234567890 myQQ@qq
+L 1234567890 myQQ@qq.com
+</code></pre>
+<p>输出样例:</p>
+<pre><code>ERROR: Not Exist
+New: OK
+ERROR: Exist
+ERROR: Wrong PW
+Login: OK
+</code></pre>
+<p>思路：在基本的Cell类型中，增加一个存储密码的字符串类型PWType、Info只需要用来判断账号存在还是不存在，不需要判断是否已删除、此题还是常规的哈希表题，涉及到哈希表的构建，查找（这里采用线性探测的方式），插入的操作。再额外加一个登陆——即字符串的比较操作即可。</p>
+<p>易错点：strcpy之前需要对Password中赋值<code>&quot;\0&quot;</code>、读取字符时需要用getchar()函数处理回车符</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAXTABLESIZE 100005
+#define MAXCHAR 16
+typedef long long int ElementType;
+typedef char PWType[MAXCHAR+1];
+typedef int Index;
+typedef Index Position;
+typedef enum { Legitimate, Empty, Deleted } EntryType;
+
+typedef struct HashEntry Cell;
+struct HashEntry
+{
+    ElementType Data;
+    PWType Password;
+    EntryType Info;
+
+};
+
+typedef struct TblNode *HashTable;
+struct TblNode
+{
+    int TableSize;
+    Cell *Cells;
+};
+
+int NextPrime( int N )
+{
+    if(N==1)
+        return 2;
+    int i, p = (N%2)? N+2 : N+1;
+
+    while( p &lt;= MAXTABLESIZE ) {
+        for( i=(int)sqrt(p); i&gt;2; i-- )
+            if ( !(p%i) ) break;
+        if ( i==2 ) break;
+        else  p += 2;
+    }
+    return p;
+}
+
+int Hash(ElementType Key, HashTable H)
+{
+    return (Key%H-&gt;TableSize);
+}
+
+HashTable CreateTable( int TableSize )
+{
+    HashTable H;
+    int i;
+
+    H = (HashTable)malloc(sizeof(struct TblNode));
+    H-&gt;TableSize = NextPrime(TableSize);
+    H-&gt;Cells = (Cell *)malloc(H-&gt;TableSize*sizeof(Cell));
+    for( i=0; i&lt;H-&gt;TableSize; i++ )
+    {
+        H-&gt;Cells[i].Info = Empty;
+        strcpy(H-&gt;Cells[i].Password, &quot;\0&quot;);
+    }
+
+    return H;
+}
+
+int LinearFind(HashTable H, ElementType Key)
+{
+    int curPos = Hash(Key ,H);
+    int newPos = curPos;
+    int count = 0;
+    while(H-&gt;Cells[newPos].Info != Empty &amp;&amp; H-&gt;Cells[newPos].Data != Key)
+    {
+        count++;
+        newPos = (curPos + count) % H-&gt;TableSize;
+    }
+    return newPos;
+}
+
+void Insert(HashTable H, ElementType Key, PWType password)
+{
+    int Pos = LinearFind(H, Key);
+    if(H-&gt;Cells[Pos].Info == Empty)
+    {
+        H-&gt;Cells[Pos].Data = Key;
+        strcpy(H-&gt;Cells[Pos].Password, password);
+        H-&gt;Cells[Pos].Info = Legitimate;
+        printf(&quot;New: OK\n&quot;);
+    }
+    else
+    {
+        printf(&quot;ERROR: Exist\n&quot;);
+    }
+}
+
+void LogIn(HashTable H, ElementType Key, PWType password)
+{
+    int Pos = LinearFind(H, Key);
+    if(H-&gt;Cells[Pos].Info == Empty)
+    {
+        printf(&quot;ERROR: Not Exist\n&quot;);
+    }
+    else if(H-&gt;Cells[Pos].Info == Legitimate &amp;&amp; strcmp(H-&gt;Cells[Pos].Password, password))
+    {
+        printf(&quot;ERROR: Wrong PW\n&quot;);
+    }
+    else
+    {
+        printf(&quot;Login: OK\n&quot;);
+    }
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    HashTable H = CreateTable(N);
+    ElementType Key;
+    PWType Password;
+    char command;
+    for(int i=0; i&lt;N; i++)
+    {
+        getchar();
+        scanf(&quot;%c&quot;,&amp;command);
+        scanf(&quot;%lld&quot;,&amp;Key);
+        scanf(&quot;%s&quot;, Password);
+        switch(command)
+        {
+        case 'N':
+            Insert(H, Key, Password);
+            break;
+        case 'L':
+            LogIn(H, Key, Password);
+            break;
+        }
+    }
+}
+</code></pre>
+<p>使用C++STL实现：</p>
+<pre><code class="language-c">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+using namespace std;
+int main() {
+    map&lt;string, string&gt; user;//账号密码
+    int N;
+    string o, us, pw;
+    cin &gt;&gt; N;
+    for(int i = 0; i &lt; N; ++i) {
+        cin &gt;&gt; o &gt;&gt; us &gt;&gt; pw;
+        if(o == &quot;L&quot;) {//Login
+            if(user.find(us) == user.end()) 
+                cout &lt;&lt; &quot;ERROR: Not Exist&quot; &lt;&lt; endl;
+            else if(user[us] == pw) 
+                cout &lt;&lt; &quot;Login: OK&quot; &lt;&lt; endl;
+            else cout &lt;&lt; &quot;ERROR: Wrong PW&quot; &lt;&lt; endl;
+        } else if(o == &quot;N&quot;) {//New
+            if(user.find(us) != user.end()) 
+                cout &lt;&lt; &quot;ERROR: Exist&quot; &lt;&lt; endl;
+            else { 
+                user[us] = pw;
+                cout &lt;&lt; &quot;New: OK&quot; &lt;&lt; endl;
+            }
+        }
+    }
+    return 0;
+} 
+</code></pre>
+<h2 id="pta-11-散列4-hashing---hard-version"><a class="header" href="#pta-11-散列4-hashing---hard-version">PTA 11-散列4 Hashing - Hard Version</a></h2>
+<p>Given a hash table of size N, we can define a hash function H(x)=x%N. Suppose that the linear probing is used to solve collisions, we can easily obtain the status of the hash table with a given sequence of input numbers.</p>
+<p>However, now you are asked to solve the reversed problem: reconstruct the input sequence from the given status of the hash table. Whenever there are multiple choices, the smallest number is always taken.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. For each test case, the first line contains a positive integer N (≤1000), which is the size of the hash table. The next line contains N integers, separated by a space. A negative integer represents an empty cell in the hash table. It is guaranteed that all the non-negative integers are distinct in the table.</p>
+<p>Output Specification:</p>
+<p>For each test case, print a line that contains the input sequence, with the numbers separated by a space. Notice that there must be no extra space at the end of each line.</p>
+<p>Sample Input:</p>
+<pre><code>11
+33 1 13 12 34 38 27 22 32 -1 21
+</code></pre>
+<p>Sample Output:</p>
+<pre><code>1 13 12 21 33 34 38 27 22 32
+</code></pre>
+<pre><code class="language-c">
+
+</code></pre>
+<h2 id="pta-kmp-串的模式匹配"><a class="header" href="#pta-kmp-串的模式匹配">PTA KMP 串的模式匹配</a></h2>
+<p>给定两个由英文字母组成的字符串 String 和 Pattern，要求找到 Pattern 在 String 中第一次出现的位置，并将此位置后的 String 的子串输出。如果找不到，则输出“Not Found”。</p>
+<p>本题旨在测试各种不同的匹配算法在各种数据情况下的表现。各组测试数据特点如下：</p>
+<ul>
+<li>数据0：小规模字符串，测试基本正确性；</li>
+<li>数据1：随机数据，String 长度为 105，Pattern 长度为 10；</li>
+<li>数据2：随机数据，String 长度为 105，Pattern 长度为 102；</li>
+<li>数据3：随机数据，String 长度为 105，Pattern 长度为 103；</li>
+<li>数据4：随机数据，String 长度为 105，Pattern 长度为 104；</li>
+<li>数据5：String 长度为 106，Pattern 长度为 105；测试尾字符不匹配的情形；</li>
+<li>数据6：String 长度为 106，Pattern 长度为 105；测试首字符不匹配的情形。</li>
+</ul>
+<p>输入格式:</p>
+<p>输入第一行给出 String，为由英文字母组成的、长度不超过 106 的字符串。第二行给出一个正整数 N（≤10），为待匹配的模式串的个数。随后 N 行，每行给出一个 Pattern，为由英文字母组成的、长度不超过 105 的字符串。每个字符串都非空，以回车结束。</p>
+<p>输出格式:</p>
+<p>对每个 Pattern，按照题面要求输出匹配结果。</p>
+<p>输入样例:</p>
+<pre><code>abcabcabcabcacabxy
+3
+abcabcacab
+cabcabcd
+abcabcabcabcacabxyz
+</code></pre>
+<p>输出样例:</p>
+<pre><code>abcabcacabxy
+Not Found
+Not Found
+</code></pre>
+<p>使用KMP算法的解法如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int Position;
+#define NotFound -1
+
+void BuildMatch( char *pattern, int *match )
+{
+    Position i, j;
+    int m = strlen(pattern);
+    match[0] = -1;
+
+    for ( j=1; j&lt;m; j++ ) {
+        i = match[j-1];
+        while ( (i&gt;=0) &amp;&amp; (pattern[i+1]!=pattern[j]) )
+            i = match[i];
+        if ( pattern[i+1]==pattern[j] )
+             match[j] = i+1;
+        else match[j] = -1;
+    }
+}
+
+Position KMP( char *string, char *pattern )
+{
+    int n = strlen(string);
+    int m = strlen(pattern);
+    Position s, p, *match;
+
+    if ( n &lt; m ) return NotFound;
+    match = (Position *)malloc(sizeof(Position) * m);
+    BuildMatch(pattern, match);
+    s = p = 0;
+    while ( s&lt;n &amp;&amp; p&lt;m ) {
+        if ( string[s]==pattern[p] ) {
+            s++; p++;
+        }
+        else if (p&gt;0) p = match[p-1]+1;
+        else s++;
+    }
+    return ( p==m )? (s-m) : NotFound;
+}
+
+int main()
+{
+    char string[1000005];
+    scanf(&quot;%s&quot;,string);
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    for(int i=0; i&lt;N; i++)
+    {
+        char pattern[100005];
+        scanf(&quot;%s&quot;,pattern);
+        Position p = KMP(string, pattern);
+        if (p==NotFound)
+            printf(&quot;Not Found\n&quot;);
+        else
+            printf(&quot;%s\n&quot;, string+p);
+    }
+    return 0;
+}
+</code></pre>
+<p>使用strstr函数的解法如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef char* Position;
+#define NotFound NULL
+
+int main()
+{
+    char string[1000005];
+    scanf(&quot;%s&quot;,string);
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    for(int i=0; i&lt;N; i++)
+    {
+        char pattern[100005];
+        scanf(&quot;%s&quot;,pattern);
+        Position p = strstr(string, pattern);
+        if (p==NotFound)
+            printf(&quot;Not Found\n&quot;);
+        else
+            printf(&quot;%s\n&quot;, p);
+    }
+    return 0;
+}
+</code></pre>
 
                     </main>
 
