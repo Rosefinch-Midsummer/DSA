@@ -8777,6 +8777,272 @@ G[5]:3-&gt;2
 <h2 id="邻接多重表"><a class="header" href="#邻接多重表">邻接多重表</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="图的遍历"><a class="header" href="#图的遍历">图的遍历</a></h1>
+<ul>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2dfs">深度优先搜索DFS</a>
+<ul>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8">邻接矩阵存储</a></li>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8">邻接表存储</a></li>
+</ul>
+</li>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2bfs">广度优先搜索BFS</a>
+<ul>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8-1">邻接矩阵存储</a></li>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8bfs%E5%AE%9E%E4%BE%8B">邻接矩阵存储、BFS实例</a></li>
+</ul>
+</li>
+<li><a href="%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.html#%E8%BF%9E%E9%80%9A%E5%9B%BE">连通图</a></li>
+</ul>
+<h2 id="深度优先搜索dfs"><a class="header" href="#深度优先搜索dfs">深度优先搜索DFS</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150017889.png" alt="" /></p>
+<h3 id="邻接矩阵存储"><a class="header" href="#邻接矩阵存储">邻接矩阵存储</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAXN 100
+
+int G[MAXN][MAXN], Nv, Ne;
+
+void BuildGraph()
+{
+    int i,j,v1,v2,w;
+    scanf(&quot;%d&quot;,&amp;Nv);
+    for(i=0; i&lt;Nv; i++)
+    {
+        for(j=0; j&lt;Nv; j++)
+        {
+            G[i][j] = 0;
+        }
+    }
+    scanf(&quot;%d&quot;,&amp;Ne);
+    for(i=0; i&lt;Ne; i++)
+    {
+        scanf(&quot;%d %d %d&quot;,&amp;v1,&amp;v2,&amp;w);
+        G[v1][v2] = w;
+        G[v2][v1] = w;
+    }
+}
+
+void printGraph()
+{
+    for(int i=0;i &lt; Nv; i++)
+    {
+        for(int j=0; j&lt;Nv; j++)
+        {
+            printf(&quot;%d &quot;, G[i][j]);
+        }
+        printf(&quot;\n&quot;);
+    }
+}
+
+typedef int Vertex;
+#define TRUE 1
+#define FALSE 0
+typedef int Boolean;
+Boolean visited[MAXN];
+Boolean IsFirst = TRUE;
+
+void dfs(Vertex V)
+{
+    visited[V] = TRUE;
+    if(IsFirst)
+    {
+        printf(&quot;%c&quot;,(char)(97 + V));
+        IsFirst = FALSE;
+    }
+    else
+        printf(&quot;-&gt;%c&quot;,(char)(97 + V));
+    for(int j=0; j&lt;Nv; j++)
+    {
+        if(G[V][j]==1 &amp;&amp; visited[j] == FALSE)
+            dfs(j);
+    }
+}
+
+int main()
+{
+    BuildGraph();
+    printGraph();
+    bfs(0);
+    return 0;
+}
+</code></pre>
+<pre><code>6  
+7  
+0 1 1  
+0 2 1  
+0 4 1  
+1 4 1  
+2 5 1  
+3 4 1  
+3 5 1  
+</code></pre>
+<pre><code>0 1 1 0 1 0
+1 0 0 0 1 0
+1 0 0 0 0 1
+0 0 0 0 1 1
+1 1 0 1 0 0
+0 0 1 1 0 0
+a-&gt;b-&gt;e-&gt;d-&gt;f-&gt;c
+</code></pre>
+<h3 id="邻接表存储"><a class="header" href="#邻接表存储">邻接表存储</a></h3>
+<pre><code class="language-c">/* 邻接表存储的图 - DFS */
+
+void Visit( Vertex V )
+{
+    printf(&quot;正在访问顶点%d\n&quot;, V);
+}
+
+/* Visited[]为全局变量，已经初始化为false */
+void DFS( LGraph Graph, Vertex V, void (*Visit)(Vertex) )
+{   /* 以V为出发点对邻接表存储的图Graph进行DFS搜索 */
+    PtrToAdjVNode W;
+    
+    Visit( V ); /* 访问第V个顶点 */
+    Visited[V] = true; /* 标记V已访问 */
+
+    for( W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next ) /* 对V的每个邻接点W-&gt;AdjV */
+        if ( !Visited[W-&gt;AdjV] )    /* 若W-&gt;AdjV未被访问 */
+            DFS( Graph, W-&gt;AdjV, Visit );    /* 则递归访问之 */
+}
+</code></pre>
+<h2 id="广度优先搜索bfs"><a class="header" href="#广度优先搜索bfs">广度优先搜索BFS</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150018452.png" alt="" /></p>
+<h3 id="邻接矩阵存储-1"><a class="header" href="#邻接矩阵存储-1">邻接矩阵存储</a></h3>
+<pre><code class="language-c">/* 邻接矩阵存储的图 - BFS */
+
+/* IsEdge(Graph, V, W)检查&lt;V, W&gt;是否图Graph中的一条边，即W是否V的邻接点。  */
+/* 此函数根据图的不同类型要做不同的实现，关键取决于对不存在的边的表示方法。*/
+/* 例如对有权图, 如果不存在的边被初始化为INFINITY, 则函数实现如下:         */
+bool IsEdge( MGraph Graph, Vertex V, Vertex W )
+{
+    return Graph-&gt;G[V][W]&lt;INFINITY ? true : false;
+}
+
+/* Visited[]为全局变量，已经初始化为false */
+void BFS ( MGraph Graph, Vertex S, void (*Visit)(Vertex) )
+{   /* 以S为出发点对邻接矩阵存储的图Graph进行BFS搜索 */
+    Queue Q;     
+    Vertex V, W;
+
+    Q = CreateQueue( MaxSize ); /* 创建空队列, MaxSize为外部定义的常数 */
+    /* 访问顶点S：此处可根据具体访问需要改写 */
+    Visit( S );
+    Visited[S] = true; /* 标记S已访问 */
+    AddQ(Q, S); /* S入队列 */
+    
+    while ( !IsEmpty(Q) ) {
+        V = DeleteQ(Q);  /* 弹出V */
+        for( W=0; W&lt;Graph-&gt;Nv; W++ ) /* 对图中的每个顶点W */
+            /* 若W是V的邻接点并且未访问过 */
+            if ( !Visited[W] &amp;&amp; IsEdge(Graph, V, W) ) {
+                /* 访问顶点W */
+                Visit( W );
+                Visited[W] = true; /* 标记W已访问 */
+                AddQ(Q, W); /* W入队列 */
+            }
+    } /* while结束*/
+}
+</code></pre>
+<h3 id="邻接矩阵存储bfs实例"><a class="header" href="#邻接矩阵存储bfs实例">邻接矩阵存储、BFS实例</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAXN 100
+
+int G[MAXN][MAXN], Nv, Ne;
+
+void BuildGraph()
+{
+    int i,j,v1,v2,w;
+    scanf(&quot;%d&quot;,&amp;Nv);
+    for(i=0; i&lt;Nv; i++)
+    {
+        for(j=0; j&lt;Nv; j++)
+        {
+            G[i][j] = 0;
+        }
+    }
+    scanf(&quot;%d&quot;,&amp;Ne);
+    for(i=0; i&lt;Ne; i++)
+    {
+        scanf(&quot;%d %d %d&quot;,&amp;v1,&amp;v2,&amp;w);
+        G[v1][v2] = w;
+        G[v2][v1] = w;
+    }
+}
+
+void printGraph()
+{
+    for(int i=0;i &lt; Nv; i++)
+    {
+        for(int j=0; j&lt;Nv; j++)
+        {
+            printf(&quot;%d &quot;, G[i][j]);
+        }
+        printf(&quot;\n&quot;);
+    }
+}
+
+typedef int Vertex;
+#define TRUE 1
+#define FALSE 0
+typedef int Boolean;
+Boolean visited[MAXN];
+Boolean IsFirst = TRUE;
+
+void bfs(Vertex V)
+{
+    int queue[100];
+    int front = 0;
+    int tail = 0;
+    visited[V] = TRUE;
+    queue[tail++] = V;
+    int temp;
+    while(front != tail)
+    {
+        temp = queue[front++];
+        if(IsFirst)
+        {
+            printf(&quot;%c&quot;,(char)(97 + temp));
+            IsFirst = FALSE;
+        }
+        else
+            printf(&quot;-&gt;%c&quot;,(char)(97 + temp));
+        for(int i=0;i &lt;Nv; i++)
+        {
+            if(G[temp][i] == 1 &amp;&amp; visited[i] == FALSE)
+            {
+                visited[i] = TRUE;
+                queue[tail++] = i;
+            }
+        }
+    }
+}
+
+int main()
+{
+    BuildGraph();
+    printGraph();
+    bfs(0);
+    return 0;
+}
+</code></pre>
+<pre><code>0 1 1 0 1 0
+1 0 0 0 1 0
+1 0 0 0 0 1
+0 0 0 0 1 1
+1 1 0 1 0 0
+0 0 1 1 0 0
+a-&gt;b-&gt;c-&gt;e-&gt;f-&gt;d
+</code></pre>
+<h2 id="连通图"><a class="header" href="#连通图">连通图</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150019290.png" alt="" /></p>
+<p>具有N个顶点的无向图至多有多少个连通分量？N</p>
+<p>如果从无向图的任一顶点出发进行一次深度优先搜索可访问所有顶点，则该图一定是连通图</p>
+<p>具有N个顶点的无向图至少有多少个连通分量？1</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150020524.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150020711.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150021924.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="最短路径算法"><a class="header" href="#最短路径算法">最短路径算法</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
