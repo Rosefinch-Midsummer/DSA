@@ -175,6 +175,482 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="图的存储"><a class="header" href="#图的存储">图的存储</a></h1>
+<ul>
+<li><a href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5">邻接矩阵</a>
+<ul>
+<li><a href="#%E5%AE%8C%E6%95%B4%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81">完整版本代码</a></li>
+<li><a href="#%E7%AE%80%E5%8C%96%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81">简化版本代码</a></li>
+</ul>
+</li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E8%A1%A8">邻接表</a>
+<ul>
+<li><a href="#%E5%AE%8C%E6%95%B4%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81-1">完整版本代码</a></li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8dfs%E9%81%8D%E5%8E%86%E5%AE%9E%E4%BE%8B">邻接表存储、DFS遍历实例</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8">十字链表</a></li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8">邻接多重表</a></li>
+</ul>
+<h2 id="邻接矩阵"><a class="header" href="#邻接矩阵">邻接矩阵</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301606913.png" alt="" /></p>
+<p>对于有N个顶点的无向图，怎样存储可以省一半空间？</p>
+<p>正确答案：用一个长度为N(N+1)/2的1维数组</p>
+<p>用一维数组<code>G[ ]</code>存储有4个顶点的无向图如下：<code>G[ ] = { 0, 1, 0, 1, 1, 0, 0, 0, 1, 0 }</code></p>
+<p>则顶点2和顶点0之间是有边的。  ✔</p>
+<p>有N个顶点的无向完全图有多少条边？N(N-1)/2</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301607069.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301607187.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301608277.png" alt="" /></p>
+<h3 id="完整版本代码"><a class="header" href="#完整版本代码">完整版本代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/* 图的邻接矩阵表示法 */
+
+#define MaxVertexNum 100    /* 最大顶点数设为100 */
+#define INFINITY 65535        /* ∞设为双字节无符号整数的最大值65535*/
+typedef int Vertex;         /* 用顶点下标表示顶点,为整型 */
+typedef int WeightType;        /* 边的权值设为整型 */
+typedef char DataType;        /* 顶点存储的数据类型设为字符型 */
+
+/* 边的定义 */
+typedef struct ENode *PtrToENode;
+struct ENode{
+    Vertex V1, V2;      /* 有向边&lt;V1, V2&gt; */
+    WeightType Weight;  /* 权重 */
+};
+typedef PtrToENode Edge;
+       
+/* 图结点的定义 */
+typedef struct GNode *PtrToGNode;
+struct GNode{
+    int Nv;  /* 顶点数 */
+    int Ne;  /* 边数   */
+    WeightType G[MaxVertexNum][MaxVertexNum]; /* 邻接矩阵 */
+    DataType Data[MaxVertexNum];      /* 存顶点的数据 */
+    /* 注意：很多情况下，顶点无数据，此时Data[]可以不用出现 */
+};
+typedef PtrToGNode MGraph; /* 以邻接矩阵存储的图类型 */
+
+
+
+MGraph CreateGraph( int VertexNum )
+{ /* 初始化一个有VertexNum个顶点但没有边的图 */
+    Vertex V, W;
+    MGraph Graph;
+    
+    Graph = (MGraph)malloc(sizeof(struct GNode)); /* 建立图 */
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    /* 初始化邻接矩阵 */
+    /* 注意：这里默认顶点编号从0开始，到(Graph-&gt;Nv - 1) */
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        for (W=0; W&lt;Graph-&gt;Nv; W++)  
+            Graph-&gt;G[V][W] = INFINITY;
+            
+    return Graph; 
+}
+       
+void InsertEdge( MGraph Graph, Edge E )
+{
+     /* 插入边 &lt;V1, V2&gt; */
+     Graph-&gt;G[E-&gt;V1][E-&gt;V2] = E-&gt;Weight;    
+     /* 若是无向图，还要插入边&lt;V2, V1&gt; */
+     Graph-&gt;G[E-&gt;V2][E-&gt;V1] = E-&gt;Weight;
+}
+
+MGraph BuildGraph()
+{
+    MGraph Graph;
+    Edge E;
+    Vertex V;
+    int Nv, i;
+    
+    scanf(&quot;%d&quot;, &amp;Nv);   /* 读入顶点个数 */
+    Graph = CreateGraph(Nv); /* 初始化有Nv个顶点但没有边的图 */ 
+    
+    scanf(&quot;%d&quot;, &amp;(Graph-&gt;Ne));   /* 读入边数 */
+    if ( Graph-&gt;Ne != 0 ) { /* 如果有边 */ 
+        E = (Edge)malloc(sizeof(struct ENode)); /* 建立边结点 */ 
+        /* 读入边，格式为&quot;起点 终点 权重&quot;，插入邻接矩阵 */
+        for (i=0; i&lt;Graph-&gt;Ne; i++) {
+            scanf(&quot;%d %d %d&quot;, &amp;E-&gt;V1, &amp;E-&gt;V2, &amp;E-&gt;Weight); 
+            /* 注意：如果权重不是整型，Weight的读入格式要改 */
+            InsertEdge( Graph, E );
+        }
+    } 
+
+    /* 如果顶点有数据的话，读入数据 */
+    for (V=0; V&lt;Graph-&gt;Nv; V++) 
+        scanf(&quot; %c&quot;, &amp;(Graph-&gt;Data[V]));
+
+    return Graph;
+}
+</code></pre>
+<h3 id="简化版本代码"><a class="header" href="#简化版本代码">简化版本代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAXN 100
+
+int G[MAXN][MAXN];
+int visited[MAXN];
+int Ne,Nv;
+
+
+void InitVisited()
+{
+    for(int i=0; i&lt;MAXN; i++)
+        visited[i] = 0;
+}
+
+void BuildGraph()
+{
+    for(int i=0; i&lt;MAXN; i++)
+    {
+        for(int j=0; j&lt;MAXN; j++)
+        {
+            G[i][j] = 0;
+        }
+    }
+    scanf(&quot;%d %d&quot;,&amp;Nv, &amp;Ne);
+    if(Ne)
+    {
+        for(int i=0; i&lt;Ne; i++)
+        {
+            int v1,v2,weight;
+            scanf(&quot;%d %d %d&quot;,&amp;v1,&amp;v2,&amp;weight);
+            G[v1][v2] = weight;
+            G[v2][v1] = weight;
+        }
+    }
+}
+
+void dfs(int v)
+{
+    visited[v] = 1;
+    printf(&quot;%d &quot;,v);
+    for(int i=0; i&lt;Nv; i++)
+    {
+        if(visited[i]==0 &amp;&amp;G[v][i]!=0)
+        {
+            dfs(i);
+        }
+    }
+}
+
+int main()
+{
+    BuildGraph();
+    InitVisited();
+    dfs(0);
+    return 0;
+}
+</code></pre>
+<p>输入数据：</p>
+<pre><code>6 7  
+0 1 1  
+0 2 1  
+0 4 1  
+1 4 1  
+2 5 1  
+3 4 1  
+3 5 1  
+</code></pre>
+<p>输出结果：</p>
+<pre><code>0 1 4 3 5 2
+</code></pre>
+<h2 id="邻接表"><a class="header" href="#邻接表">邻接表</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301608777.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311301609554.png" alt="" /></p>
+<p>用邻接表表示有N个顶点、E条边的图，则遍历图中所有边的时间复杂度为：O(N+E)</p>
+<p>需要N个头指针 + 2E个结点（每个结点至少2个域），则E小于多少是省空间的？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202311201430423.png" alt="" /></p>
+<p>《数据结构》课程给出的图的邻接表表示法如下：</p>
+<h3 id="完整版本代码-1"><a class="header" href="#完整版本代码-1">完整版本代码</a></h3>
+<pre><code class="language-c">/* 图的邻接表表示法 */
+
+#define MaxVertexNum 100    /* 最大顶点数设为100 */
+typedef int Vertex;         /* 用顶点下标表示顶点,为整型 */
+typedef int WeightType;        /* 边的权值设为整型 */
+typedef char DataType;        /* 顶点存储的数据类型设为字符型 */
+
+/* 边的定义 */
+typedef struct ENode *PtrToENode;
+struct ENode{
+    Vertex V1, V2;      /* 有向边&lt;V1, V2&gt; */
+    WeightType Weight;  /* 权重 */
+};
+typedef PtrToENode Edge;
+
+/* 邻接点的定义 */
+typedef struct AdjVNode *PtrToAdjVNode; 
+struct AdjVNode{
+    Vertex AdjV;        /* 邻接点下标 */
+    WeightType Weight;  /* 边权重 */
+    PtrToAdjVNode Next;    /* 指向下一个邻接点的指针 */
+};
+
+/* 顶点表头结点的定义 */
+typedef struct Vnode{
+    PtrToAdjVNode FirstEdge;/* 边表头指针 */
+    DataType Data;            /* 存顶点的数据 */
+    /* 注意：很多情况下，顶点无数据，此时Data可以不用出现 */
+} AdjList[MaxVertexNum];    /* AdjList是邻接表类型 */
+
+/* 图结点的定义 */
+typedef struct GNode *PtrToGNode;
+struct GNode{  
+    int Nv;     /* 顶点数 */
+    int Ne;     /* 边数   */
+    AdjList G;  /* 邻接表 */
+};
+typedef PtrToGNode LGraph; /* 以邻接表方式存储的图类型 */
+
+
+
+LGraph CreateGraph( int VertexNum )
+{ /* 初始化一个有VertexNum个顶点但没有边的图 */
+    Vertex V;
+    LGraph Graph;
+    
+    Graph = (LGraph)malloc( sizeof(struct GNode) ); /* 建立图 */
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    /* 初始化邻接表头指针 */
+    /* 注意：这里默认顶点编号从0开始，到(Graph-&gt;Nv - 1) */
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        Graph-&gt;G[V].FirstEdge = NULL;
+            
+    return Graph; 
+}
+       
+void InsertEdge( LGraph Graph, Edge E )
+{
+    PtrToAdjVNode NewNode;
+    
+    /* 插入边 &lt;V1, V2&gt; */
+    /* 为V2建立新的邻接点 */
+    NewNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    NewNode-&gt;AdjV = E-&gt;V2;
+    NewNode-&gt;Weight = E-&gt;Weight;
+    /* 将V2插入V1的表头 */
+    NewNode-&gt;Next = Graph-&gt;G[E-&gt;V1].FirstEdge;
+    Graph-&gt;G[E-&gt;V1].FirstEdge = NewNode;
+        
+    /* 若是无向图，还要插入边 &lt;V2, V1&gt; */
+    /* 为V1建立新的邻接点 */
+    NewNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    NewNode-&gt;AdjV = E-&gt;V1;
+    NewNode-&gt;Weight = E-&gt;Weight;
+    /* 将V1插入V2的表头 */
+    NewNode-&gt;Next = Graph-&gt;G[E-&gt;V2].FirstEdge;
+    Graph-&gt;G[E-&gt;V2].FirstEdge = NewNode;
+}
+
+LGraph BuildGraph()
+{
+    LGraph Graph;
+    Edge E;
+    Vertex V;
+    int Nv, i;
+    
+    scanf(&quot;%d&quot;, &amp;Nv);   /* 读入顶点个数 */
+    Graph = CreateGraph(Nv); /* 初始化有Nv个顶点但没有边的图 */ 
+    
+    scanf(&quot;%d&quot;, &amp;(Graph-&gt;Ne));   /* 读入边数 */
+    if ( Graph-&gt;Ne != 0 ) { /* 如果有边 */ 
+        E = (Edge)malloc( sizeof(struct ENode) ); /* 建立边结点 */ 
+        /* 读入边，格式为&quot;起点 终点 权重&quot;，插入邻接矩阵 */
+        for (i=0; i&lt;Graph-&gt;Ne; i++) {
+            scanf(&quot;%d %d %d&quot;, &amp;E-&gt;V1, &amp;E-&gt;V2, &amp;E-&gt;Weight); 
+            /* 注意：如果权重不是整型，Weight的读入格式要改 */
+            InsertEdge( Graph, E );
+        }
+    } 
+
+    /* 如果顶点有数据的话，读入数据 */
+    for (V=0; V&lt;Graph-&gt;Nv; V++) 
+        scanf(&quot; %c&quot;, &amp;(Graph-&gt;G[V].Data));
+
+    return Graph;
+}
+</code></pre>
+<h3 id="邻接表存储dfs遍历实例"><a class="header" href="#邻接表存储dfs遍历实例">邻接表存储、DFS遍历实例</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+
+#define MaxVertexNum 100    /* 最大顶点数设为100 */
+typedef int Vertex;         /* 用顶点下标表示顶点,为整型 */
+typedef int WeightType;        /* 边的权值设为整型 */
+typedef char DataType;        /* 顶点存储的数据类型设为字符型 */
+
+int Visited[MaxVertexNum];
+
+void InitVisited()
+{
+    for(int i=0; i&lt;MaxVertexNum; i++)
+        Visited[i] = 0;
+}
+
+/* 边的定义 */
+typedef struct ENode *PtrToENode;
+struct ENode{
+    Vertex V1, V2;      /* 有向边&lt;V1, V2&gt; */
+    WeightType Weight;  /* 权重 */
+};
+typedef PtrToENode Edge;
+
+typedef struct AdjVNode *PtrToAdjVNode;
+struct AdjVNode
+{
+    Vertex AdjV;
+    WeightType Weight;
+    PtrToAdjVNode Next;
+};
+
+typedef struct VNode
+{
+    PtrToAdjVNode FirstEdge;
+}AdjList[MaxVertexNum];
+
+typedef struct GNode *PtrToGNode;
+
+struct GNode
+{
+    int Ne;
+    int Nv;
+    AdjList G;
+};
+
+typedef PtrToGNode LGraph;
+
+LGraph CreateGraph(int VertexNum)
+{
+    LGraph Graph = (LGraph)malloc(sizeof(struct GNode));
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+    {
+        Graph-&gt;G[i].FirstEdge = NULL;
+    }
+    return Graph;
+}
+
+void InsertEdge(LGraph Graph, Edge E)
+{
+    PtrToAdjVNode newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    newNode-&gt;AdjV = E-&gt;V2;
+    newNode-&gt;Weight = E-&gt;Weight;
+    newNode-&gt;Next = Graph-&gt;G[E-&gt;V1].FirstEdge;
+    Graph-&gt;G[E-&gt;V1].FirstEdge = newNode;
+
+    newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    newNode-&gt;AdjV = E-&gt;V1;
+    newNode-&gt;Weight = E-&gt;Weight;
+    newNode-&gt;Next = Graph-&gt;G[E-&gt;V2].FirstEdge;
+    Graph-&gt;G[E-&gt;V2].FirstEdge = newNode;
+}
+
+LGraph BuildGraph()
+{
+    LGraph Graph = (LGraph)malloc(sizeof(struct GNode));
+    Edge E;
+    int Nv;
+    scanf(&quot;%d&quot;, &amp;Nv);
+    Graph = CreateGraph(Nv);
+    scanf(&quot;%d&quot;, &amp;(Graph-&gt;Ne));
+    if(Graph-&gt;Ne != 0)
+    {
+        for(int i=0; i&lt;Graph-&gt;Ne; i++)
+        {
+            E = (Edge)malloc(sizeof(struct ENode));
+            scanf(&quot;%d %d %d&quot;,&amp;E-&gt;V1,&amp;E-&gt;V2,&amp;E-&gt;Weight);
+            InsertEdge(Graph, E);
+        }
+    }
+    return Graph;
+}
+
+/* 邻接表存储的图 - DFS */
+
+void Visit( Vertex V )
+{
+    printf(&quot;正在访问顶点%d\n&quot;, V);
+}
+
+/* Visited[]为全局变量，已经初始化为false */
+void DFS( LGraph Graph, Vertex V, void (*Visit)(Vertex) )
+{   /* 以V为出发点对邻接表存储的图Graph进行DFS搜索 */
+    PtrToAdjVNode W;
+
+    Visit( V ); /* 访问第V个顶点 */
+    Visited[V] = 1; /* 标记V已访问 */
+
+    for( W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next ) /* 对V的每个邻接点W-&gt;AdjV */
+        if ( !Visited[W-&gt;AdjV] )    /* 若W-&gt;AdjV未被访问 */
+            DFS( Graph, W-&gt;AdjV, Visit );    /* 则递归访问之 */
+}
+
+void PrintList(LGraph Graph)
+{
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+    {
+        PtrToAdjVNode W = Graph-&gt;G[i].FirstEdge;
+        printf(&quot;G[%d]:&quot;, i);
+        int IsFirst = 1;
+        while(W)
+        {
+            if(IsFirst)
+            {
+                printf(&quot;%d&quot;, W-&gt;AdjV);
+                IsFirst = 0;
+            }
+            else
+                printf(&quot;-&gt;%d&quot;, W-&gt;AdjV);
+            W = W-&gt;Next;
+        }
+        printf(&quot;\n&quot;);
+    }
+}
+
+int main()
+{
+    LGraph Graph = BuildGraph();
+    InitVisited();
+    DFS(Graph, 0, Visit);
+    PrintList(Graph);
+    return 0;
+}
+</code></pre>
+<p>输入数据：</p>
+<pre><code>6  
+7  
+0 1 1  
+0 2 1  
+0 4 1  
+1 4 1  
+2 5 1  
+3 4 1  
+3 5 1  
+</code></pre>
+<p>输出结果：</p>
+<pre><code>正在访问顶点0
+正在访问顶点4
+正在访问顶点3
+正在访问顶点5
+正在访问顶点2
+正在访问顶点1
+G[0]:4-&gt;2-&gt;1
+G[1]:4-&gt;0
+G[2]:5-&gt;0
+G[3]:5-&gt;4
+G[4]:3-&gt;1-&gt;0
+G[5]:3-&gt;2
+</code></pre>
+<h2 id="十字链表"><a class="header" href="#十字链表">十字链表</a></h2>
+<h2 id="邻接多重表"><a class="header" href="#邻接多重表">邻接多重表</a></h2>
 
                     </main>
 
