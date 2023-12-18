@@ -1,0 +1,674 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>拓扑排序和关键路径 - 资料结构与演算法</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="弁言.html"><strong aria-hidden="true">1.</strong> 弁言</a></li><li class="chapter-item expanded "><a href="数据结构与算法概论.html"><strong aria-hidden="true">2.</strong> 数据结构与算法概论</a></li><li class="chapter-item expanded "><a href="MOOC-PTA复杂度题目.html"><strong aria-hidden="true">3.</strong> MOOC-PTA复杂度题目</a></li><li class="chapter-item expanded "><a href="线性结构.html"><strong aria-hidden="true">4.</strong> 线性结构</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="线性表.html"><strong aria-hidden="true">4.1.</strong> 线性表</a></li><li class="chapter-item expanded "><a href="栈.html"><strong aria-hidden="true">4.2.</strong> 栈</a></li><li class="chapter-item expanded "><a href="队列.html"><strong aria-hidden="true">4.3.</strong> 队列</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA线性结构题目.html"><strong aria-hidden="true">5.</strong> MOOC-PTA线性结构题目</a></li><li class="chapter-item expanded "><a href="树.html"><strong aria-hidden="true">6.</strong> 树</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="二叉树.html"><strong aria-hidden="true">6.1.</strong> 二叉树</a></li><li class="chapter-item expanded "><a href="二叉搜索树.html"><strong aria-hidden="true">6.2.</strong> 二叉搜索树</a></li><li class="chapter-item expanded "><a href="平衡二叉树.html"><strong aria-hidden="true">6.3.</strong> 平衡二叉树</a></li><li class="chapter-item expanded "><a href="堆.html"><strong aria-hidden="true">6.4.</strong> 堆</a></li><li class="chapter-item expanded "><a href="哈夫曼树.html"><strong aria-hidden="true">6.5.</strong> 哈夫曼树</a></li><li class="chapter-item expanded "><a href="并查集.html"><strong aria-hidden="true">6.6.</strong> 并查集</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA树题目.html"><strong aria-hidden="true">7.</strong> MOOC-PTA树题目</a></li><li class="chapter-item expanded "><a href="图.html"><strong aria-hidden="true">8.</strong> 图</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="图的存储.html"><strong aria-hidden="true">8.1.</strong> 图的存储</a></li><li class="chapter-item expanded "><a href="图的遍历.html"><strong aria-hidden="true">8.2.</strong> 图的遍历</a></li><li class="chapter-item expanded "><a href="最短路径算法.html"><strong aria-hidden="true">8.3.</strong> 最短路径算法</a></li><li class="chapter-item expanded "><a href="最小生成树算法.html"><strong aria-hidden="true">8.4.</strong> 最小生成树算法</a></li><li class="chapter-item expanded "><a href="拓扑排序和关键路径.html" class="active"><strong aria-hidden="true">8.5.</strong> 拓扑排序和关键路径</a></li></ol></li><li class="chapter-item expanded "><a href="MOOC-PTA图题目.html"><strong aria-hidden="true">9.</strong> MOOC-PTA图题目</a></li><li class="chapter-item expanded "><a href="排序算法.html"><strong aria-hidden="true">10.</strong> 排序算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA排序题目.html"><strong aria-hidden="true">11.</strong> MOOC-PTA排序题目</a></li><li class="chapter-item expanded "><a href="查找算法.html"><strong aria-hidden="true">12.</strong> 查找算法</a></li><li class="chapter-item expanded "><a href="MOOC-PTA查找题目.html"><strong aria-hidden="true">13.</strong> MOOC-PTA查找题目</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">资料结构与演算法</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="拓扑排序和关键路径"><a class="header" href="#拓扑排序和关键路径">拓扑排序和关键路径</a></h1>
+<ul>
+<li><a href="#aov%E7%BD%91%E7%BB%9C%E5%92%8C%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F">AOV网络和拓扑排序</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89">定义</a></li>
+<li><a href="#%E5%AE%B9%E5%99%A8%E7%9A%84%E5%BD%B1%E5%93%8D">容器的影响</a></li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95">邻接表存储——拓扑排序算法</a></li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%AE%9E%E4%BE%8B">邻接表存储——拓扑排序算法实例</a></li>
+</ul>
+</li>
+<li><a href="#aoe%E7%BD%91%E7%BB%9C%E5%92%8C%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84">AOE网络和关键路径</a></li>
+</ul>
+<h2 id="aov网络和拓扑排序"><a class="header" href="#aov网络和拓扑排序">AOV网络和拓扑排序</a></h2>
+<h3 id="定义"><a class="header" href="#定义">定义</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151451496.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151451653.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151451771.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151452380.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151452017.png" alt="" /></p>
+<p>在TopSort函数中，如果外循环还没结束，就已经找不到“未输出的入度为0的顶点”，则说明图中必定存在回路。</p>
+<h3 id="容器的影响"><a class="header" href="#容器的影响">容器的影响</a></h3>
+<p>分别用队列和堆栈作为容器，对计算机专业课程进行拓扑排序，得到的序列有什么区别？用哪种容器排课更合理？</p>
+<p>队列拓扑排序得到的结果是从上到下的顺序，类似于一层一层地拓扑排序。 堆栈拓扑排序得到的结果是从下到上的顺序，类似于逆序的拓扑排序。 选择合理的容器： 如果你希望按照正常的学习顺序，从基础课程开始，逐渐深入，那么队列拓扑排序更合理。 如果你更关注最终课程的先修条件，或者希望从高级课程逆向推导，那么堆栈拓扑排序更合理。</p>
+<p>分别用队列和堆栈作为容器，对计算机专业课程进行拓扑排序，得到的序列有什么区别？用哪种容器排课更合理？</p>
+<p>在进行拓扑排序时，可以使用队列或堆栈作为辅助容器。这两种方法都能够正确地产生拓扑排序，但得到的序列可能会不同，这取决于容器的数据结构特性。</p>
+<p>使用队列进行拓扑排序</p>
+<p>当使用队列进行拓扑排序时，通常是实现了所谓的Kahn算法。这种方法是基于入度（指向某个顶点的边的数量）的概念：</p>
+<p>首先将所有入度为0的顶点加入队列。</p>
+<p>然后依次从队列中取出一个顶点，将其添加到排序结果中，并移除所有从该顶点出发的边，更新相关顶点的入度。</p>
+<p>如果某个顶点的入度变为0，则将其加入队列。</p>
+<p>重复步骤2和3，直到队列为空。</p>
+<p>使用队列的拓扑排序通常产生多种合法的排序结果，对于同一张图，不同的顶点加入队列的顺序可能会产生不同的拓扑排序序列。</p>
+<p>使用堆栈进行拓扑排序</p>
+<p>使用堆栈进行拓扑排序通常是基于深度优先搜索（DFS）：</p>
+<p>对每个尚未访问的顶点，执行DFS。</p>
+<p>在DFS的过程中，当从某个顶点出发的所有边都被探索过后，将该顶点压入堆栈。</p>
+<p>DFS完成后，依次从堆栈中弹出顶点，这个顺序就是拓扑排序的结果。</p>
+<p>这种方法也可能产生多种拓扑排序，具体结果取决于DFS的顺序。</p>
+<p>哪种方法更合理？</p>
+<p>在排课程时，选择哪种方法取决于具体的需求：</p>
+<p>如果你想要的是一种可能的顺序，并且希望尽快开始没有先决条件的课程（即入度为0的课程），那么使用基于队列的Kahn算法更合适。</p>
+<p>如果你对课程之间的依赖关系有更深入的探究，或者对课程的探索顺序有特定需求，使用基于DFS的堆栈方法可能更合适。</p>
+<p>在大多数情况下，使用队列的方法更直观，因为它直接处理了课程之间的依赖关系。然而，最终的选择应该基于具体场景和需求。</p>
+<h3 id="邻接表存储拓扑排序算法"><a class="header" href="#邻接表存储拓扑排序算法">邻接表存储——拓扑排序算法</a></h3>
+<pre><code class="language-c">/* 邻接表存储 - 拓扑排序算法 */
+
+bool TopSort( LGraph Graph, Vertex TopOrder[] )
+{ /* 对Graph进行拓扑排序,  TopOrder[]顺序存储排序后的顶点下标 */
+    int Indegree[MaxVertexNum], cnt;
+    Vertex V;
+    PtrToAdjVNode W;
+       Queue Q = CreateQueue( Graph-&gt;Nv );
+ 
+    /* 初始化Indegree[] */
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        Indegree[V] = 0;
+        
+    /* 遍历图，得到Indegree[] */
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        for (W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next)
+            Indegree[W-&gt;AdjV]++; /* 对有向边&lt;V, W-&gt;AdjV&gt;累计终点的入度 */
+            
+    /* 将所有入度为0的顶点入列 */
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        if ( Indegree[V]==0 )
+            AddQ(Q, V);
+            
+    /* 下面进入拓扑排序 */ 
+    cnt = 0; 
+    while( !IsEmpty(Q) ){
+        V = DeleteQ(Q); /* 弹出一个入度为0的顶点 */
+        TopOrder[cnt++] = V; /* 将之存为结果序列的下一个元素 */
+        /* 对V的每个邻接点W-&gt;AdjV */
+        for ( W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next )
+            if ( --Indegree[W-&gt;AdjV] == 0 )/* 若删除V使得W-&gt;AdjV入度为0 */
+                AddQ(Q, W-&gt;AdjV); /* 则该顶点入列 */ 
+    } /* while结束*/
+    
+    if ( cnt != Graph-&gt;Nv )
+        return false; /* 说明图中有回路, 返回不成功标志 */ 
+    else
+        return true;
+}
+</code></pre>
+<h3 id="邻接表存储拓扑排序算法实例"><a class="header" href="#邻接表存储拓扑排序算法实例">邻接表存储——拓扑排序算法实例</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MaxVertexNum 100
+typedef int WeightType;
+typedef int Vertex;
+
+typedef struct ENode *PtrToENode;
+struct ENode
+{
+    Vertex V1;
+    Vertex V2;
+    WeightType Weight;
+};
+typedef PtrToENode Edge;
+
+typedef struct AdjVNode *PtrToAdjVNode;
+struct AdjVNode
+{
+    PtrToAdjVNode Next;
+    Vertex AdjV;
+    WeightType Weight;
+};
+
+typedef struct VNode
+{
+    PtrToAdjVNode FirstEdge;
+}AdjList[MaxVertexNum];
+
+
+typedef struct GNode *PtrToGNode;
+struct GNode
+{
+    int Ne;
+    int Nv;
+    AdjList G;
+};
+typedef PtrToGNode LGraph;
+
+void InsertEdge(LGraph Graph, Edge E)
+{
+    PtrToAdjVNode newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    newNode-&gt;AdjV = E-&gt;V2;
+    newNode-&gt;Weight = E-&gt;Weight;
+    newNode-&gt;Next = Graph-&gt;G[E-&gt;V1].FirstEdge;
+    Graph-&gt;G[E-&gt;V1].FirstEdge = newNode;
+
+    //newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    //newNode-&gt;AdjV = E-&gt;V1;
+    //newNode-&gt;Weight = E-&gt;Weight;
+    //newNode-&gt;Next = Graph-&gt;G[E-&gt;V2].FirstEdge;
+    //Graph-&gt;G[E-&gt;V2].FirstEdge = newNode;
+}
+
+LGraph CreateGraph(int VertexNum)
+{
+    LGraph Graph = (LGraph)malloc(sizeof(struct GNode));
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+        Graph-&gt;G[i].FirstEdge = NULL;
+    return Graph;
+}
+
+LGraph BuildGraph()
+{
+    int N;
+    Edge E;
+    scanf(&quot;%d&quot;,&amp;N);
+    LGraph Graph = CreateGraph(N);
+    scanf(&quot;%d&quot;,&amp;Graph-&gt;Ne);
+    if(Graph-&gt;Ne != 0)
+    {
+        for(int i=0; i&lt;Graph-&gt;Ne; i++)
+        {
+            E = (Edge)malloc(sizeof(struct ENode));
+            scanf(&quot;%d %d %d&quot;,&amp;E-&gt;V1,&amp;E-&gt;V2,&amp;E-&gt;Weight);
+            InsertEdge(Graph, E);
+        }
+    }
+    return Graph;
+}
+
+void TopSort(LGraph Graph, int TopOrder[])
+{
+    int Indegree[MaxVertexNum], count;
+    Vertex V;
+    PtrToAdjVNode W;
+    //Queue Q = CreateQueue( Graph-&gt;Nv );
+    Vertex queue[Graph-&gt;Nv];
+    int front = 0;
+    int rear = 0;
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        Indegree[V] = 0;
+
+    for(V=0; V&lt;Graph-&gt;Nv; V++)
+    {
+        for(W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next)
+        {
+            Indegree[W-&gt;AdjV]++;
+        }
+    }
+    for(V=0; V&lt;Graph-&gt;Nv; V++)
+    {
+        if(Indegree[V] == 0)
+        {
+            queue[rear++] = V;
+        }
+    }
+    //下面进入拓扑排序
+    count = 0;
+    while(front != rear)
+    {
+        V = queue[front++];
+        TopOrder[count++] = V;
+        for(W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next)
+        {
+            if(--Indegree[W-&gt;AdjV] == 0)
+            {
+                queue[rear++] = W-&gt;AdjV;
+            }
+        }
+    }
+    if(count != Graph-&gt;Nv)
+    {
+        printf(&quot;图中存在循环路径！\n&quot;);
+    }
+    else
+    {
+        for(int i=0; i&lt;count; i++)
+            printf(&quot;%d &quot;,TopOrder[i]);
+    }
+
+}
+
+int main()
+{
+    LGraph Graph = BuildGraph();
+    Vertex TopOrder[MaxVertexNum];
+    TopSort(Graph, TopOrder);
+    return 0;
+}
+</code></pre>
+<p>输入数据：</p>
+<pre><code>6  
+7  
+0 2 1  
+1 2 1  
+1 0 1  
+2 5 1  
+2 3 1  
+3 5 1  
+4 5 1  
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312011659433.png" alt="" /></p>
+<p>输出结果：</p>
+<pre><code>1 4 0 2 3 5
+</code></pre>
+<p>说明一下，拓扑排序可能有多种结果。</p>
+<p>另一种结果可以是<code>4 1 0 2 3 5</code>。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MaxVertexNum 100
+typedef int WeightType;
+typedef int Vertex;
+
+typedef struct ENode *PtrToENode;
+struct ENode
+{
+    Vertex V1;
+    Vertex V2;
+    WeightType Weight;
+};
+typedef PtrToENode Edge;
+
+typedef struct AdjVNode *PtrToAdjVNode;
+struct AdjVNode
+{
+    PtrToAdjVNode Next;
+    Vertex AdjV;
+    WeightType Weight;
+};
+
+typedef struct VNode
+{
+    PtrToAdjVNode FirstEdge;
+}AdjList[MaxVertexNum];
+
+
+typedef struct GNode *PtrToGNode;
+struct GNode
+{
+    int Ne;
+    int Nv;
+    AdjList G;
+};
+typedef PtrToGNode LGraph;
+
+void InsertEdge(LGraph Graph, Edge E)
+{
+    PtrToAdjVNode newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    newNode-&gt;AdjV = E-&gt;V2;
+    newNode-&gt;Weight = E-&gt;Weight;
+    newNode-&gt;Next = Graph-&gt;G[E-&gt;V1].FirstEdge;
+    Graph-&gt;G[E-&gt;V1].FirstEdge = newNode;
+
+    //newNode = (PtrToAdjVNode)malloc(sizeof(struct AdjVNode));
+    //newNode-&gt;AdjV = E-&gt;V1;
+    //newNode-&gt;Weight = E-&gt;Weight;
+    //newNode-&gt;Next = Graph-&gt;G[E-&gt;V2].FirstEdge;
+    //Graph-&gt;G[E-&gt;V2].FirstEdge = newNode;
+}
+
+LGraph CreateGraph(int VertexNum)
+{
+    LGraph Graph = (LGraph)malloc(sizeof(struct GNode));
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+        Graph-&gt;G[i].FirstEdge = NULL;
+    return Graph;
+}
+
+LGraph BuildGraph()
+{
+    int N;
+    Edge E;
+    scanf(&quot;%d&quot;,&amp;N);
+    LGraph Graph = CreateGraph(N);
+    scanf(&quot;%d&quot;,&amp;Graph-&gt;Ne);
+    if(Graph-&gt;Ne != 0)
+    {
+        for(int i=0; i&lt;Graph-&gt;Ne; i++)
+        {
+            E = (Edge)malloc(sizeof(struct ENode));
+            scanf(&quot;%d %d %d&quot;,&amp;E-&gt;V1,&amp;E-&gt;V2,&amp;E-&gt;Weight);
+            InsertEdge(Graph, E);
+        }
+    }
+    return Graph;
+}
+
+void PrintList(LGraph Graph)
+{
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+    {
+        PtrToAdjVNode W = Graph-&gt;G[i].FirstEdge;
+        printf(&quot;G[%d]:&quot;, i);
+        int IsFirst = 1;
+        while(W)
+        {
+            if(IsFirst)
+            {
+                printf(&quot;%d&quot;, W-&gt;AdjV);
+                IsFirst = 0;
+            }
+            else
+                printf(&quot;-&gt;%d&quot;, W-&gt;AdjV);
+            W = W-&gt;Next;
+        }
+        printf(&quot;\n&quot;);
+    }
+}
+
+void TopSort(LGraph Graph, int TopOrder[])
+{
+    int Indegree[MaxVertexNum], count;
+    Vertex V;
+    PtrToAdjVNode W;
+    //Queue Q = CreateQueue( Graph-&gt;Nv );
+    Vertex queue[Graph-&gt;Nv];
+    int front = 0;
+    int rear = 0;
+    for (V=0; V&lt;Graph-&gt;Nv; V++)
+        Indegree[V] = 0;
+
+    for(V=0; V&lt;Graph-&gt;Nv; V++)
+    {
+        for(W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next)
+        {
+            Indegree[W-&gt;AdjV]++;
+        }
+    }
+    for(V=0; V&lt;Graph-&gt;Nv; V++)
+    {
+        if(Indegree[V] == 0)
+        {
+            queue[rear++] = V;
+        }
+    }
+    //下面进入拓扑排序
+    count = 0;
+    while(front != rear)
+    {
+        V = queue[front++];
+        TopOrder[count++] = V;
+        for(W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next)
+        {
+            if(--Indegree[W-&gt;AdjV] == 0)
+            {
+                queue[rear++] = W-&gt;AdjV;
+            }
+        }
+    }
+    if(count != Graph-&gt;Nv)
+    {
+        printf(&quot;图中存在循环路径！\n&quot;);
+    }
+    else
+    {
+        for(int i=0; i&lt;count; i++)
+            printf(&quot;%d &quot;,TopOrder[i]);
+    }
+
+}
+
+int main()
+{
+    LGraph Graph = BuildGraph();
+    PrintList(Graph);
+    Vertex TopOrder[MaxVertexNum];
+    TopSort(Graph, TopOrder);
+    return 0;
+}
+</code></pre>
+<p>输入数据：</p>
+<pre><code>6  
+7  
+0 2 1   
+1 0 1  
+2 1 1 
+2 5 1  
+2 3 1  
+3 5 1  
+4 5 1  
+</code></pre>
+<p>输出结果：</p>
+<pre><code>G[0]:2
+G[1]:0
+G[2]:3-&gt;5-&gt;1
+G[3]:5
+G[4]:5
+G[5]:
+图中存在循环路径！
+</code></pre>
+<h2 id="aoe网络和关键路径"><a class="header" href="#aoe网络和关键路径">AOE网络和关键路径</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151452600.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312151453533.png" alt="" /></p>
+<p>下图给定了一个项目的AOE。整个项目最早完工需要的时间是</p>
+<p><img src="https://img-ph-mirror.nosdn.127.net/W6uCjomzeNw1GWuIB6EoEg==/3358840897189137675.jpg" alt="" /></p>
+<ul>
+<li>A.17</li>
+<li>B.19</li>
+<li>C.20</li>
+<li>D.23</li>
+</ul>
+<p>正确答案：D你选对了</p>
+<p>2在上图中，如果&lt;0,2&gt;组能加快进度，整个项目就能提前完工。</p>
+<p>✔</p>
+<p>正确答案：A你选对了</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="最小生成树算法.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="MOOC-PTA图题目.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="最小生成树算法.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="MOOC-PTA图题目.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
