@@ -11113,95 +11113,1370 @@ int main()
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="排序算法"><a class="header" href="#排序算法">排序算法</a></h1>
 <ul>
-<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序</a></li>
-<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a></li>
-</ul>
-<h2 id="选择排序"><a class="header" href="#选择排序">选择排序</a></h2>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a>
 <ul>
-<li>从所有元素中找到最小的元素放到数组的第0个位置</li>
-<li>从剩余元素中找出最小的放到第1个位置，以此类推，直到所有元素都放到了适当的位置</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BAbubble_sort">3. 动图演示bubble_sort</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">4. 性能分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81">5.完整代码</a></li>
 </ul>
-<pre><code class="language-cpp">#include &lt;iostream&gt;
-
-using namespace std;
-
-int main() {
-
-    int lh,rh,k,tmp;
-    int array[]={2,5,1,9,10,0,4,8,7,6};
-    for(lh=0;lh&lt;10;lh++)
-    {
-        rh=lh;
-        for(k=lh;k&lt;10;++k)
-            if(array[k]&lt;array[rh])
-                rh=k;
-        tmp=array[lh];
-        array[lh]=array[rh];
-        array[rh]=tmp;
-    }
-    for(lh=0;lh&lt;10;lh++) cout&lt;&lt;array[lh]&lt;&lt;' ';
-
-    return 0;
-}
-</code></pre>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3">1.基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-1">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA">3. 动图演示</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-1">4. 性能分析</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81-1">5.完整代码</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-2">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-1">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-2">4. 性能分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5-%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81">5. 完整代码</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-1">1.基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91">2.实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA">3.动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81-2">5.完整代码</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%A0%86%E6%8E%92%E5%BA%8F">堆排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-3">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-2">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#31-%E5%88%9B%E5%BB%BA%E6%9C%80%E5%A4%A7%E5%A0%86">3.1 创建最大堆</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#32-%E5%A0%86%E6%8E%92%E5%BA%8F%E6%9C%80%E5%A4%A7%E5%A0%86%E8%B0%83%E6%95%B4">3.2 堆排序（最大堆调整）</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-1">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81-3">5.完整代码</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-3">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-4">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-3">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-2">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E5%88%86%E8%80%8C%E6%B2%BB%E4%B9%8B">递归实现（分而治之）</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E9%9D%9E%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0">非递归实现</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">快速排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-2">1.基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-5">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-4">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6">4. 复杂度</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">5. 代码实现</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#6%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F-%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8%E5%BA%93%E5%87%BD%E6%95%B0">6快速排序-直接调用库函数</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E8%A1%A8%E6%8E%92%E5%BA%8F">表排序</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E7%89%A9%E7%90%86%E6%8E%92%E5%BA%8F">物理排序</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F">计数排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-4">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-6">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-5">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-3">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1">5. 代码实现</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E6%A1%B6%E6%8E%92%E5%BA%8F">桶排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-5">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-7">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-6">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-4">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2">5. 代码实现</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F">基数排序</a>
+<ul>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-6">1. 基本思想</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#2-%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-8">2. 实现逻辑</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA-7">3. 动图演示</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#4-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-5">4. 复杂度分析</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F---%E6%AC%A1%E4%BD%8D%E4%BC%98%E5%85%88%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">5.基数排序 - 次位优先代码实现</a></li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#5%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F---%E4%B8%BB%E4%BD%8D%E4%BC%98%E5%85%88%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">5.基数排序 - 主位优先代码实现</a></li>
+</ul>
+</li>
+<li><a href="%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html#%E5%A4%9A%E5%85%B3%E9%94%AE%E5%AD%97%E6%8E%92%E5%BA%8F">多关键字排序</a></li>
+</ul>
+<p><a href="https://www.zhihu.com/column/developer1024">本文部分内容来自developer1024专栏</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021438193.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021439047.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021440439.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181642406.png" alt="" /></p>
+<p>1请选择下面四种排序算法中最快又是稳定的排序算法：</p>
+<ul>
+<li>A. 希尔排序</li>
+<li>B. 堆排序</li>
+<li>C.归并排序</li>
+<li>D.快速排序</li>
+</ul>
+<p>正确答案：C你选对了</p>
+<p>2下列排序算法中，哪种算法可能出现：在最后一趟开始之前，所有的元素都不在其最终的位置上</p>
+<ul>
+<li>A.堆排序</li>
+<li>B.插入排序</li>
+<li>C.冒泡排序</li>
+<li>D.快速排序</li>
+</ul>
+<p>正确答案：B你选对了</p>
+<p>3当待排序列已经基本有序时，下面哪个排序算法效率最差</p>
+<ul>
+<li>A. 快速排序</li>
+<li>B.直接插入</li>
+<li>C.选择排序</li>
+<li>D.堆排序</li>
+</ul>
+<p>正确答案：C你错选为B</p>
+<p>4数据序列（3,2,4,9,8,11,6,20）只能是下列哪种排序算法的两趟排序结果</p>
+<ul>
+<li>A.冒泡排序</li>
+<li>B.插入排序</li>
+<li>C.选择排序</li>
+<li>D.快速排序</li>
+</ul>
+<p>正确答案：D你选对了</p>
 <h2 id="冒泡排序"><a class="header" href="#冒泡排序">冒泡排序</a></h2>
+<p>交换相邻元素</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021438200.png" alt="" /></p>
+<p>优点：稳定、能处理链表排序</p>
+<p>对于7个数进行冒泡排序，最坏情况下需要进行的比较次数为21</p>
+<h3 id="1-基本思想"><a class="header" href="#1-基本思想">1. 基本思想</a></h3>
+<p>冒泡排序是一种交换排序，核心是冒泡，把数组中最小的那个往上冒，冒的过程就是和他相邻的元素交换。</p>
+<p>重复走访要排序的数列，通过两两比较相邻记录的排序码。排序过程中每次从后往前冒一个最小值，且每次能确定一个数在序列中的最终位置。若发生逆序，则交换；有俩种方式进行冒泡，一种是先把小的冒泡到前边去，另一种是把大的元素冒泡到后边。</p>
+<p>趣味解释：</p>
+<p>有一群泡泡，其中一个泡泡跑到一个泡小妹说，小妹小妹你过来咱俩比比谁大，小妹说哇你好大，于是他跑到了泡小妹前面，又跟前面的一个泡大哥说，大哥，咱俩比比谁大呗。泡大哥看了他一眼他就老实了。这就是内层的for，那个泡泡跟每个人都比一次。</p>
+<p>话说那个泡泡刚老实下来，另一个泡泡又开始跟别人比谁大了，这就是外层的for，每个泡泡都会做一次跟其他泡泡比个没完的事。</p>
+<h3 id="2-实现逻辑"><a class="header" href="#2-实现逻辑">2. 实现逻辑</a></h3>
 <ul>
-<li>大数沉淀、小数冒泡</li>
+<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
+<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
 </ul>
-<pre><code class="language-cpp">#include &lt;iostream&gt;
+<p>通过两层循环控制：</p>
+<ul>
+<li>第一个循环（外循环），负责把需要冒泡的那个数字排除在外；</li>
+<li>第二个循环（内循环），负责两两比较交换。</li>
+</ul>
+<h3 id="3-动图演示bubble_sort"><a class="header" href="#3-动图演示bubble_sort">3. 动图演示bubble_sort</a></h3>
+<p><img src="https://pic4.zhimg.com/v2-33a947c71ad62b254cab62e5364d2813_b.webp" alt="动图封面" /></p>
+<p>冒泡排序</p>
+<h3 id="4-性能分析"><a class="header" href="#4-性能分析">4. 性能分析</a></h3>
+<ul>
+<li>平均时间复杂度：O(N^2)</li>
+<li>最佳时间复杂度：O(N)</li>
+<li>最差时间复杂度：O(N^2)</li>
+<li>空间复杂度：O(1)</li>
+<li>排序方式：In-place</li>
+<li>稳定性：稳定</li>
+</ul>
+<p>解析说明：</p>
+<p>冒泡排序涉及相邻两两数据的比较，故需要嵌套两层 for 循环来控制;</p>
+<p>外层循环 n 次，内层最多时循环 n – 1次、最少循环 0 次，平均循环(n-1)/2;</p>
+<p>所以循环体内总的比较交换次数为：n*(n-1) / 2 = (n^2-n)/2 ;</p>
+<p>按照计算时间复杂度的规则，去掉常数、去掉最高项系数，其复杂度为O(N^2) ;</p>
+<p>最优的空间复杂度为开始元素已排序，则空间复杂度为 0;</p>
+<p>最差的空间复杂度为开始元素为逆排序，则空间复杂度为 O(N);</p>
+<p>平均的空间复杂度为O(1) 。</p>
+<h3 id="5完整代码"><a class="header" href="#5完整代码">5.完整代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
 
-using namespace std;
+typedef int ElementType;
 
-int main() {
-
-    int i,j,tmp,n=10;
-    int array[]={9,8,5,4,2,0,10,6,11,7};
-
-    for(j=0;j&lt;n-1;j++)
-        for(i=0;i&lt;n-1-j;i++)
-            if(array[i]&gt;array[i+1])
+void Bubble_Sort(ElementType A[], int N)
+{
+    for(int P=N-1; P&gt;=0; P--)
+    {
+        int flag = 0;
+        for(int i=0; i&lt;P; i++)
+        {
+            if(A[i]&gt;A[i+1])
             {
-                tmp=array[i];
-                array[i]=array[i+1];
-                array[i+1]=tmp;
+                int temp;
+                temp = A[i];
+                A[i] = A[i+1];
+                A[i+1] = temp;
             }
-    cout&lt;&lt;endl;
-
-    for(i=0;i&lt;n;i++) cout&lt;&lt;array[i]&lt;&lt;' ';
-
-    return 0;
-}
-</code></pre>
-<p>改进版：增加一个标志变量，若数组已排好序，则只用扫描一遍</p>
-<pre><code class="language-cpp">#include &lt;iostream&gt;
-
-using namespace std;
-
-int main() {
-
-    int i,j,tmp,n=10;
-    bool flag;
-    int array[]={9,8,5,4,2,0,10,6,11,7};
-
-    for(j=0;j&lt;n-1;j++){
-        flag=false;
-        for(i=0;i&lt;n-1-j;i++)
-            if(array[i]&gt;array[i+1])
-            {
-                tmp=array[i];
-                array[i]=array[i+1];
-                array[i+1]=tmp;
-                flag=true;
-            }
-        if(!flag) break;
+            flag = 1;
+        }
+        if(flag == 0)
+            break;
     }
-    cout&lt;&lt;endl;
+}
 
-    for(i=0;i&lt;n;i++) cout&lt;&lt;array[i]&lt;&lt;' ';
-
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;, &amp;N);
+    ElementType A[N];
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;A[i]);
+    }
+    Bubble_Sort(A, N);
+    int First = 1;
+    for(int i=0; i&lt;N; i++)
+    {
+        if(First)
+        {
+            printf(&quot;%d&quot;,A[i]);
+            First = 0;
+        }
+        else
+        {
+            printf(&quot; %d&quot;, A[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
     return 0;
 }
 </code></pre>
+<h2 id="插入排序"><a class="header" href="#插入排序">插入排序</a></h2>
+<p>交换相邻元素</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021439726.png" alt="" /></p>
+<p>给定初始序列{34, 8, 64, 51, 32, 21}，冒泡排序和插入排序分别需要多少次元素交换才能完成？  冒泡9次，插入9次</p>
+<p>序列{34, 8, 64, 51, 32, 21}中有多少逆序对？   9</p>
+<p>对一组包含10个元素的非递减有序序列，采用插入排序排成非递增序列，其可能的比较次数和移动次数分别是   45, 44</p>
+<h3 id="1基本思想"><a class="header" href="#1基本思想">1.基本思想</a></h3>
+<p>插入排序的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。</p>
+<p>趣味解释：</p>
+<p><img src="https://pic3.zhimg.com/v2-91dc753e1ddc5348eafd57ab24a8bab6_b.png" alt="" /></p>
+<p>插入排序操作类似于摸牌并将其从大到小排列。每次摸到一张牌后，根据其点数插入到确切位置。</p>
+<p>如上图：表示的是摸到草花7后进行插入的过程。忽略最右边的草花10，相当于一开始7在最右边，然后逐个与左边的排相比较(当然左边的牌早已排好顺序)，将其放置在合适的位置。当摸到草花10后重复上述过程即可。</p>
+<p>而实际中，如何将插入牌的这个过程应用到实际排序操作中呢？具体我们以一组数字来说操作说明：</p>
+<p><img src="https://pic1.zhimg.com/v2-8de71a6d88ccc5754deb89d58bcc8800_b.jpg" alt="" /></p>
+<p>例如我们有一组数字：｛5，2，4，6，1，3｝，我们要将这组数字从小到大进行排列。 我们从第二个数字开始，将其认为是新增加的数字，这样第二个数字只需与其左边的第一个数字比较后排好序；在第三个数字，认为前两个已经排好序的数字为手里整理好的牌，那么只需将第三个数字与前两个数字比较即可；以此类推，直到最后一个数字与前面的所有数字比较结束，插入排序完成。</p>
+<h3 id="2-实现逻辑-1"><a class="header" href="#2-实现逻辑-1">2. 实现逻辑</a></h3>
+<blockquote>
+<p>① 从第一个元素开始，该元素可以认为已经被排序<br />
+② 取出下一个元素，在已经排序的元素序列中从后向前扫描<br />
+③如果该元素（已排序）大于新元素，将该元素移到下一位置<br />
+④ 重复步骤③，直到找到已排序的元素小于或者等于新元素的位置<br />
+⑤将新元素插入到该位置后<br />
+⑥ 重复步骤②~⑤</p>
+</blockquote>
+<h3 id="3-动图演示"><a class="header" href="#3-动图演示">3. 动图演示</a></h3>
+<p><img src="https://pic3.zhimg.com/v2-91b76e8e4dab9b0cad9a017d7dd431e2_b.webp" alt="动图封面" /></p>
+<p>插入排序</p>
+<h2 id="4-性能分析-1"><a class="header" href="#4-性能分析-1"><strong>4</strong>. 性能分析</a></h2>
+<blockquote>
+<p>平均时间复杂度：O(N^2)<br />
+最差时间复杂度：O(N^2)<br />
+空间复杂度：O(1)<br />
+排序方式：In-place<br />
+稳定性：稳定</p>
+</blockquote>
+<p>如果插入排序的目标是把n个元素的序列升序排列，那么采用插入排序存在最好情况和最坏情况：</p>
+<blockquote>
+<p>(1) 最好情况：序列已经是升序排列，在这种情况下，需要进行的比较操作需(n-1)次即可。<br />
+(2) 最坏情况：序列是降序排列，那么此时需要进行的比较共有n(n-1)/2次。</p>
+</blockquote>
+<p>插入排序的赋值操作是比较操作的次数减去(n-1)次。平均来说插入排序算法复杂度为O(N^2)。</p>
+<p>最优的空间复杂度为开始元素已排序，则空间复杂度为 0；</p>
+<p>最差的空间复杂度为开始元素为逆排序，则空间复杂度最坏时为 O(N);</p>
+<p>平均的空间复杂度为O(1)</p>
+<h3 id="5完整代码-1"><a class="header" href="#5完整代码-1">5.完整代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef int ElementType;
+
+void Insertion_Sort( ElementType A[], int N )
+{ /* 插入排序 */
+     int P, i;
+     ElementType Tmp;
+     
+     for ( P=1; P&lt;N; P++ ) {
+         Tmp = A[P]; /* 取出未排序序列中的第一个元素*/
+         for ( i=P; i&gt;0 &amp;&amp; A[i-1]&gt;Tmp; i-- )
+             A[i] = A[i-1]; /*依次与已排序序列中元素比较并右移*/
+         A[i] = Tmp; /* 放进合适的位置 */
+     }
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;, &amp;N);
+    ElementType A[N];
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;A[i]);
+    }
+    Insertion_Sort(A, N);
+    int First = 1;
+    for(int i=0; i&lt;N; i++)
+    {
+        if(First)
+        {
+            printf(&quot;%d&quot;,A[i]);
+            First = 0;
+        }
+        else
+        {
+            printf(&quot; %d&quot;, A[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="希尔排序"><a class="header" href="#希尔排序">希尔排序</a></h2>
+<p>希尔排序是不稳定的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021535526.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021535363.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021536562.png" alt="" /></p>
+<p>希尔排序的实质就是分组插入排序，该方法又称递减增量排序算法，因DL．Shell于1959年提出而得名。希尔排序是非稳定的排序算法。</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<blockquote>
+<p>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位</p>
+</blockquote>
+<h3 id="1-基本思想-1"><a class="header" href="#1-基本思想-1">1. 基本思想</a></h3>
+<p>先将整个待排元素序列分割成若干个子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序。</p>
+<p>因为直接插入排序在元素基本有序的情况下（接近最好情况），效率是很高的，因此希尔排序在时间效率上比前两种方法有较大提高。</p>
+<h3 id="2-实现逻辑-2"><a class="header" href="#2-实现逻辑-2">2. 实现逻辑</a></h3>
+<blockquote>
+<p>① 先取一个小于n的整数d1作为第一个增量，把文件的全部记录分成d1个组。<br />
+② 所有距离为d1的倍数的记录放在同一个组中，在各组内进行直接插入排序。<br />
+③ 取第二个增量d2小于d1重复上述的分组和排序，直至所取的增量dt=1(dt小于dt-l小于…小于d2小于d1)，即所有记录放在同一组中进行直接插入排序为止。</p>
+</blockquote>
+<h3 id="3-动图演示-1"><a class="header" href="#3-动图演示-1">3. 动图演示</a></h3>
+<p><img src="https://pic3.zhimg.com/v2-f9616f6892819e579a2d4ab10256a732_b.webp" alt="动图封面" /></p>
+<p>希尔排序</p>
+<p>以一组数字来说操作说明：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-7ef755d2b04f11cb013acb47f10928cc_1440w.webp" alt="" /></p>
+<p>假设有一组｛9, 1, 2, 5, 7, 4, 8, 6, 3, 5｝无需序列。</p>
+<blockquote>
+<p><strong>第一趟排序</strong>： 设 gap1 = N / 2 = 5，即相隔距离为 5 的元素组成一组，可以分为 5 组。接下来，按照直接插入排序的方法对每个组进行排序。<br />
+<strong>第二趟排序</strong>：<br />
+将上次的 gap 缩小一半，即 gap2 = gap1 / 2 = 2 (取整数)。这样每相隔距离为 2 的元素组成一组，可以分为2组。按照直接插入排序的方法对每个组进行排序。<br />
+<strong>第三趟排序</strong>：<br />
+再次把 gap 缩小一半，即gap3 = gap2 / 2 = 1。 这样相隔距离为1的元素组成一组，即只有一组。按照直接插入排序的方法对每个组进行排序。此时，排序已经结束。</p>
+</blockquote>
+<p>注：需要注意一下的是，图中有两个相等数值的元素5和5。我们可以清楚的看到，在排序过程中，两个元素位置交换了。</p>
+<h3 id="4-性能分析-2"><a class="header" href="#4-性能分析-2">4. 性能分析</a></h3>
+<blockquote>
+<p>平均时间复杂度：O(Nlog2N)<br />
+最佳时间复杂度：<br />
+最差时间复杂度：O(N^2)<br />
+空间复杂度：O(1)<br />
+稳定性：不稳定<br />
+复杂性：较复杂</p>
+</blockquote>
+<p>希尔排序的效率取决于增量值gap的选取，时间复杂度并不是一个定值。</p>
+<p>开始时，gap取值较大，子序列中的元素较少，排序速度快，克服了直接插入排序的缺点；其次，gap值逐渐变小后，虽然子序列的元素逐渐变多，但大多元素已基本有序，所以继承了直接插入排序的优点，能以近线性的速度排好序。</p>
+<p>最优的空间复杂度为开始元素已排序，则空间复杂度为 0；最差的空间复杂度为开始元素为逆排序，则空间复杂度为 O(N);平均的空间复杂度为O(1)希尔排序并不只是相邻元素的比较，有许多跳跃式的比较，难免会出现相同元素之间的相对位置发生变化。比如上面的例子中希尔排序中相等数据5就交换了位置，所以希尔排序是不稳定的算法。</p>
+<h3 id="5-完整代码"><a class="header" href="#5-完整代码">5. 完整代码</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021536536.png" alt="" /></p>
+<p>原始希尔排序</p>
+<pre><code class="language-c">void Shell_Sort(ElementType A[], int N)
+{
+    for(int D=N/2; D&gt;0; D=D/2)
+    {
+        for(int P=D; P&lt;N; P++)
+        {
+            ElementType temp = A[P];
+            int i;
+            for(i=P; i&gt;=D &amp;&amp; A[i-D]&gt;temp; i-=D)
+            {
+                A[i] = A[i-D];
+            }
+            A[i] = temp;
+        }
+    }
+}
+</code></pre>
+<p>希尔排序 - 用Sedgewick增量序列</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef int ElementType;
+
+void Shell_Sort( ElementType A[], int N )
+{ /* 希尔排序 - 用Sedgewick增量序列 */
+     int Si, D, P, i;
+     ElementType Tmp;
+     /* 这里只列出一小部分增量 */
+     int Sedgewick[] = {929, 505, 209, 109, 41, 19, 5, 1, 0};
+
+     for ( Si=0; Sedgewick[Si]&gt;=N; Si++ )
+         ; /* 初始的增量Sedgewick[Si]不能超过待排序列长度 */
+
+     for ( D=Sedgewick[Si]; D&gt;0; D=Sedgewick[++Si] )
+         for ( P=D; P&lt;N; P++ ) { /* 插入排序*/
+             Tmp = A[P];
+             for ( i=P; i&gt;=D &amp;&amp; A[i-D]&gt;Tmp; i-=D )
+                 A[i] = A[i-D];
+             A[i] = Tmp;
+         }
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;, &amp;N);
+    ElementType A[N];
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;A[i]);
+    }
+    Shell_Sort(A, N);
+    int First = 1;
+    for(int i=0; i&lt;N; i++)
+    {
+        if(First)
+        {
+            printf(&quot;%d&quot;,A[i]);
+            First = 0;
+        }
+        else
+        {
+            printf(&quot; %d&quot;, A[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="选择排序"><a class="header" href="#选择排序">选择排序</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021601424.png" alt="" /></p>
+<p><strong>选择排序(Selection sort)</strong> 是一种简单直观的排序算法。</p>
+<h3 id="1基本思想-1"><a class="header" href="#1基本思想-1">1.基本思想</a></h3>
+<p>首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+<p>选择排序的思想其实和冒泡排序有点类似，都是在一次排序后把最小的元素放到最前面，或者将最大值放在最后面。但是过程不同，冒泡排序是通过相邻的比较和交换。而选择排序是通过对整体的选择，每一趟从前往后查找出无序区最小值，将最小值交换至无序区最前面的位置。</p>
+<h3 id="2实现逻辑"><a class="header" href="#2实现逻辑">2.实现逻辑</a></h3>
+<blockquote>
+<p>① 第一轮从下标为 1 到下标为 n-1 的元素中选取最小值，若小于第一个数，则交换<br />
+② 第二轮从下标为 2 到下标为 n-1 的元素中选取最小值，若小于第二个数，则交换<br />
+③ 依次类推下去……</p>
+</blockquote>
+<h3 id="3动图演示"><a class="header" href="#3动图演示">3.动图演示</a></h3>
+<p><img src="https://pic1.zhimg.com/v2-1c7e20f306ddc02eb4e3a50fa7817ff4_b.webp" alt="动图" /></p>
+<p>选择排序</p>
+<p><strong>注</strong>：红色表示当前最小值，黄色表示已排序序列，绿色表示当前位置。</p>
+<p>具体的我们以一组无序数列｛20，40，30，10，60，50｝为例分解说明，如下图所示：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-23667fac97d8ee2d6d256b8302c38eaf_1440w.webp" alt="" /></p>
+<h3 id="4-复杂度分析"><a class="header" href="#4-复杂度分析"><strong>4. 复杂度分析</strong></a></h3>
+<blockquote>
+<p>平均时间复杂度：O(N^2)<br />
+最佳时间复杂度：O(N^2)<br />
+最差时间复杂度：O(N^2)<br />
+空间复杂度：O(1)<br />
+排序方式：In-place<br />
+稳定性：不稳定</p>
+</blockquote>
+<p>选择排序的交换操作介于和(n-1)次之间。选择排序的比较操作为n(n-1)/2次之间。选择排序的赋值操作介于0和3(n-1)次之间。</p>
+<p>比较次数O(n^2)，比较次数与关键字的初始状态无关，总的比较次数N = (n-1) + (n-2) +…+ 1 = n x (n-1)/2。交换次数O(n)，最好情况是，已经有序，交换0次；最坏情况是，逆序，交换n-1次。</p>
+<h3 id="5完整代码-2"><a class="header" href="#5完整代码-2">5.完整代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef int ElementType;
+
+void Selection_Sort( ElementType A[], int N )
+{
+     ElementType min, temp;
+     for(int i=0; i&lt;N-1; i++)
+     {
+         min = i;
+         for(int j=i+1; j&lt;N; j++)
+         {
+             if(A[j] &lt; A[min])
+                min = j;
+         }
+         temp = A[i];
+         A[i] = A[min];
+         A[min] = temp;
+     }
+
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;, &amp;N);
+    ElementType A[N];
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;A[i]);
+    }
+    Selection_Sort(A, N);
+    int First = 1;
+    for(int i=0; i&lt;N; i++)
+    {
+        if(First)
+        {
+            printf(&quot;%d&quot;,A[i]);
+            First = 0;
+        }
+        else
+        {
+            printf(&quot; %d&quot;, A[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="堆排序"><a class="header" href="#堆排序">堆排序</a></h2>
+<p>堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021602746.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312021602997.png" alt="" /></p>
+<p>在堆排序中，元素下标从0开始。则对于下标为i的元素，其左、右孩子的下标分别为：  2i+1, 2i+2</p>
+<p>有一组记录（46,77,55,38,41,85），用堆排序建立的初始堆为85,77,55,38,41,46</p>
+<p>注：先建立一个堆再调整</p>
+<p>堆排序最适合解决什么样的问题？</p>
+<p>对时间复杂度要求较高的场景： 堆排序的时间复杂度为 O(n log n)，其中 n 是要排序的元素数量。这使得堆排序在大规模数据集上的性能表现较好，适合对时间效率要求较高的情况。</p>
+<p>对内存空间要求较高的场景： 堆排序是一种原地排序算法，不需要额外的辅助空间，只需要一个数组来存储待排序的元素。这对于内存空间有限的情况下非常有优势。</p>
+<p>不要求稳定排序的场景： 堆排序是一种不稳定的排序算法，即在排序过程中相同元素的相对顺序可能会发生变化。如果对稳定性有要求的话，可能会选择其他稳定的排序算法，如归并排序。</p>
+<p>动态数据流的场景： 堆排序适用于动态数据流，即不断有新的数据加入并需要保持排序状态的情况。由于堆结构的特性，可以较容易地实现在动态数据中插入元素和删除最大/最小元素的操作。</p>
+<p>选择最大/最小的 k 个元素： 由于堆排序的特性，可以方便地找到最大（大顶堆）或最小（小顶堆）的 k 个元素，这在一些特定场景中是很有用的，比如求 Top K 问题。</p>
+<h3 id="1-基本思想-2"><a class="header" href="#1-基本思想-2">1. 基本思想</a></h3>
+<p>利用大顶堆(小顶堆)堆顶记录的是最大关键字(最小关键字)这一特性，使得每次从无序中选择最大记录(最小记录)变得简单。</p>
+<blockquote>
+<p>① 将待排序的序列构造成一个最大堆，此时序列的最大值为根节点<br />
+② 依次将根节点与待排序序列的最后一个元素交换<br />
+③ 再维护从根节点到该元素的前一个节点为最大堆，如此往复，最终得到一个递增序列</p>
+</blockquote>
+<h3 id="2-实现逻辑-3"><a class="header" href="#2-实现逻辑-3">2. 实现逻辑</a></h3>
+<blockquote>
+<p>① 先将初始的<code>R[0…n-1]</code>建立成最大堆，此时是无序堆，而堆顶是最大元素。<br />
+② 再将堆顶<code>R[0]</code>和无序区的最后一个记录<code>R[n-1]</code>交换，由此得到新的无序区<code>R[0…n-2]</code>和有序区<code>R[n-1]</code>，且满足<code>R[0…n-2].keys ≤ R[n-1].key  </code>
+③ 由于交换后新的根<code>R[1]</code>可能违反堆性质，故应将当前无序区<code>R[1..n-1]</code>调整为堆。然后再次将<code>R[1..n-1]</code>中关键字最大的记录<code>R[1]</code>和该区间的最后一个记录<code>R[n-1]</code>交换，由此得到新的无序区<code>R[1..n-2]</code>和有序区<code>R[n-1..n]</code>，且仍满足关系<code>R[1..n-2].keys≤R[n-1..n].keys</code>，同样要将<code>R[1..n-2]</code>调整为堆。<br />
+④ 直到无序区只有一个元素为止。</p>
+</blockquote>
+<h3 id="3-动图演示-2"><a class="header" href="#3-动图演示-2">3. 动图演示</a></h3>
+<p><img src="https://pic3.zhimg.com/v2-b7907d351809293c60658b0b87053c66_b.webp" alt="动图封面" /></p>
+<p>堆排序算法的演示。首先，将元素进行重排，以匹配堆的条件。图中排序过程之前简单的绘出了堆树的结构。</p>
+<p><strong>分步解析说明</strong>：</p>
+<p>实现堆排序需要解决两个问题：</p>
+<blockquote>
+<p>1、如何由一个无序序列建成一个堆？<br />
+2、如何在输出堆顶元素之后，调整剩余元素成为一个新的堆？</p>
+</blockquote>
+<p>假设给定一个组无序数列{100,5,3,11,6,8,7}，带着问题，我们对其进行堆排序操作进行分步操作说明。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-acbdde7cf6f0426e693187c4899716e7_1440w.webp" alt="" /></p>
+<h3 id="31-创建最大堆"><a class="header" href="#31-创建最大堆">3.1 创建最大堆</a></h3>
+<p>①首先我们将数组我们将数组从上至下按顺序排列，转换成二叉树：一个无序堆。每一个三角关系都是一个堆，上面是父节点，下面两个分叉是子节点，两个子节点俗称左孩子、右孩子；</p>
+<p><img src="https://pic2.zhimg.com/80/v2-6db33bd4ddb7937ca5946283ef2acc5d_1440w.webp" alt="" /></p>
+<p>②转换成无序堆之后，我们要努力让这个无序堆变成最大堆(或是最小堆)，即每个堆里都实现父节点的值都大于任何一个子节点的值。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-6db33bd4ddb7937ca5946283ef2acc5d_1440w.webp" alt="" /></p>
+<p>③从最后一个堆开始，即左下角那个没有右孩子的那个堆开始；首先对比左右孩子，由于这个堆没有右孩子，所以只能用左孩子，左孩子的值比父节点的值小所以不需要交换。如果发生交换，要检测子节点是否为其他堆的父节点，如果是，递归进行同样的操作。</p>
+<p>④第二次对比红色三角形内的堆，取较大的子节点，右孩子8胜出，和父节点比较，右孩子8大于父节点3，升级做父节点，与3交换位置，3的位置没有子节点，这个堆建成最大堆。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-29c3af6ba60e66f1d328c164d09b4adc_1440w.webp" alt="" /></p>
+<p>⑤对黄色三角形内堆进行排序，过程和上面一样，最终是右孩子33升为父节点，被交换的右孩子下面也没有子节点，所以直接结束对比。</p>
+<p>⑥最顶部绿色的堆，堆顶100比左右孩子都大，所以不用交换，至此最大堆创建完成。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-cf88501a8092e7b0c4712aa81a875f03_1440w.webp" alt="" /></p>
+<h3 id="32-堆排序最大堆调整"><a class="header" href="#32-堆排序最大堆调整">3.2 堆排序（最大堆调整）</a></h3>
+<p>①首先将堆顶元素100交换至最底部7的位置，7升至堆顶，100所在的底部位置即为有序区，有序区不参与之后的任何对比。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-e96b570c470785e19936abceee95c8ca_1440w.webp" alt="" /></p>
+<p>②在7升至顶部之后，对顶部重新做最大堆调整，左孩子33代替7的位置。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-5bbfec3cb200b9fa7efcf29fe71fc7dd_1440w.webp" alt="" /></p>
+<p>③在7被交换下来后，下面还有子节点，所以需要继续与子节点对比，左孩子11比7大，所以11与7交换位置，交换位置后7下面为有序区，不参与对比，所以本轮结束，无序区再次形成一个最大堆。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-1f490e927a5d7d5e97e9609f7e99b6e5_1440w.webp" alt="" /></p>
+<p>④将最大堆堆顶33交换至堆末尾，扩大有序区；</p>
+<p><img src="https://pic1.zhimg.com/80/v2-d77c2cf77a7b81041fba5871979f3910_1440w.webp" alt="" /></p>
+<p>⑤不断建立最大堆，并且扩大有序区，最终全部有序。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-724e54aaff73bd4c0bf5e5352fc673ce_1440w.webp" alt="" /></p>
+<h3 id="4-复杂度分析-1"><a class="header" href="#4-复杂度分析-1">4. 复杂度分析</a></h3>
+<ul>
+<li>平均时间复杂度：O(nlogn)</li>
+<li>最佳时间复杂度：O(nlogn)</li>
+<li>最差时间复杂度：O(nlogn)</li>
+<li>稳定性：不稳定</li>
+</ul>
+<p>堆排序其实也是一种选择排序，是一种树形选择排序。只不过直接选择排序中，为了从<code>R[1…n]</code>中选择最大记录，需比较n-1次，然后从<code>R[1…n-2]</code>中选择最大记录需比较n-2次。事实上这n-2次比较中有很多已经在前面的n-1次比较中已经做过，而树形选择排序恰好利用树形的特点保存了部分前面的比较结果，因此可以减少比较次数。对于n个关键字序列，最坏情况下每个节点需比较log2(n)次，因此其最坏情况下时间复杂度为nlogn。堆排序为不稳定排序，不适合记录较少的排序。</p>
+<h3 id="5完整代码-3"><a class="header" href="#5完整代码-3">5.完整代码</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef int ElementType;
+
+void Swap( ElementType *a, ElementType *b )
+{
+     ElementType t = *a; *a = *b; *b = t;
+}
+ 
+void PercDown( ElementType A[], int p, int N )
+{ /* 改编代码4.24的PercDown( MaxHeap H, int p )    */
+  /* 将N个元素的数组中以A[p]为根的子堆调整为最大堆 */
+    int Parent, Child;
+    ElementType X;
+
+    X = A[p]; /* 取出根结点存放的值 */
+    for( Parent=p; (Parent*2+1)&lt;N; Parent=Child ) {
+        Child = Parent * 2 + 1;
+        if( (Child!=N-1) &amp;&amp; (A[Child]&lt;A[Child+1]) )
+            Child++;  /* Child指向左右子结点的较大者 */
+        if( X &gt;= A[Child] ) break; /* 找到了合适位置 */
+        else  /* 下滤X */
+            A[Parent] = A[Child];
+    }
+    A[Parent] = X;
+}
+
+void HeapSort( ElementType A[], int N ) 
+{ /* 堆排序 */
+     int i;
+      
+     for ( i=N/2-1; i&gt;=0; i-- )/* 建立最大堆 */
+         PercDown( A, i, N );
+     
+     for ( i=N-1; i&gt;0; i-- ) {
+         /* 删除最大堆顶 */
+         Swap( &amp;A[0], &amp;A[i] ); /* 见代码7.1 */
+         PercDown( A, 0, i );
+     }
+}
+
+int main()
+{
+    int N;
+    scanf(&quot;%d&quot;, &amp;N);
+    ElementType A[N];
+    for(int i=0; i&lt;N; i++)
+    {
+        scanf(&quot;%d&quot;, &amp;A[i]);
+    }
+    Heap_Sort(A, N);
+    int First = 1;
+    for(int i=0; i&lt;N; i++)
+    {
+        if(First)
+        {
+            printf(&quot;%d&quot;,A[i]);
+            First = 0;
+        }
+        else
+        {
+            printf(&quot; %d&quot;, A[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+
+</code></pre>
+<h2 id="归并排序"><a class="header" href="#归并排序">归并排序</a></h2>
+<p>内部排序（数据一次性全部读入内存然后排序）通常不使用归并排序</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031541623.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031542329.png" alt="" /></p>
+<p>归并排序，是创建在归并操作上的一种有效的排序算法。算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。归并排序思路简单，速度仅次于快速排序，为稳定排序算法，一般用于对总体无序，但是各子项相对有序的数列。</p>
+<h3 id="1-基本思想-3"><a class="header" href="#1-基本思想-3">1. 基本思想</a></h3>
+<p>归并排序是用分治思想，分治模式在每一层递归上有三个步骤：</p>
+<ul>
+<li><strong>分解（Divide）</strong>：将n个元素分成个含n/2个元素的子序列。</li>
+<li><strong>解决（Conquer）</strong>：用合并排序法对两个子序列递归的排序。</li>
+<li><strong>合并（Combine）</strong>：合并两个已排序的子序列已得到排序结果。</li>
+</ul>
+<h3 id="2-实现逻辑-4"><a class="header" href="#2-实现逻辑-4">2. 实现逻辑</a></h3>
+<p><strong>2.1 迭代法</strong></p>
+<blockquote>
+<p>① 申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列<br />
+② 设定两个指针，最初位置分别为两个已经排序序列的起始位置<br />
+③ 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置<br />
+④ 重复步骤③直到某一指针到达序列尾<br />
+⑤ 将另一序列剩下的所有元素直接复制到合并序列尾</p>
+</blockquote>
+<p><strong>2.2 递归法</strong></p>
+<blockquote>
+<p>① 将序列每相邻两个数字进行归并操作，形成floor(n/2)个序列，排序后每个序列包含两个元素<br />
+② 将上述序列再次归并，形成floor(n/4)个序列，每个序列包含四个元素<br />
+③ 重复步骤②，直到所有元素排序完毕</p>
+</blockquote>
+<h3 id="3-动图演示-3"><a class="header" href="#3-动图演示-3">3. 动图演示</a></h3>
+<p><img src="https://pic4.zhimg.com/v2-a29c0dd0186d1f8cef3c5ebdedf3e5a3_b.webp" alt="动图封面" /></p>
+<p>归并排序演示</p>
+<p>具体的我们以一组无序数列｛14，12，15，13，11，16｝为例分解说明，如下图所示：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-2958d4f3d9dd9156f1b5dca6788fe8a7_1440w.webp" alt="" /></p>
+<p>上图中首先把一个未排序的序列从中间分割成2部分，再把2部分分成4部分，依次分割下去，直到分割成一个一个的数据，再把这些数据两两归并到一起，使之有序，不停的归并，最后成为一个排好序的序列。</p>
+<h3 id="4-复杂度分析-2"><a class="header" href="#4-复杂度分析-2">4. 复杂度分析</a></h3>
+<blockquote>
+<p>平均时间复杂度：O(nlogn)<br />
+最佳时间复杂度：O(n)<br />
+最差时间复杂度：O(nlogn)<br />
+空间复杂度：O(n)<br />
+排序方式：In-place<br />
+稳定性：稳定</p>
+</blockquote>
+<p>不管元素在什么情况下都要做这些步骤，所以花销的时间是不变的，所以该算法的最优时间复杂度和最差时间复杂度及平均时间复杂度都是一样的为：O( nlogn )</p>
+<p>归并的空间复杂度就是那个临时的数组和递归时压入栈的数据占用的空间：n + logn；所以空间复杂度为: O(n)。</p>
+<p>归并排序算法中，归并最后到底都是相邻元素之间的比较交换，并不会发生相同元素的相对位置发生变化，故是稳定性算法。</p>
+<h3 id="递归实现分而治之"><a class="header" href="#递归实现分而治之">递归实现（分而治之）</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031542795.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031542436.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031543603.png" alt="" /></p>
+<pre><code class="language-c">/* 归并排序 - 递归实现 */
+
+/* L = 左边起始位置, R = 右边起始位置, RightEnd = 右边终点位置*/
+void Merge( ElementType A[], ElementType TmpA[], int L, int R, int RightEnd )
+{ /* 将有序的A[L]~A[R-1]和A[R]~A[RightEnd]归并成一个有序序列 */
+     int LeftEnd, NumElements, Tmp;
+     int i;
+     
+     LeftEnd = R - 1; /* 左边终点位置 */
+     Tmp = L;         /* 有序序列的起始位置 */
+     NumElements = RightEnd - L + 1;
+     
+     while( L &lt;= LeftEnd &amp;&amp; R &lt;= RightEnd ) {
+         if ( A[L] &lt;= A[R] )
+             TmpA[Tmp++] = A[L++]; /* 将左边元素复制到TmpA */
+         else
+             TmpA[Tmp++] = A[R++]; /* 将右边元素复制到TmpA */
+     }
+
+     while( L &lt;= LeftEnd )
+         TmpA[Tmp++] = A[L++]; /* 直接复制左边剩下的 */
+     while( R &lt;= RightEnd )
+         TmpA[Tmp++] = A[R++]; /* 直接复制右边剩下的 */
+         
+     for( i = 0; i &lt; NumElements; i++, RightEnd -- )
+         A[RightEnd] = TmpA[RightEnd]; /* 将有序的TmpA[]复制回A[] */
+}
+
+void Msort( ElementType A[], ElementType TmpA[], int L, int RightEnd )
+{ /* 核心递归排序函数 */ 
+     int Center;
+     
+     if ( L &lt; RightEnd ) {
+          Center = (L+RightEnd) / 2;
+          Msort( A, TmpA, L, Center );              /* 递归解决左边 */ 
+          Msort( A, TmpA, Center+1, RightEnd );     /* 递归解决右边 */  
+          Merge( A, TmpA, L, Center+1, RightEnd );  /* 合并两段有序序列 */ 
+     }
+}
+
+void MergeSort( ElementType A[], int N )
+{ /* 归并排序 */
+     ElementType *TmpA;
+     TmpA = (ElementType *)malloc(N*sizeof(ElementType));
+     
+     if ( TmpA != NULL ) {
+          Msort( A, TmpA, 0, N-1 );
+          free( TmpA );
+     }
+     else printf( &quot;空间不足&quot; );
+}
+</code></pre>
+<h3 id="非递归实现"><a class="header" href="#非递归实现">非递归实现</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031543413.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031544153.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312031544264.png" alt="" /></p>
+<pre><code class="language-c">/* 归并排序 - 循环实现 */
+/* L = 左边起始位置, R = 右边起始位置, RightEnd = 右边终点位置*/
+void Merge( ElementType A[], ElementType TmpA[], int L, int R, int RightEnd )
+{ /* 将有序的A[L]~A[R-1]和A[R]~A[RightEnd]归并成一个有序序列 */
+     int LeftEnd, NumElements, Tmp;
+     int i;
+     
+     LeftEnd = R - 1; /* 左边终点位置 */
+     Tmp = L;         /* 有序序列的起始位置 */
+     NumElements = RightEnd - L + 1;
+     
+     while( L &lt;= LeftEnd &amp;&amp; R &lt;= RightEnd ) {
+         if ( A[L] &lt;= A[R] )
+             TmpA[Tmp++] = A[L++]; /* 将左边元素复制到TmpA */
+         else
+             TmpA[Tmp++] = A[R++]; /* 将右边元素复制到TmpA */
+     }
+
+     while( L &lt;= LeftEnd )
+         TmpA[Tmp++] = A[L++]; /* 直接复制左边剩下的 */
+     while( R &lt;= RightEnd )
+         TmpA[Tmp++] = A[R++]; /* 直接复制右边剩下的 */
+         
+     for( i = 0; i &lt; NumElements; i++, RightEnd -- )
+         A[RightEnd] = TmpA[RightEnd]; /* 将有序的TmpA[]复制回A[] */
+}
+
+/* length = 当前有序子列的长度*/
+void Merge_pass( ElementType A[], ElementType TmpA[], int N, int length )
+{ /* 两两归并相邻有序子列 */
+     int i, j;
+      
+     for ( i=0; i &lt;= N-2*length; i += 2*length )
+         Merge( A, TmpA, i, i+length, i+2*length-1 );
+     if ( i+length &lt; N ) /* 归并最后2个子列*/
+         Merge( A, TmpA, i, i+length, N-1);
+     else /* 最后只剩1个子列*/
+         for ( j = i; j &lt; N; j++ ) TmpA[j] = A[j];
+}
+
+void Merge_Sort( ElementType A[], int N )
+{ 
+     int length; 
+     ElementType *TmpA;
+     
+     length = 1; /* 初始化子序列长度*/
+     TmpA = malloc( N * sizeof( ElementType ) );
+     if ( TmpA != NULL ) {
+          while( length &lt; N ) {
+              Merge_pass( A, TmpA, N, length );
+              length *= 2;
+              Merge_pass( TmpA, A, N, length );
+              length *= 2;
+          }
+          free( TmpA );
+     }
+     else printf( &quot;空间不足&quot; );
+}
+</code></pre>
+<h2 id="快速排序"><a class="header" href="#快速排序">快速排序</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181317212.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181319410.png" alt="" /></p>
+<p>什么是快速排序算法的最好情况？每次正好中分</p>
+<p>快速排序，又称划分交换排序（partition-exchange sort）</p>
+<p>主要步骤：选主元、划分子集、分别处理</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181320287.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181320771.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181320925.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181321744.png" alt="" /></p>
+<h3 id="1基本思想-2"><a class="header" href="#1基本思想-2">1.基本思想</a></h3>
+<p>通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。</p>
+<h3 id="2-实现逻辑-5"><a class="header" href="#2-实现逻辑-5">2. 实现逻辑</a></h3>
+<p>快速排序使用分治法（Divide and conquer）策略来把一个序列（list）分为两个子序列（sub-lists）。</p>
+<blockquote>
+<p>① 从数列中挑出一个元素，称为 “基准”（pivot），<br />
+② 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作。<br />
+③ 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。</p>
+</blockquote>
+<p>递归到最底部时，数列的大小是零或一，也就是已经排序好了。这个算法一定会结束，因为在每次的迭代（iteration）中，它至少会把一个元素摆到它最后的位置去。</p>
+<h3 id="3-动图演示-4"><a class="header" href="#3-动图演示-4">3. 动图演示</a></h3>
+<p><img src="https://pic2.zhimg.com/v2-d4e5d0a778dba725091d8317e6bac939_b.webp" alt="动图封面" /></p>
+<p>快速排序</p>
+<h3 id="4-复杂度"><a class="header" href="#4-复杂度">4. 复杂度</a></h3>
+<blockquote>
+<p>平均时间复杂度：O(NlogN)<br />
+最佳时间复杂度：O(NlogN)<br />
+最差时间复杂度：O(N^2)<br />
+空间复杂度：根据实现方式的不同而不同</p>
+</blockquote>
+<h3 id="5-代码实现"><a class="header" href="#5-代码实现">5. 代码实现</a></h3>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181321253.png" alt="" /></p>
+<pre><code class="language-c">/* 快速排序 */
+
+ElementType Median3( ElementType A[], int Left, int Right )
+{ 
+    int Center = (Left+Right) / 2;
+    if ( A[Left] &gt; A[Center] )
+        Swap( &amp;A[Left], &amp;A[Center] );
+    if ( A[Left] &gt; A[Right] )
+        Swap( &amp;A[Left], &amp;A[Right] );
+    if ( A[Center] &gt; A[Right] )
+        Swap( &amp;A[Center], &amp;A[Right] );
+    /* 此时A[Left] &lt;= A[Center] &lt;= A[Right] */
+    Swap( &amp;A[Center], &amp;A[Right-1] ); /* 将基准Pivot藏到右边*/
+    /* 只需要考虑A[Left+1] … A[Right-2] */
+    return  A[Right-1];  /* 返回基准Pivot */
+}
+
+void Qsort( ElementType A[], int Left, int Right )
+{ /* 核心递归函数 */ 
+     int Pivot, Cutoff, Low, High;
+      
+     if ( Cutoff &lt;= Right-Left ) { /* 如果序列元素充分多，进入快排 */
+          Pivot = Median3( A, Left, Right ); /* 选基准 */ 
+          Low = Left; High = Right-1;
+          while (1) { /*将序列中比基准小的移到基准左边，大的移到右边*/
+               while ( A[++Low] &lt; Pivot ) ;
+               while ( A[--High] &gt; Pivot ) ;
+               if ( Low &lt; High ) Swap( &amp;A[Low], &amp;A[High] );
+               else break;
+          }
+          Swap( &amp;A[Low], &amp;A[Right-1] );   /* 将基准换到正确的位置 */ 
+          Qsort( A, Left, Low-1 );    /* 递归解决左边 */ 
+          Qsort( A, Low+1, Right );   /* 递归解决右边 */  
+     }
+     else InsertionSort( A+Left, Right-Left+1 ); /* 元素太少，用简单排序 */ 
+}
+
+void QuickSort( ElementType A[], int N )
+{ /* 统一接口 */
+     Qsort( A, 0, N-1 );
+}
+</code></pre>
+<h3 id="6快速排序-直接调用库函数"><a class="header" href="#6快速排序-直接调用库函数">6快速排序-直接调用库函数</a></h3>
+<pre><code class="language-c">/* 快速排序 - 直接调用库函数 */
+
+#include &lt;stdlib.h&gt;
+
+/*---------------简单整数排序--------------------*/
+int compare(const void *a, const void *b)
+{ /* 比较两整数。非降序排列 */
+    return (*(int*)a - *(int*)b);
+}
+/* 调用接口 */ 
+qsort(A, N, sizeof(int), compare);
+/*---------------简单整数排序--------------------*/
+
+
+/*--------------- 一般情况下，对结构体Node中的某键值key排序 ---------------*/
+struct Node {
+    int key1, key2;
+} A[MAXN];
+ 
+int compare2keys(const void *a, const void *b)
+{ /* 比较两种键值：按key1非升序排列；如果key1相等，则按key2非降序排列 */
+    int k;
+    if ( ((const struct Node*)a)-&gt;key1 &lt; ((const struct Node*)b)-&gt;key1 )
+        k = 1;
+    else if ( ((const struct Node*)a)-&gt;key1 &gt; ((const struct Node*)b)-&gt;key1 )
+        k = -1;
+    else { /* 如果key1相等 */
+        if ( ((const struct Node*)a)-&gt;key2 &lt; ((const struct Node*)b)-&gt;key2 )
+            k = -1;
+        else
+            k = 1;
+    }
+    return k;
+}
+/* 调用接口 */ 
+qsort(A, N, sizeof(struct Node), compare2keys);
+/*--------------- 一般情况下，对结构体Node中的某键值key排序 ---------------*/
+</code></pre>
+<h2 id="表排序"><a class="header" href="#表排序">表排序</a></h2>
+<p>当待排序的元素是结构体等复杂元素时，可以使用表排序</p>
+<p>间接排序：不移动元素本身，只移动指针</p>
+<p>原因：移动元素本身耗时较长</p>
+<p>例如下面按照关键字排序：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181325443.png" alt="" /></p>
+<p>key行中元素不变，用插入排序改变table行中的元素</p>
+<p>table等于3说明这里放的是<code>A[3]</code></p>
+<p>1给定<code>A[]={46, 23, 8, 99, 31, 12, 85}</code>，调用非递归的归并排序加表排序执行第1趟后，表元素的结果是：</p>
+<ul>
+<li>A.0, 1, 2, 3, 4, 5, 6 </li>
+<li>B.1, 0, 3, 2, 6, 5, 4</li>
+<li>C.1, 0, 2, 3, 5, 4, 6</li>
+<li>D.0, 2, 1, 4, 3, 5, 6</li>
+</ul>
+<p>正确答案：C你选对了</p>
+<p>非递归的归并排序第一趟：两两比较</p>
+<p>2给定<code>A[]={23, 46, 8, 99, 31, 12, 85}</code>，调用表排序后，表元素的结果是：</p>
+<ul>
+<li>A.1, 2, 3, 4, 5, 6, 7</li>
+<li>B.2, 0, 3, 5, 1, 4, 6</li>
+<li>C.3, 6, 1, 5, 2, 7, 4</li>
+<li>D.2, 5, 0, 4, 1, 6, 3</li>
+</ul>
+<p>正确答案：D你选对了</p>
+<h2 id="物理排序"><a class="header" href="#物理排序">物理排序</a></h2>
+<p>在表排序的基础上移动元素本身</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181325289.png" alt="" /></p>
+<p>三种颜色对应三个环</p>
+<p>如何判断一个环的结束？</p>
+<p>正确答案：每访问一个空位i后，就令<code>table[i]=i</code>。当发现<code>table[i]==i</code>时，环就结束了。</p>
+<p>注：有个临时变量Temp</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181326977.png" alt="" /></p>
+<p>物理排序过程的最坏情况是：有N/2个环，每个环包含2个元素</p>
+<h2 id="计数排序"><a class="header" href="#计数排序">计数排序</a></h2>
+<p>**计数排序（Counting sort）**是一种稳定的线性时间排序算法。</p>
+<h3 id="1-基本思想-4"><a class="header" href="#1-基本思想-4">1. 基本思想</a></h3>
+<p>计数排序使用一个额外的数组C，其中第i个元素是待排序数组A中值等于i的元素的个数。</p>
+<p>计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
+<p>用来计数的数组C的长度取决于待排序数组中数据的范围（等于待排序数组的最大值与最小值的差加上1），然后进行分配、收集处理：</p>
+<blockquote>
+<p>① <strong>分配</strong>。扫描一遍原始数组，以当前值-minValue作为下标，将该下标的计数器增1。<br />
+② <strong>收集</strong>。扫描一遍计数器数组，按顺序把值收集起来。</p>
+</blockquote>
+<h3 id="2-实现逻辑-6"><a class="header" href="#2-实现逻辑-6">2. 实现逻辑</a></h3>
+<blockquote>
+<p>① 找出待排序的数组中最大和最小的元素<br />
+② 统计数组中每个值为i的元素出现的次数，存入数组C的第i项<br />
+③ 对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）<br />
+④ 反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1</p>
+</blockquote>
+<h3 id="3-动图演示-5"><a class="header" href="#3-动图演示-5">3. 动图演示</a></h3>
+<p><img src="https://pic1.zhimg.com/v2-827d96b8ca3682e8775f4916f22b45ac_b.webp" alt="动图封面" /></p>
+<p>计数排序演示</p>
+<p>举个例子，假设有无序数列<code>nums=[2, 1, 3, 1, 5]</code>, 首先扫描一遍获取最小值和最大值，maxValue=5, minValue=1，于是开一个长度为5的计数器数组counter</p>
+<blockquote>
+<p><strong>(1) 分配</strong><br />
+统计每个元素出现的频率，得到<code>counter=[2, 1, 1, 0, 1]</code>，例如<code>counter[0]</code>表示值0+minValue=1出现了2次。<br />
+<strong>(2) 收集</strong><br />
+<code>counter[0]=2</code>表示1出现了两次，那就向原始数组写入两个1，<code>counter[1]=1</code>表示2出现了1次，那就向原始数组写入一个2，依次类推，最终原始数组变为<code>[1,1,2,3,5]</code>，排好序了。</p>
+</blockquote>
+<h3 id="4-复杂度分析-3"><a class="header" href="#4-复杂度分析-3">4. 复杂度分析</a></h3>
+<blockquote>
+<p>平均时间复杂度：O(n + k)<br />
+最佳时间复杂度：O(n + k)<br />
+最差时间复杂度：O(n + k)<br />
+空间复杂度：O(n + k)</p>
+</blockquote>
+<p>当输入的元素是n 个0到k之间的整数时，它的运行时间是 O(n + k)。。在实际工作中，当k=O(n)时，我们一般会采用计数排序，这时的运行时间为O(n)。</p>
+<p>计数排序需要两个额外的数组用来对元素进行计数和保存排序的输出结果，所以空间复杂度为O(k+n)。</p>
+<p>计数排序的一个重要性质是它是稳定的：具有相同值的元素在输出数组中的相对次序与它们在输入数组中的相对次序是相同的。也就是说，对两个相同的数来说，在输入数组中先出现的数，在输出数组中也位于前面。</p>
+<p>计数排序的稳定性很重要的一个原因是：计数排序经常会被用于基数排序算法的一个子过程。我们将在后面文章中介绍，为了使基数排序能够正确运行，计数排序必须是稳定的。</p>
+<h3 id="5-代码实现-1"><a class="header" href="#5-代码实现-1">5. 代码实现</a></h3>
+<pre><code class="language-c">// 计数排序（C）
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+void print_arr(int *arr, int n) {
+    int i;
+    printf(&quot;%d&quot;, arr[0]);
+    for (i = 1; i &lt; n; i++)
+        printf(&quot; %d&quot;, arr[i]);
+    printf(&quot;\n&quot;);
+}
+void counting_sort(int *ini_arr, int *sorted_arr, int n) {
+    int *count_arr = (int *) malloc(sizeof(int) * 100);
+    int i, j, k;
+    for (k = 0; k &lt; 100; k++)
+        count_arr[k] = 0;
+    for (i = 0; i &lt; n; i++)
+        count_arr[ini_arr[i]]++;
+    for (k = 1; k &lt; 100; k++)
+        count_arr[k] += count_arr[k - 1];
+    for (j = n; j &gt; 0; j--)
+        sorted_arr[--count_arr[ini_arr[j - 1]]] = ini_arr[j - 1];
+    free(count_arr);
+}
+int main(int argc, char **argv) {
+    int n = 10;
+    int i;
+    int *arr = (int *) malloc(sizeof(int) * n);
+    int *sorted_arr = (int *) malloc(sizeof(int) * n);
+    srand(time(0));
+    for (i = 0; i &lt; n; i++)
+        arr[i] = rand() % 100;
+    printf(&quot;ini_array: &quot;);
+    print_arr(arr, n);
+    counting_sort(arr, sorted_arr, n);
+    printf(&quot;sorted_array: &quot;);
+    print_arr(sorted_arr, n);
+    free(arr);
+    free(sorted_arr);
+    return 0;
+}
+</code></pre>
+<p>计数算法只能使用在已知序列中的元素在0-k之间，且要求排序的复杂度在线性效率上。 Â 计数排序和基数排序很类似，都是非比较型排序算法。但是，它们的核心思想是不同的，基数排序主要是按照进制位对整数进行依次排序，而计数排序主要侧重于对有限范围内对象的统计。基数排序可以采用计数排序来实现。</p>
+<h2 id="桶排序"><a class="header" href="#桶排序">桶排序</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181406594.png" alt="" /></p>
+<p>桶排序（Bucket sort）或所谓的箱排序，是一个排序算法，工作的原理是将数组分到有限数量的桶里。每个桶再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后依次把各个桶中的记录列出来记得到有序序列。桶排序是鸽巢排序的一种归纳结果。当要被排序的数组内的数值是均匀分配的时候，桶排序使用线性时间（Θ(n)）。但桶排序并不是比较排序，他不受到O(n log n)下限的影响。</p>
+<h3 id="1-基本思想-5"><a class="header" href="#1-基本思想-5">1. 基本思想</a></h3>
+<p>桶排序的思想近乎彻底的<strong>分治思想</strong>。</p>
+<p>桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。</p>
+<p>然后基于某种映射函数f ，将待排序列的关键字 k 映射到第i个桶中 (即桶数组B 的下标i) ，那么该关键字k 就作为 <code>B[i]</code>中的元素 (每个桶<code>B[i]</code>都是一组大小为N/M 的序列 )。</p>
+<p>接着将各个桶中的数据有序的合并起来 : 对每个桶<code>B[i]</code> 中的所有元素进行比较排序 (可以使用快排)。然后依次枚举输出 <code>B[0]….B[M]</code> 中的全部内容即是一个有序序列。</p>
+<blockquote>
+<p>补充： 映射函数一般是 <code>f = array[i] / k</code>; k^2 = n; n是所有元素个数</p>
+</blockquote>
+<p>为了使桶排序更加高效，我们需要做到这两点：</p>
+<blockquote>
+<p>1、在额外空间充足的情况下，尽量增大桶的数量；<br />
+2、使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中；</p>
+</blockquote>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。</p>
+<h3 id="2-实现逻辑-7"><a class="header" href="#2-实现逻辑-7">2. 实现逻辑</a></h3>
+<ul>
+<li>设置一个定量的数组当作空桶子。</li>
+<li>寻访序列，并且把项目一个一个放到对应的桶子去。</li>
+<li>对每个不是空的桶子进行排序。</li>
+<li>从不是空的桶子里把项目再放回原来的序列中。</li>
+</ul>
+<h3 id="3-动图演示-6"><a class="header" href="#3-动图演示-6">3. 动图演示</a></h3>
+<p><img src="https://pic3.zhimg.com/v2-b29c1a8ee42595e7992b6d2eb1030f76_b.webp" alt="动图封面" /></p>
+<p>桶排序演示</p>
+<p>分步骤图示说明：设有数组 <code>array = [63, 157, 189, 51, 101, 47, 141, 121, 157, 156, 194, 117, 98, 139, 67, 133, 181, 13, 28, 109]</code>，对其进行桶排序：</p>
+<p><img src="https://pic2.zhimg.com/v2-ff4cdccdb1ff6b90ecdb3fc4d361f725_b.jpg" alt="" /></p>
+<h3 id="4-复杂度分析-4"><a class="header" href="#4-复杂度分析-4">4. 复杂度分析</a></h3>
+<blockquote>
+<p>平均时间复杂度：O(n + k)<br />
+最佳时间复杂度：O(n + k)<br />
+最差时间复杂度：O(n ^ 2)<br />
+空间复杂度：O(n * k)<br />
+稳定性：稳定</p>
+</blockquote>
+<p>桶排序最好情况下使用线性时间O(n)，桶排序的时间复杂度，取决与对各个桶之间数据进行排序的时间复杂度，因为其它部分的时间复杂度都为O(n)。很显然，桶划分的越小，各个桶之间的数据越少，排序所用的时间也会越少。但相应的空间消耗就会增大。</p>
+<h3 id="5-代码实现-2"><a class="header" href="#5-代码实现-2">5. 代码实现</a></h3>
+<p>假设数据分布在<code>[0，100)</code>之间，每个桶内部用链表表示，在数据入桶的同时插入排序。然后把各个桶中的数据合并。</p>
+<pre><code class="language-cpp">#include&lt;iterator&gt;
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+using namespace std;
+const int BUCKET_NUM = 10;
+struct ListNode{
+	explicit ListNode(int i=0):mData(i),mNext(NULL){}
+	ListNode* mNext;
+	int mData;
+};
+ListNode* insert(ListNode* head,int val){
+	ListNode dummyNode;
+	ListNode *newNode = new ListNode(val);
+	ListNode *pre,*curr;
+	dummyNode.mNext = head;
+	pre = &amp;dummyNode;
+	curr = head;
+	while(NULL!=curr &amp;&amp; curr-&gt;mData&lt;=val){
+		pre = curr;
+		curr = curr-&gt;mNext;
+	}
+	newNode-&gt;mNext = curr;
+	pre-&gt;mNext = newNode;
+	return dummyNode.mNext;
+}
+ListNode* Merge(ListNode *head1,ListNode *head2){
+	ListNode dummyNode;
+	ListNode *dummy = &amp;dummyNode;
+	while(NULL!=head1 &amp;&amp; NULL!=head2){
+		if(head1-&gt;mData &lt;= head2-&gt;mData){
+			dummy-&gt;mNext = head1;
+			head1 = head1-&gt;mNext;
+		}else{
+			dummy-&gt;mNext = head2;
+			head2 = head2-&gt;mNext;
+		}
+		dummy = dummy-&gt;mNext;
+	}
+	if(NULL!=head1) dummy-&gt;mNext = head1;
+	if(NULL!=head2) dummy-&gt;mNext = head2;
+	
+	return dummyNode.mNext;
+}
+void BucketSort(int n,int arr[]){
+	vector&lt;ListNode*&gt; buckets(BUCKET_NUM,(ListNode*)(0));
+	for(int i=0;i&lt;n;++i){
+		int index = arr[i]/BUCKET_NUM;
+		ListNode *head = buckets.at(index);
+		buckets.at(index) = insert(head,arr[i]);
+	}
+	ListNode *head = buckets.at(0);
+	for(int i=1;i&lt;BUCKET_NUM;++i){
+		head = Merge(head,buckets.at(i));
+	}
+	for(int i=0;i&lt;n;++i){
+		arr[i] = head-&gt;mData;
+		head = head-&gt;mNext;
+	}
+}
+</code></pre>
+<p>桶排序是计数排序的变种，它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。把计数排序中相邻的m个”小桶”放到一个”大桶”中，在分完桶后，对每个桶进行排序（一般用快排），然后合并成最后的结果。</p>
+<p>算法思想和散列中的开散列法差不多，当冲突时放入同一个桶中；可应用于数据量分布比较均匀，或比较侧重于区间数量时。</p>
+<p>桶排序最关键的建桶，如果桶设计得不好的话桶排序是几乎没有作用的。通常情况下，上下界有两种取法，第一种是取一个10^n或者是2^n的数，方便实现。另一种是取数列的最大值和最小值然后均分作桶.</p>
+<h2 id="基数排序"><a class="header" href="#基数排序">基数排序</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181407873.png" alt="" /></p>
+<p>基数排序是稳定的算法。</p>
+<p>10个基数就建立10个桶</p>
+<p>基数排序（Radix sort）是一种非比较型整数排序算法。</p>
+<h3 id="1-基本思想-6"><a class="header" href="#1-基本思想-6">1. 基本思想</a></h3>
+<p>原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序的方式可以采用LSD（Least significant digital）或MSD（Most significant digital），LSD的排序方式由键值的最右边开始，而MSD则相反，由键值的最左边开始。</p>
+<ul>
+<li><strong>MSD</strong>：先从高位开始进行排序，在每个关键字上，可采用计数排序</li>
+<li><strong>LSD</strong>：先从低位开始进行排序，在每个关键字上，可采用桶排序</li>
+</ul>
+<h3 id="2-实现逻辑-8"><a class="header" href="#2-实现逻辑-8">2. 实现逻辑</a></h3>
+<blockquote>
+<p>① 将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零。<br />
+② 从最低位开始，依次进行一次排序。<br />
+③ 这样从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列。</p>
+</blockquote>
+<h3 id="3-动图演示-7"><a class="header" href="#3-动图演示-7">3. 动图演示</a></h3>
+<p><img src="https://pic1.zhimg.com/v2-603a48e7a7a6e2093c6c9a0365775823.jpg?source=382ee89a" alt="" /></p>
+<p>分步图示说明：设有数组 array = {53, 3, 542, 748, 14, 214, 154, 63, 616}，对其进行基数排序：</p>
+<p><img src="https://pic4.zhimg.com/v2-5ae4857fa248035ecec780583c5e3303_b.jpg" alt="" /></p>
+<p>在上图中，首先将所有待比较数字统一为统一位数长度，接着从最低位开始，依次进行排序。</p>
+<ul>
+<li>按照个位数进行排序。</li>
+<li>按照十位数进行排序。</li>
+<li>按照百位数进行排序。</li>
+</ul>
+<p>排序后，数列就变成了一个有序序列。</p>
+<h3 id="4-复杂度分析-5"><a class="header" href="#4-复杂度分析-5">4. 复杂度分析</a></h3>
+<blockquote>
+<p>时间复杂度：O(k*N)<br />
+空间复杂度：O(k + N)<br />
+稳定性：稳定</p>
+</blockquote>
+<p>设待排序的数组<code>R[1..n]</code>，数组中最大的数是d位数，基数为r（如基数为10，即10进制，最大有10种可能，即最多需要10个桶来映射数组元素）。</p>
+<p>处理一位数，需要将数组元素映射到r个桶中，映射完成后还需要收集，相当于遍历数组一遍，最多元素数为n，则时间复杂度为O(n+r)。所以，总的时间复杂度为O(d*(n+r))。</p>
+<p>基数排序过程中，用到一个计数器数组，长度为r，还用到一个r_n的二位数组来做为桶，所以空间复杂度为O(r_n)。</p>
+<p>基数排序基于分别排序，分别收集，所以是稳定的。</p>
+<h3 id="5基数排序---次位优先代码实现"><a class="header" href="#5基数排序---次位优先代码实现">5.基数排序 - 次位优先代码实现</a></h3>
+<pre><code class="language-c">/* 基数排序 - 次位优先 */
+
+/* 假设元素最多有MaxDigit个关键字，基数全是同样的Radix */
+#define MaxDigit 4
+#define Radix 10
+
+/* 桶元素结点 */
+typedef struct Node *PtrToNode;
+struct Node {
+    int key;
+    PtrToNode next;
+};
+
+/* 桶头结点 */
+struct HeadNode {
+    PtrToNode head, tail;
+};
+typedef struct HeadNode Bucket[Radix];
+ 
+int GetDigit ( int X, int D )
+{ /* 默认次位D=1, 主位D&lt;=MaxDigit */
+    int d, i;
+    
+    for (i=1; i&lt;=D; i++) {
+        d = X % Radix;
+        X /= Radix;
+    }
+    return d;
+}
+
+void LSDRadixSort( ElementType A[], int N )
+{ /* 基数排序 - 次位优先 */
+     int D, Di, i;
+     Bucket B;
+     PtrToNode tmp, p, List = NULL; 
+     
+     for (i=0; i&lt;Radix; i++) /* 初始化每个桶为空链表 */
+         B[i].head = B[i].tail = NULL;
+     for (i=0; i&lt;N; i++) { /* 将原始序列逆序存入初始链表List */
+         tmp = (PtrToNode)malloc(sizeof(struct Node));
+         tmp-&gt;key = A[i];
+         tmp-&gt;next = List;
+         List = tmp;
+     }
+     /* 下面开始排序 */ 
+     for (D=1; D&lt;=MaxDigit; D++) { /* 对数据的每一位循环处理 */
+         /* 下面是分配的过程 */
+         p = List;
+         while (p) {
+             Di = GetDigit(p-&gt;key, D); /* 获得当前元素的当前位数字 */
+             /* 从List中摘除 */
+             tmp = p; p = p-&gt;next;
+             /* 插入B[Di]号桶尾 */
+             tmp-&gt;next = NULL;
+             if (B[Di].head == NULL)
+                 B[Di].head = B[Di].tail = tmp;
+             else {
+                 B[Di].tail-&gt;next = tmp;
+                 B[Di].tail = tmp;
+             }
+         }
+         /* 下面是收集的过程 */
+         List = NULL; 
+         for (Di=Radix-1; Di&gt;=0; Di--) { /* 将每个桶的元素顺序收集入List */
+             if (B[Di].head) { /* 如果桶不为空 */
+                 /* 整桶插入List表头 */
+                 B[Di].tail-&gt;next = List;
+                 List = B[Di].head;
+                 B[Di].head = B[Di].tail = NULL; /* 清空桶 */
+             }
+         }
+     }
+     /* 将List倒入A[]并释放空间 */
+     for (i=0; i&lt;N; i++) {
+        tmp = List;
+        List = List-&gt;next;
+        A[i] = tmp-&gt;key;
+        free(tmp);
+     } 
+}
+</code></pre>
+<h3 id="5基数排序---主位优先代码实现"><a class="header" href="#5基数排序---主位优先代码实现">5.基数排序 - 主位优先代码实现</a></h3>
+<pre><code class="language-c">/* 基数排序 - 主位优先 */
+
+/* 假设元素最多有MaxDigit个关键字，基数全是同样的Radix */
+
+#define MaxDigit 4
+#define Radix 10
+
+/* 桶元素结点 */
+typedef struct Node *PtrToNode;
+struct Node{
+    int key;
+    PtrToNode next;
+};
+
+/* 桶头结点 */
+struct HeadNode {
+    PtrToNode head, tail;
+};
+typedef struct HeadNode Bucket[Radix];
+ 
+int GetDigit ( int X, int D )
+{ /* 默认次位D=1, 主位D&lt;=MaxDigit */
+    int d, i;
+    
+    for (i=1; i&lt;=D; i++) {
+        d = X%Radix;
+        X /= Radix;
+    }
+    return d;
+}
+
+void MSD( ElementType A[], int L, int R, int D )
+{ /* 核心递归函数: 对A[L]...A[R]的第D位数进行排序 */
+     int Di, i, j;
+     Bucket B;
+     PtrToNode tmp, p, List = NULL; 
+     if (D==0) return; /* 递归终止条件 */
+     
+     for (i=0; i&lt;Radix; i++) /* 初始化每个桶为空链表 */
+         B[i].head = B[i].tail = NULL;
+     for (i=L; i&lt;=R; i++) { /* 将原始序列逆序存入初始链表List */
+         tmp = (PtrToNode)malloc(sizeof(struct Node));
+         tmp-&gt;key = A[i];
+         tmp-&gt;next = List;
+         List = tmp;
+     }
+     /* 下面是分配的过程 */
+     p = List;
+     while (p) {
+         Di = GetDigit(p-&gt;key, D); /* 获得当前元素的当前位数字 */
+         /* 从List中摘除 */
+         tmp = p; p = p-&gt;next;
+         /* 插入B[Di]号桶 */
+         if (B[Di].head == NULL) B[Di].tail = tmp;
+         tmp-&gt;next = B[Di].head;
+         B[Di].head = tmp;
+     }
+     /* 下面是收集的过程 */
+     i = j = L; /* i, j记录当前要处理的A[]的左右端下标 */
+     for (Di=0; Di&lt;Radix; Di++) { /* 对于每个桶 */
+         if (B[Di].head) { /* 将非空的桶整桶倒入A[], 递归排序 */
+             p = B[Di].head;
+             while (p) {
+                 tmp = p;
+                 p = p-&gt;next;
+                 A[j++] = tmp-&gt;key;
+                 free(tmp);
+             }
+             /* 递归对该桶数据排序, 位数减1 */
+             MSD(A, i, j-1, D-1);
+             i = j; /* 为下一个桶对应的A[]左端 */
+         } 
+     } 
+}
+
+void MSDRadixSort( ElementType A[], int N )
+{ /* 统一接口 */
+    MSD(A, 0, N-1, MaxDigit); 
+}
+</code></pre>
+<p>基数排序与计数排序、桶排序这三种排序算法都利用了桶的概念，但对桶的使用方法上有明显差异：</p>
+<ul>
+<li>基数排序：根据键值的每位数字来分配桶；</li>
+<li>计数排序：每个桶只存储单一键值；</li>
+<li>桶排序：每个桶存储一定范围的数值；</li>
+</ul>
+<p>基数排序不是直接根据元素整体的大小进行元素比较，而是将原始列表元素分成多个部分，对每一部分按一定的规则进行排序，进而形成最终的有序列表。</p>
+<h2 id="多关键字排序"><a class="header" href="#多关键字排序">多关键字排序</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181407916.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181407609.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="mooc-pta排序题目"><a class="header" href="#mooc-pta排序题目">MOOC-PTA排序题目</a></h1>
 <ul>
