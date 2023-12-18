@@ -175,6 +175,390 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="最短路径算法"><a class="header" href="#最短路径算法">最短路径算法</a></h1>
+<ul>
+<li><a href="#%E5%8D%95%E6%BA%90%E6%97%A0%E6%9D%83%E5%9B%BE%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95">单源无权图最短路算法</a>
+<ul>
+<li><a href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E5%AD%98%E5%82%A8---%E6%97%A0%E6%9D%83%E5%9B%BE%E7%9A%84%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95">邻接表存储 - 无权图的单源最短路算法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8D%95%E6%BA%90%E6%9C%89%E6%9D%83%E5%9B%BE%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95dijkstra%E7%AE%97%E6%B3%95">单源有权图最短路径算法——Dijkstra算法</a>
+<ul>
+<li><a href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8---%E6%9C%89%E6%9D%83%E5%9B%BE%E7%9A%84%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95">邻接矩阵存储 - 有权图的单源最短路算法</a></li>
+<li><a href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8---%E6%9C%89%E6%9D%83%E5%9B%BE%E7%9A%84%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E5%AE%9E%E4%BE%8B">邻接矩阵存储 - 有权图的单源最短路算法实例</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A4%9A%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95floyd%E7%AE%97%E6%B3%95">多源最短路算法——Floyd算法</a>
+<ul>
+<li><a href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E5%AD%98%E5%82%A8---%E5%A4%9A%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95">邻接矩阵存储 - 多源最短路算法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%86%E6%94%AF%E9%99%90%E7%95%8C%E6%B3%95">分支限界法</a></li>
+<li><a href="#bellman-ford%E7%AE%97%E6%B3%95">Bellman-Ford算法</a></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150023866.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150023476.png" alt="" /></p>
+<h2 id="单源无权图最短路算法"><a class="header" href="#单源无权图最短路算法">单源无权图最短路算法</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150023847.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150023914.png" alt="" /></p>
+<p><code>dist[W]</code> = V 到 W 的最短距离；那么<code>dist[W]</code>应该被初始化为多少呢？D</p>
+<ul>
+<li>A.正无穷</li>
+<li>B.负无穷</li>
+<li>C.-1</li>
+<li>D.这三种都可以</li>
+</ul>
+<p>随便一个不可能的数字即可表示没被访问，注意这里是无权图。</p>
+<p>如果有|V|个顶点和|E|条边的图用邻接表存储，则算法的时间复杂度是多少？</p>
+<pre><code class="language-c">void Unweighted ( Vertex S ) 
+{ 
+	Enqueue(S, Q);
+	while(!IsEmpty(Q)){
+	    V = Dequeue(Q); 
+	    for ( V 的每个邻接点 W )
+	      if ( dist[W] == -1  ) {
+	        dist[W] = dist[V]+1;
+	        path[W] = V;
+	        Enqueue(W, Q);
+      }
+  }
+}
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312180956024.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312180959798.png" alt="" /></p>
+<h3 id="邻接表存储---无权图的单源最短路算法"><a class="header" href="#邻接表存储---无权图的单源最短路算法">邻接表存储 - 无权图的单源最短路算法</a></h3>
+<pre><code class="language-c">/* 邻接表存储 - 无权图的单源最短路算法 */
+
+/* dist[]和path[]全部初始化为-1 */
+void Unweighted ( LGraph Graph, int dist[], int path[], Vertex S )
+{
+    Queue Q;
+    Vertex V;
+    PtrToAdjVNode W;
+    
+    Q = CreateQueue( Graph-&gt;Nv ); /* 创建空队列, MaxSize为外部定义的常数 */
+    dist[S] = 0; /* 初始化源点 */
+    AddQ (Q, S);
+
+    while( !IsEmpty(Q) ){
+        V = DeleteQ(Q);
+        for ( W=Graph-&gt;G[V].FirstEdge; W; W=W-&gt;Next ) /* 对V的每个邻接点W-&gt;AdjV */
+            if ( dist[W-&gt;AdjV]==-1 ) { /* 若W-&gt;AdjV未被访问过 */
+                dist[W-&gt;AdjV] = dist[V]+1; /* W-&gt;AdjV到S的距离更新 */
+                path[W-&gt;AdjV] = V; /* 将V记录在S到W-&gt;AdjV的路径上 */
+                AddQ(Q, W-&gt;AdjV);
+            }
+    } /* while结束*/
+}
+</code></pre>
+<h2 id="单源有权图最短路径算法dijkstra算法"><a class="header" href="#单源有权图最短路径算法dijkstra算法">单源有权图最短路径算法——Dijkstra算法</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150024318.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150024396.png" alt="" /></p>
+<p>如果收录v使得s到w的路径变短，则：s到w的路径一定经过v，并且v到w有一条边</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150024069.png" alt="" /></p>
+<p>Dijkstra算法中的dist应该如何初始化？如果s到w有直接的边，则<code>dist[w]=&lt;s,w&gt;的权重</code>；否则<code>dist[w]</code>定义为A</p>
+<ul>
+<li>A.正无穷</li>
+<li>B.负无穷</li>
+<li>C. -1</li>
+<li>D.这三种都可以</li>
+</ul>
+<p>注：这里是根据不等式结果更新dist数组的，不能随便初始化</p>
+<pre><code class="language-c">void Dijkstra( Vertex s )
+{ while (1) {
+    V = 未收录顶点中dist最小者;
+    if ( 这样的V不存在 )
+      break; 
+    collected[V] = true;
+    for ( V 的每个邻接点 W )
+      if ( collected[W] == false ) 
+    if ( dist[V]+E&lt;V,W&gt; &lt; dist[W] ) {
+         dist[W] = dist[V] + E&lt;V,W&gt; ;
+         path[W] = V;
+    }
+  }
+}
+</code></pre>
+<p>算法的时间复杂度是多少？</p>
+<p>不好计算，取决于如何从未收录顶点中选出dist最小者</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150025731.png" alt="" /></p>
+<h3 id="邻接矩阵存储---有权图的单源最短路算法"><a class="header" href="#邻接矩阵存储---有权图的单源最短路算法">邻接矩阵存储 - 有权图的单源最短路算法</a></h3>
+<pre><code class="language-c">/* 邻接矩阵存储 - 有权图的单源最短路算法 */
+
+Vertex FindMinDist( MGraph Graph, int dist[], int collected[] )
+{ /* 返回未被收录顶点中dist最小者 */
+    Vertex MinV, V;
+    int MinDist = INFINITY;
+
+    for (V=0; V&lt;Graph-&gt;Nv; V++) {
+        if ( collected[V]==false &amp;&amp; dist[V]&lt;MinDist) {
+            /* 若V未被收录，且dist[V]更小 */
+            MinDist = dist[V]; /* 更新最小距离 */
+            MinV = V; /* 更新对应顶点 */
+        }
+    }
+    if (MinDist &lt; INFINITY) /* 若找到最小dist */
+        return MinV; /* 返回对应的顶点下标 */
+    else return ERROR;  /* 若这样的顶点不存在，返回错误标记 */
+}
+
+bool Dijkstra( MGraph Graph, int dist[], int path[], Vertex S )
+{
+    int collected[MaxVertexNum];
+    Vertex V, W;
+
+    /* 初始化：此处默认邻接矩阵中不存在的边用INFINITY表示 */
+    for ( V=0; V&lt;Graph-&gt;Nv; V++ ) {
+        dist[V] = Graph-&gt;G[S][V];
+        if ( dist[V]&lt;INFINITY )
+            path[V] = S;
+        else
+            path[V] = -1;
+        collected[V] = false;
+    }
+    /* 先将起点收入集合 */
+    dist[S] = 0;
+    collected[S] = true;
+
+    while (1) {
+        /* V = 未被收录顶点中dist最小者 */
+        V = FindMinDist( Graph, dist, collected );
+        if ( V==ERROR ) /* 若这样的V不存在 */
+            break;      /* 算法结束 */
+        collected[V] = true;  /* 收录V */
+        for( W=0; W&lt;Graph-&gt;Nv; W++ ) /* 对图中的每个顶点W */
+            /* 若W是V的邻接点并且未被收录 */
+            if ( collected[W]==false &amp;&amp; Graph-&gt;G[V][W]&lt;INFINITY ) {
+                if ( Graph-&gt;G[V][W]&lt;0 ) /* 若有负边 */
+                    return false; /* 不能正确解决，返回错误标记 */
+                /* 若收录V使得dist[W]变小 */
+                if ( dist[V]+Graph-&gt;G[V][W] &lt; dist[W] ) {
+                    dist[W] = dist[V]+Graph-&gt;G[V][W]; /* 更新dist[W] */
+                    path[W] = V; /* 更新S到W的路径 */
+                }
+            }
+    } /* while结束*/
+    return true; /* 算法执行完毕，返回正确标记 */
+}
+</code></pre>
+<h3 id="邻接矩阵存储---有权图的单源最短路算法实例"><a class="header" href="#邻接矩阵存储---有权图的单源最短路算法实例">邻接矩阵存储 - 有权图的单源最短路算法实例</a></h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define MaxVertexNum 100
+#define INFINITY 65535
+
+int visited[MaxVertexNum];
+int dist[MaxVertexNum];
+int path[MaxVertexNum];
+
+typedef int Vertex;
+typedef int WeightType;
+
+typedef struct ENode *PtrToENode;
+struct ENode
+{
+    Vertex V1;
+    Vertex V2;
+    WeightType Weight;
+};
+typedef PtrToENode Edge;
+
+typedef struct GNode *PtrToGNode;
+struct GNode
+{
+    int Nv;
+    int Ne;
+    WeightType G[MaxVertexNum][MaxVertexNum];
+};
+typedef PtrToGNode MGraph;
+
+MGraph CreateGraph(int VertexNum)
+{
+    MGraph Graph = (MGraph)malloc(sizeof(struct GNode));
+    Graph-&gt;Nv = VertexNum;
+    Graph-&gt;Ne = 0;
+    Vertex V1,V2;
+    for(Vertex V1=0; V1&lt;Graph-&gt;Nv; V1++)
+        for(Vertex V2=0; V2&lt;Graph-&gt;Nv; V2++)
+            Graph-&gt;G[V1][V2] = 0;
+
+    return Graph;
+}
+
+void InsertEdge(MGraph Graph, Edge E)
+{
+    Graph-&gt;G[E-&gt;V1][E-&gt;V2] = E-&gt;Weight;
+}
+
+MGraph BuildGraph()
+{
+    int Nv;
+    Edge E;
+    scanf(&quot;%d&quot;, &amp;Nv);
+    MGraph Graph = CreateGraph(Nv);
+    scanf(&quot;%d&quot;, &amp;(Graph-&gt;Ne));
+    if((Graph-&gt;Ne) != 0)
+    {
+        E = (Edge)malloc(sizeof(struct ENode));
+        for(int i=0; i&lt;Graph-&gt;Ne; i++)
+        {
+            scanf(&quot;%d %d %d&quot;,&amp;E-&gt;V1,&amp;E-&gt;V2,&amp;E-&gt;Weight);
+            InsertEdge(Graph, E);
+        }
+    }
+    return Graph;
+}
+
+void ResetVisited()
+{
+    for(int i=0; i&lt;MaxVertexNum; i++)
+        visited[i] = 0;
+}
+
+void Dijkstra(MGraph Graph, Vertex V)
+{
+    ResetVisited();
+    for(int i=0; i&lt;Graph-&gt;Nv; i++)
+    {
+        if(Graph-&gt;G[V][i]&gt;0 &amp;&amp; V!=i)
+        {
+            dist[i] = Graph-&gt;G[V][i];
+            path[i] = V;
+        }
+        else
+        {
+            dist[i] = INFINITY;
+            path[i] = -1;
+        }
+    }
+    dist[V] = 0;
+    path[V] = V;
+    visited[V] = 1;
+    for(int i=1; i&lt;Graph-&gt;Nv; i++)
+    {
+        int minDist = INT_MAX;
+        int index;
+        for(int j=0; j&lt;Graph-&gt;Nv; j++)
+        {
+            if(visited[j]==0 &amp;&amp; dist[j]&lt;minDist)
+            {
+                minDist = dist[j];
+                index = j;
+            }
+        }
+        visited[index] = 1;
+        for(int k=0; k&lt;Graph-&gt;Nv; k++)
+        {
+            if(visited[k]==0 &amp;&amp; Graph-&gt;G[index][k]&gt;0 &amp;&amp; minDist+Graph-&gt;G[index][k]&lt;dist[k])
+            {
+                dist[k] = minDist+Graph-&gt;G[index][k];
+                path[k] = index;
+            }
+        }
+    }
+
+}
+
+void PrintPath(int path[], int distance)
+{
+    int temp = distance;
+    int count = 1;
+    int collected[MaxVertexNum] = {0};
+
+    while(path[temp]!=0)
+    {
+        collected[count] = path[temp];
+        count++;
+        temp = path[temp];
+    }
+    collected[count] = path[temp];
+    while(count!=0)
+    {
+        printf(&quot;v%d-&gt;&quot;, collected[count]);
+        count--;
+    }
+    printf(&quot;v%d&quot;,distance);
+}
+
+int main()
+{
+    MGraph Graph = BuildGraph();
+    Dijkstra(Graph, 0);
+    int distance = 5;
+    PrintPath(path, distance);
+    printf(&quot;\ncost distance :%d&quot;,dist[distance]);
+    return 0;
+}
+</code></pre>
+<p>输入数据：</p>
+<pre><code>7 12
+2 0 4
+2 5 5
+0 1 2
+0 3 1
+1 4 10
+1 3 3
+3 2 2
+3 5 8
+3 6 4
+3 4 2
+4 6 6
+6 5 1
+</code></pre>
+<p>输出结果：</p>
+<pre><code>v0-&gt;v3-&gt;v6-&gt;v5
+cost distance :6
+</code></pre>
+<h2 id="多源最短路算法floyd算法"><a class="header" href="#多源最短路算法floyd算法">多源最短路算法——Floyd算法</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150025085.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150027534.png" alt="" /></p>
+<p>D矩阵应该初始化为什么？</p>
+<ul>
+<li>A.带权的邻接矩阵，对角元是0</li>
+<li>B.带权的邻接矩阵，对角元是无穷大</li>
+<li>C.全是0的矩阵</li>
+<li>D.全是无穷大的矩阵</li>
+</ul>
+<p>正确答案：A你选对了</p>
+<p>如果i和j之间没有直接的边，<code>D[i][j]</code>应该定义为什么？</p>
+<ul>
+<li>A.正无穷</li>
+<li>B.0</li>
+<li>C.负无穷</li>
+<li>D.这三种都可以</li>
+</ul>
+<p>正确答案：A你选对了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312150027520.png" alt="" /></p>
+<h3 id="邻接矩阵存储---多源最短路算法"><a class="header" href="#邻接矩阵存储---多源最短路算法">邻接矩阵存储 - 多源最短路算法</a></h3>
+<pre><code class="language-c">/* 邻接矩阵存储 - 多源最短路算法 */
+
+bool Floyd( MGraph Graph, WeightType D[][MaxVertexNum], Vertex path[][MaxVertexNum] )
+{
+    Vertex i, j, k;
+
+    /* 初始化 */
+    for ( i=0; i&lt;Graph-&gt;Nv; i++ )
+        for( j=0; j&lt;Graph-&gt;Nv; j++ ) {
+            D[i][j] = Graph-&gt;G[i][j];
+            path[i][j] = -1;
+        }
+
+    for( k=0; k&lt;Graph-&gt;Nv; k++ )
+        for( i=0; i&lt;Graph-&gt;Nv; i++ )
+            for( j=0; j&lt;Graph-&gt;Nv; j++ )
+                if( D[i][k] + D[k][j] &lt; D[i][j] ) {
+                    D[i][j] = D[i][k] + D[k][j];
+                    if ( i==j &amp;&amp; D[i][j]&lt;0 ) /* 若发现负值圈 */
+                        return false; /* 不能正确解决，返回错误标记 */
+                    path[i][j] = k;
+                }
+    return true; /* 算法执行完毕，返回正确标记 */
+}
+</code></pre>
+<h2 id="分支限界法"><a class="header" href="#分支限界法"><strong>分支限界法</strong></a></h2>
+<p>https://blog.csdn.net/lcw_2015/article/details/52892501</p>
+<h2 id="bellman-ford算法"><a class="header" href="#bellman-ford算法"><strong>Bellman-Ford算法</strong></a></h2>
 
                     </main>
 
