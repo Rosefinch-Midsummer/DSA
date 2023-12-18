@@ -201,13 +201,20 @@
 <li><a href="#%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95">分离链接法</a></li>
 </ul>
 </li>
-<li><a href="#%E6%95%A3%E5%88%97%E8%A1%A8%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">散列表的性能分析</a>
-<ul>
+<li><a href="#%E6%95%A3%E5%88%97%E8%A1%A8%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">散列表的性能分析</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8%E5%AE%9E%E7%8E%B0">基于数组的哈希表实现</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8%E5%AE%9E%E7%8E%B0">基于链表的哈希表实现</a></li>
 <li><a href="#%E5%93%88%E5%B8%8C%E8%A1%A8%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B%E7%BB%9F%E8%AE%A1%E8%AF%8D%E9%A2%91">哈希表应用实例：统计词频</a></li>
 </ul>
 </li>
-<li><a href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8%E5%AE%9E%E7%8E%B0">基于数组的哈希表实现</a></li>
-<li><a href="#%E5%9F%BA%E4%BA%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8%E5%AE%9E%E7%8E%B0">基于链表的哈希表实现</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D">字符串匹配</a>
+<ul>
+<li><a href="#%E6%99%AE%E9%80%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0">普通字符串匹配实现</a></li>
+<li><a href="#kmp%E7%AE%97%E6%B3%95%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D">KMP算法——字符串匹配</a>
+<ul>
+<li><a href="#%E5%AE%9E%E4%BE%8Bpta-kmp-%E4%B8%B2%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D">实例：PTA KMP 串的模式匹配</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -516,7 +523,6 @@ void DestroyTable( HashTable H )
 <p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312061548330.png" alt="" /></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312061549295.png" alt="" /></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312061549070.png" alt="" /></p>
-<h3 id="哈希表应用实例统计词频"><a class="header" href="#哈希表应用实例统计词频">哈希表应用实例：统计词频</a></h3>
 <h2 id="基于数组的哈希表实现"><a class="header" href="#基于数组的哈希表实现">基于数组的哈希表实现</a></h2>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
@@ -802,6 +808,225 @@ int main()
 </code></pre>
 <pre><code>35:蓬蒿人
 29:Young   39:哦哦哦
+</code></pre>
+<h2 id="哈希表应用实例统计词频"><a class="header" href="#哈希表应用实例统计词频">哈希表应用实例：统计词频</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181705164.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181705375.png" alt="" /></p>
+<h1 id="字符串匹配"><a class="header" href="#字符串匹配">字符串匹配</a></h1>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181711736.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181711758.png" alt="" /></p>
+<h2 id="普通字符串匹配实现"><a class="header" href="#普通字符串匹配实现">普通字符串匹配实现</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181712185.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181712051.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181712723.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181713791.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef char* Position;
+#define NotFound NULL
+int main()
+{
+	char string[] = &quot;This is a simple example.&quot;;
+	char pattern[] = &quot;simple&quot;;
+	Position p = strstr(string, pattern);
+	if (p==NotFound) 
+		printf(&quot;Not Found.\n&quot;);
+	else
+        printf(&quot;%s\n&quot;,p);
+	return 0;
+}
+
+</code></pre>
+<pre><code>simple example.
+</code></pre>
+<h2 id="kmp算法字符串匹配"><a class="header" href="#kmp算法字符串匹配">KMP算法——字符串匹配</a></h2>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181713171.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181713690.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181714862.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181714583.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181714709.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181715273.png" alt="" /></p>
+<p>当<code>pattern[match[j-1]+1] != pattern[j]</code> 时，下一个待与<code> pattern[j]</code> 比较的元素下标是：D</p>
+<ul>
+<li>A.<code>match[j-2]</code></li>
+<li>B.<code>match[j-2]+1</code></li>
+<li>C<code>.match[match[j-1]]</code></li>
+<li>D. <code>match[match[j-1]]+1</code></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181715587.png" alt="" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Rosefinch-Midsummer/MyImagesHost03/img/202312181715659.png" alt="" /></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt; 
+#include &lt;stdlib.h&gt;
+
+typedef int Position;
+#define NotFound -1
+
+void BuildMatch( char *pattern, int *match )
+{
+	Position i, j;
+	int m = strlen(pattern);
+	match[0] = -1;
+	
+	for ( j=1; j&lt;m; j++ ) {
+		i = match[j-1];
+		while ( (i&gt;=0) &amp;&amp; (pattern[i+1]!=pattern[j]) )
+			i = match[i];
+		if ( pattern[i+1]==pattern[j] )
+		     match[j] = i+1;
+		else match[j] = -1;
+	}
+}
+
+Position KMP( char *string, char *pattern )
+{
+	int n = strlen(string);
+	int m = strlen(pattern);
+	Position s, p, *match;
+	
+	if ( n &lt; m ) return NotFound;
+	match = (Position *)malloc(sizeof(Position) * m);
+	BuildMatch(pattern, match);
+	s = p = 0;
+	while ( s&lt;n &amp;&amp; p&lt;m ) {
+		if ( string[s]==pattern[p] ) {
+			s++; p++;
+		}
+		else if (p&gt;0) p = match[p-1]+1;
+		else s++;
+	}
+	return ( p==m )? (s-m) : NotFound;
+}
+
+int main()
+{
+	char string[] = &quot;This is a simple example.&quot;;
+	char pattern[] = &quot;simple&quot;;
+	Position p = KMP(string, pattern);
+	if (p==NotFound) printf(&quot;Not Found.\n&quot;);
+	else printf(&quot;%s\n&quot;, string+p);
+	return 0;	
+}
+</code></pre>
+<h3 id="实例pta-kmp-串的模式匹配"><a class="header" href="#实例pta-kmp-串的模式匹配">实例：PTA KMP 串的模式匹配</a></h3>
+<p>给定两个由英文字母组成的字符串 String 和 Pattern，要求找到 Pattern 在 String 中第一次出现的位置，并将此位置后的 String 的子串输出。如果找不到，则输出“Not Found”。</p>
+<p>本题旨在测试各种不同的匹配算法在各种数据情况下的表现。各组测试数据特点如下：</p>
+<ul>
+<li>数据0：小规模字符串，测试基本正确性；</li>
+<li>数据1：随机数据，String 长度为 105，Pattern 长度为 10；</li>
+<li>数据2：随机数据，String 长度为 105，Pattern 长度为 102；</li>
+<li>数据3：随机数据，String 长度为 105，Pattern 长度为 103；</li>
+<li>数据4：随机数据，String 长度为 105，Pattern 长度为 104；</li>
+<li>数据5：String 长度为 106，Pattern 长度为 105；测试尾字符不匹配的情形；</li>
+<li>数据6：String 长度为 106，Pattern 长度为 105；测试首字符不匹配的情形。</li>
+</ul>
+<p>输入格式:</p>
+<p>输入第一行给出 String，为由英文字母组成的、长度不超过 106 的字符串。第二行给出一个正整数 N（≤10），为待匹配的模式串的个数。随后 N 行，每行给出一个 Pattern，为由英文字母组成的、长度不超过 105 的字符串。每个字符串都非空，以回车结束。</p>
+<p>输出格式:</p>
+<p>对每个 Pattern，按照题面要求输出匹配结果。</p>
+<p>输入样例:</p>
+<pre><code>abcabcabcabcacabxy
+3
+abcabcacab
+cabcabcd
+abcabcabcabcacabxyz
+</code></pre>
+<p>输出样例:</p>
+<pre><code>abcabcacabxy
+Not Found
+Not Found
+</code></pre>
+<p>使用KMP算法的解法如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int Position;
+#define NotFound -1
+
+void BuildMatch( char *pattern, int *match )
+{
+    Position i, j;
+    int m = strlen(pattern);
+    match[0] = -1;
+
+    for ( j=1; j&lt;m; j++ ) {
+        i = match[j-1];
+        while ( (i&gt;=0) &amp;&amp; (pattern[i+1]!=pattern[j]) )
+            i = match[i];
+        if ( pattern[i+1]==pattern[j] )
+             match[j] = i+1;
+        else match[j] = -1;
+    }
+}
+
+Position KMP( char *string, char *pattern )
+{
+    int n = strlen(string);
+    int m = strlen(pattern);
+    Position s, p, *match;
+
+    if ( n &lt; m ) return NotFound;
+    match = (Position *)malloc(sizeof(Position) * m);
+    BuildMatch(pattern, match);
+    s = p = 0;
+    while ( s&lt;n &amp;&amp; p&lt;m ) {
+        if ( string[s]==pattern[p] ) {
+            s++; p++;
+        }
+        else if (p&gt;0) p = match[p-1]+1;
+        else s++;
+    }
+    return ( p==m )? (s-m) : NotFound;
+}
+
+int main()
+{
+    char string[1000005];
+    scanf(&quot;%s&quot;,string);
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    for(int i=0; i&lt;N; i++)
+    {
+        char pattern[100005];
+        scanf(&quot;%s&quot;,pattern);
+        Position p = KMP(string, pattern);
+        if (p==NotFound)
+            printf(&quot;Not Found\n&quot;);
+        else
+            printf(&quot;%s\n&quot;, string+p);
+    }
+    return 0;
+}
+</code></pre>
+<p>使用strstr函数的解法如下：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef char* Position;
+#define NotFound NULL
+
+int main()
+{
+    char string[1000005];
+    scanf(&quot;%s&quot;,string);
+    int N;
+    scanf(&quot;%d&quot;,&amp;N);
+    for(int i=0; i&lt;N; i++)
+    {
+        char pattern[100005];
+        scanf(&quot;%s&quot;,pattern);
+        Position p = strstr(string, pattern);
+        if (p==NotFound)
+            printf(&quot;Not Found\n&quot;);
+        else
+            printf(&quot;%s\n&quot;, p);
+    }
+    return 0;
+}
 </code></pre>
 
                     </main>
