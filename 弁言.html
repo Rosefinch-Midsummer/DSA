@@ -175,6 +175,313 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <h1 id="弁言"><a class="header" href="#弁言">弁言</a></h1>
+<ul>
+<li><a href="#%E6%95%99%E7%A8%8B%E8%B5%84%E6%BA%90">教程资源</a></li>
+<li><a href="#leetcode%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97">Leetcode刷题指南</a>
+<ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95">代码随想录</a></li>
+<li><a href="#%E5%90%B4%E5%B8%88%E5%85%84%E5%AD%A6%E7%AE%97%E6%B3%95">吴师兄学算法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E5%AD%A6%E4%B9%A0%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95">如何高效学习数据结构与算法</a>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E7%B3%BB%E7%BB%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95">如何系统化学习算法</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C">系统化的效果</a></li>
+<li><a href="#%E7%B2%BE%E9%80%9A%E4%B8%80%E4%B8%AA%E9%A2%86%E5%9F%9F">精通一个领域</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%89%E4%BB%80%E4%B9%88">数据结构有什么？</a></li>
+<li><a href="#%E7%AE%97%E6%B3%95%E6%9C%89%E4%BB%80%E4%B9%88">算法有什么？</a></li>
+<li><a href="#%E5%88%BB%E6%84%8F%E7%BB%83%E4%B9%A0---deliberate-practice">刻意练习 - Deliberate practice</a></li>
+<li><a href="#%E5%8F%8D%E9%A6%88---feedback">反馈 - Feedback</a></li>
+<li><a href="#%E5%88%87%E9%A2%98%E5%9B%9B%E4%BB%B6%E5%A5%97">切题四件套</a></li>
+<li><a href="#%E5%88%B7%E9%A2%98%E6%96%B9%E5%BC%8F%E4%BA%94%E6%AF%92%E7%A5%9E%E6%8E%8C">刷题方式（五毒神掌）</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="教程资源"><a class="header" href="#教程资源">教程资源</a></h1>
+<ul>
+<li><a href="https://www.icourse163.org/course/ZJU-93001">ZJU 数据结构</a></li>
+<li><a href="https://www.icourse163.org/course/ZJU1-1460402161">ZJU Advanced Data Structures and Algorithm Analysis</a></li>
+<li><a href="https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS61B/">UCB CS61B: Data Structures and Algorithms</a></li>
+<li><a href="https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Algo/">Coursera: Algorithms I &amp; II</a></li>
+<li><a href="https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/6.006/">MIT 6.006: Introduction to Algorithms</a></li>
+<li><a href="https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/6.046/">MIT 6.046: Design and Analysis of Algorithms</a></li>
+<li><a href="https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS170/">UCB CS170: Efficient Algorithms and Intractable Problems</a></li>
+</ul>
+<h1 id="leetcode刷题指南"><a class="header" href="#leetcode刷题指南">Leetcode刷题指南</a></h1>
+<h2 id="代码随想录"><a class="header" href="#代码随想录">代码随想录</a></h2>
+<p><a href="https://programmercarl.com/">代码随想录网站</a></p>
+<p><a href="https://space.bilibili.com/525438321">Bilibili讲解视频网址</a></p>
+<p>很多刚开始刷题的同学都有一个困惑：面对leetcode上近两千道题目，从何刷起。</p>
+<p>大家平时刷题感觉效率低，浪费的时间主要在三点：</p>
+<ul>
+<li><strong>找题</strong></li>
+<li><strong>找到了不应该现阶段做的题</strong></li>
+<li><strong>没有全套的优质题解可以参考</strong></li>
+</ul>
+<p>其实我之前在知乎上回答过这个问题，回答内容大概是按照如下类型来刷数组-&gt; 链表-&gt; 哈希表-&gt;字符串-&gt;栈与队列-&gt;树-&gt;回溯-&gt;贪心-&gt;动态规划-&gt;图论-&gt;高级数据结构，再从简单刷起，做了几个类型题目之后，再慢慢做中等题目、困难题目。</p>
+<p>即使有这样一个整体规划，对于一位初学者甚至算法老手寻找合适自己的题目也是很困难，时间成本很高，而且题目还不一定就是经典题目。</p>
+<p>对于刷题，我们都是想用最短的时间<strong>按照循序渐进的难度顺序把经典题目都做一遍</strong>，这样效率才是最高的！</p>
+<p><strong>而且一个正确的刷题顺序对算法学习是非常重要的！</strong></p>
+<p>所以我整理了leetcode刷题攻略：一个超级详细的刷题顺序，<strong>每道题目都是我精心筛选，都是经典题目高频面试题</strong>，大家只要按照这个顺序刷就可以了，<strong>你没看错，左面的菜单栏就是刷题顺序，每一个专题，挨个刷就可以，不用自己再去题海里选题了！</strong></p>
+<p>而且每道题目我都写了的详细题解（图文并茂，难点配有视频），我的题解已经陪伴了几万录友渡过了算法学习旅程，质量是有目共睹的。</p>
+<p><strong>那么现在我把刷题顺序都整理出来，是为了帮助更多的学习算法的同学少走弯路！</strong></p>
+<p>如果你在刷leetcode，强烈建议先按照本站的题目顺序来刷，刷完了你会发现对整个知识体系有一个质的飞跃，不用在题海茫然的寻找方向。</p>
+<h2 id="吴师兄学算法"><a class="header" href="#吴师兄学算法">吴师兄学算法</a></h2>
+<p><a href="https://blog.algomooc.com/">吴师兄学算法</a></p>
+<p>大家好，我是吴师兄。</p>
+<p>1、LeetCode 题目太多，<strong>全部刷完肯定不是最好最有效的方式</strong>，其中涉及到的基本知识点来来回回就那些，同时有非常多的类似题，所以刷经典题，掌握这些经典题是最有效的学习方式。</p>
+<p>2、从算法训练营第一期开始到现在的第十二期，吴师兄整理和迭代了非常多的刷题顺序，经过这两年的同学们的反馈，终于整理出一份我认为是最适合新手小白转码同学的 LeetCode 刷题顺序。</p>
+<p>3、本刷题顺序涵盖了 205 道算法题，如果你的自学能力强，每天能够投入 2 小时的刷题时间，两个月左右是可以做到完完整整的全部刷完。</p>
+<p>4、所有题目均来源于算法训练营的内容，以动画和视频的形式讲解，弱化了文字讲解部分，所以很多题目没有提供题目解析部分，而是以代码注释的形式进行讲解。</p>
+<p>5、每道题目的文字解析部分会逐步补充好，为后续实体书的出版提供物料。</p>
+<p>6、添加吴师兄的微信 algomooc555 ，后期将会在朋友圈赠送 205 道题目的 PDF 版题解。</p>
+<h1 id="如何高效学习数据结构与算法"><a class="header" href="#如何高效学习数据结构与算法">如何高效学习数据结构与算法</a></h1>
+<p><a href="https://zhuanlan.zhihu.com/p/143128567">原文链接</a></p>
+<p>原作者：<strong>三钻</strong></p>
+<h2 id="前言"><a class="header" href="#前言"><strong>前言</strong></a></h2>
+<p>本文是个人基于覃超老师的《算法训练营》的学习笔记，此笔记的内容都是学习后的个人记录、个人总结、理解和思想。仅供参考学习。</p>
+<p>很多同学在大学的时候会觉得数据结构与算法很枯燥，很多小伙伴都不愿意听这门课程。甚至以前还觉得能开发一个项目就能成为一个合格的程序员。但是学会算法，或者接触过数据结构与算法后，发现懂这门知识的程序员编写出来的代码相对有更高的质量。代码的性能、写法、底层逻辑和解决问题的能力都会高于不懂数据结构与算法的程序员。</p>
+<p>到了如今，如果想成为一个高级开发工程师或者进入大厂，不论岗位是前端、后端还是AI，算法都是重中之重。也无论我们需要进入的公司的岗位是否最后是做算法工程师，前提面试就需要考算法。所以小时不学算法，长大掉头发。</p>
+<p>这系列的《<strong>算法学习笔记</strong>》，与大家一起重温或者学习数据结构与算法。</p>
+<p>这里也赠送大家一句话：  &quot;好记性不如烂笔头，好记性更不如好笔记&quot;</p>
+<p>愿大家在技术银河中终身漂泊学习时，习惯编写自己的笔记，以后这些笔记必定成为我们最珍贵的宝藏！✨</p>
+<h2 id="如何系统化学习算法"><a class="header" href="#如何系统化学习算法"><strong>如何系统化学习算法</strong></a></h2>
+<p>深入到精通一门知识的我们都需要一个系统化的学习方法，如果这门知识越是有难度，前期就越是枯燥无味，或者甚至觉得很困难。所以学习算法也是一样的：</p>
+<ul>
+<li>
+<p><strong>枯燥无味</strong></p>
+<ul>
+<li>所以需要系统化学习；</li>
+<li>小步快跑的方式进行学习；</li>
+<li>不懂就找答案不要埋头苦学；</li>
+</ul>
+</li>
+<li>
+<p><strong>不牢固</strong></p>
+<ul>
+<li>越是庞大的知识，越学就会越觉得之前学到的知识忘的差不多了；</li>
+<li>其实就是缺乏知识的稳固性；</li>
+</ul>
+</li>
+<li>
+<p><strong>预习</strong></p>
+<ul>
+<li>学习任何一门知识，都要先了解和预习这门知识；</li>
+<li>同理，在学习一门新的开发语言时，我们都会先来一个<code>hello world</code>；</li>
+</ul>
+</li>
+<li>
+<p><strong>坚持leetcode刷题</strong></p>
+<ul>
+<li>要学会算法，并且稳固这一门知识，不断的<strong>刻意练习</strong>是重中之重；</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="系统化的效果"><a class="header" href="#系统化的效果"><strong>系统化的效果</strong></a></h2>
+<p>系统化学习和拿起一本书最终的效果是不一样的。很多时候我们开始学习一门知识，我们都会看：《xxx深入浅出》、《xxx指南》和《从0到1学会xxx》，其实里面的知识是很庞大的。只靠知识是无法支撑我们的实战和经验的，所以我们需要<strong>系统化的学习方法</strong>最终达到的目标也是不一样的，例如：</p>
+<ul>
+<li>提升到职业顶尖水平</li>
+<li>通过一线互联网大厂的面试</li>
+<li>要有Leetcode 300+ 刷题量</li>
+</ul>
+<p>推荐阅读《Outliner》这本书中的<strong>学习方法</strong></p>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="精通一个领域"><a class="header" href="#精通一个领域"><strong>精通一个领域</strong></a></h2>
+<p>前面说到，任何一个领域的知识都是很庞大的。而且只靠看书，看文章学习都是不够的。所以一套好的学习方法，可以为我们打开一扇大门。而且在打开这扇大门的同时不会因为艰苦、困难、煎熬或者是枯燥而最后放弃。</p>
+<ul>
+<li>切碎知识点 Chunk it up
+<ul>
+<li>庖丁解牛</li>
+<li>脉络相连 - 从根部开始学习，到分支，再到树叶。让每一个知识点都有关联关系</li>
+</ul>
+</li>
+<li>刻意练习 Deliberate Practicing</li>
+<li>反馈 Feedback</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="数据结构有什么"><a class="header" href="#数据结构有什么"><strong>数据结构有什么？</strong></a></h2>
+<ul>
+<li>
+<p>一维：</p>
+</li>
+<li>
+<p>基础： 数组 array (string)，链表 linked list</p>
+</li>
+<li>
+<p>高级：栈 stack，队列 queue， 双端队列 duque，集合 set，映射 map (hash or map)，等等</p>
+</li>
+<li>
+<p>二维：</p>
+</li>
+<li>
+<p>基础：树 tree, 图 graph</p>
+</li>
+<li>
+<p>高级：二叉搜索树 binary search tree（红黑树 red-black tree, AVL），堆 heap，并查集 disjoint set，字典树 Trie</p>
+</li>
+<li>
+<p>特殊：</p>
+</li>
+<li>
+<p>位运算 Bitwise，步隆过滤器 BloomFilter</p>
+</li>
+<li>
+<p>LRU Cache (缓存)</p>
+</li>
+</ul>
+<p><img src="https://pic2.zhimg.com/80/v2-7accca40d96aa5049c11d6dc4e579c7d_1440w.webp" alt="" /></p>
+<p>参考：覃超老师的《数据库脑图》</p>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="算法有什么"><a class="header" href="#算法有什么"><strong>算法有什么？</strong></a></h2>
+<p>任何的高级算法与数据结构都会转换成If Else，for循环，其实也是最朴素的计算机的知识，没有什么AI，人工智能的知识。高级算法重点是找到重复单元。</p>
+<ul>
+<li>跳转语句 (Branch) ：If-else，switch</li>
+<li>循环 (Iteration) ：for, which，while loop</li>
+<li>递归 (Recursion) ： Divide &amp; Conquer, Backtrace</li>
+<li>搜索 (Search) ：深度优先搜索 Depth first search，广度优先搜索 Breadth first search，启发式搜索 A*</li>
+<li>动态规划 (Dynamic Programming)</li>
+<li>二分查找 (Binary Search)</li>
+<li>贪心 (Greedy)</li>
+<li>数学 (Math)，几何 (Geometry)</li>
+</ul>
+<p><img src="https://pic4.zhimg.com/80/v2-43f98bbd8008533ce370b78672cb8aa7_1440w.webp" alt="" /></p>
+<p>参考：覃超老师的《算法脑图》</p>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="刻意练习---deliberate-practice"><a class="header" href="#刻意练习---deliberate-practice"><strong>刻意练习 - Deliberate practice</strong></a></h2>
+<p>无论是科学家、国家运动员、技术专家还是游戏职业选手，他们的优秀的背后都有一个共同点：<strong>刻意练习</strong>。</p>
+<p><strong>什么是刻意练习？</strong></p>
+<ul>
+<li>刻意练习 - 过遍数，持续多边形的练习，用数遍达到质变！（五毒神掌）；</li>
+<li>练习不擅长的地方；</li>
+<li>如果感到不舒服、不爽、枯燥的话，那证明我们正在爬坡，正在提升！</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="反馈---feedback"><a class="header" href="#反馈---feedback"><strong>反馈 - Feedback</strong></a></h2>
+<p>很多时候在学习中，特别是在自学的过程，我们永远不知道自己的学习的成果是怎么样的。或者我们有时候会遇到难点但是无法突破，甚至有时候我们以为自己很努力，或者已经很强了。但是其实还只是坐井观天而已。所以我们在学习的时候需要<code>反馈</code>。所谓的反馈有几种：</p>
+<ul>
+<li>即时反馈
+<ul>
+<li>学会使用一门语言；</li>
+<li>能写出能执行的代码；</li>
+<li>能写出一个项目；</li>
+<li>能实现一个功能；</li>
+</ul>
+</li>
+<li>主动型反馈
+<ul>
+<li>高手代码（Github、LeetCode）；</li>
+<li>第一视角止步（看视频，看高手写的代码，学习思路）；</li>
+</ul>
+</li>
+<li>被动式反馈（高手指点）
+<ul>
+<li>代码审查 code review；</li>
+<li>例如：教练看你打，给你反馈；</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="切题四件套"><a class="header" href="#切题四件套"><strong>切题四件套</strong></a></h2>
+<p>我个人认为也可以叫<code>解题四大法则</code>：</p>
+<ul>
+<li>
+<p>理解题目（Clarification）</p>
+<ul>
+<li>在LeetCode看题后，先思考，认真确认和理解题目；</li>
+<li>避免忽略了一些条件或者是误解题目；</li>
+<li>面试的时候更加应该跟面试官确认清楚题目、条件、场景等；</li>
+</ul>
+</li>
+<li>
+<p>多种解题方案（Possible solutions）</p>
+<ul>
+<li>对比时间和空间复杂度 compare (time/space)</li>
+<li>最优解 optimal (加强)</li>
+</ul>
+</li>
+<li>
+<p>多编写（Coding）</p>
+<ul>
+<li>代码反复练习和编写；</li>
+<li>每一种解法都反复练习和编写；</li>
+</ul>
+</li>
+<li>
+<p>多测试案例（Test cases）</p>
+<ul>
+<li>在LeetCode上可以改变测试案例；</li>
+<li>多测试几种案例，确保自己的代码可以适应各种特殊情况；</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="刷题方式五毒神掌"><a class="header" href="#刷题方式五毒神掌"><strong>刷题方式（五毒神掌）</strong></a></h2>
+<p><strong>第一遍</strong></p>
+<ul>
+<li>5分钟：读题 + 思考；</li>
+<li>5分钟过后，没有思路就直接看解法；</li>
+<li>记录多个解题方法，比较解题方法的优弊；</li>
+<li>尝试默写代码，训练刻意手写代码；</li>
+</ul>
+<p><strong>第二遍</strong></p>
+<ul>
+<li>自己编写，这时候就不要再看题解了；</li>
+<li>LeetCode提交代码，确保能通过；</li>
+<li>有Bug没有关系，重复debug到通过为止；</li>
+<li>编写出多种解题方法；</li>
+<li>持续优化 - 重点是 <code>执行时间</code> （可参考LeetCode中打败了多少的人，也可以点击比较优秀的人，学习更好的写法）；</li>
+</ul>
+<p><strong>第三遍</strong></p>
+<ul>
+<li>过了一天后，再重复做题；</li>
+<li>根据自己不熟悉的题目与程度做专项练习；</li>
+<li>专项练习就是针对自己不熟悉的种类的题，从而刻意练习哪一种题；</li>
+</ul>
+<p><strong>第四遍</strong></p>
+<ul>
+<li>过了一周后，再反复练习；</li>
+</ul>
+<p><strong>第五遍</strong></p>
+<ul>
+<li>面试前，提前2-3周开始重复练习；</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-f2038364ef9f96022ee836fd03323b2c_1440w.webp" alt="" /></p>
+<h2 id="总结"><a class="header" href="#总结"><strong>总结</strong></a></h2>
+<p>这篇笔记中，我们记录了一下关键知识重点点：</p>
+<ul>
+<li>
+<p><strong>如何深入学习一门知识</strong></p>
+<ul>
+<li>通过系统化学习一门知识；</li>
+<li>最高效和持续的学习算法就是通过系统化的学习；</li>
+<li>这里推荐大家，真的想学好一个技术，最好的方法就是找对老师，找对课程，找对人；</li>
+</ul>
+</li>
+<li>
+<p><strong>如何攻破庞大的知识体系变成编程职业高手</strong></p>
+<ul>
+<li>切碎知识点与建立脉络</li>
+<li>刻意练习</li>
+<li>反馈</li>
+</ul>
+</li>
+<li>
+<p><strong>数据结构中有什么？</strong> - 看脑图</p>
+</li>
+<li>
+<p><strong>算法中有什么？</strong>- 看脑图</p>
+</li>
+<li>
+<p><strong>算法练习方法</strong></p>
+<ul>
+<li>切题四件套</li>
+<li>五毒神掌</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 
